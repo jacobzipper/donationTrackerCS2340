@@ -39,4 +39,21 @@
         app:layout_constraintTop_toBottomOf="@+id/welcomeStringGreeting"
         app:layout_constraintVertical_bias="0.197"
         tools:text="@string/welcome_button_to_login" />
+
+    <Button
+        android:id="@+id/goToRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/welcome_button_to_register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeLoginButton"
+        app:layout_constraintVertical_bias="0.07"
+        tools:text="@string/welcome_button_to_register" />
 </android.support.constraint.ConstraintLayout>

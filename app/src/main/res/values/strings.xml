@@ -4,17 +4,24 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_password_verify">Password (Verify)</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_username_already_exists">A profile with this username already exists</string>
+    <string name="error_passwords_dont_match">Must match password</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing username
         completions."
     </string>
     <string name="welcome_string">Welcome to the Donation Tracker!</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="welcome_button_to_login">Login</string>
+    <string name="welcome_button_to_register">Register</string>
     <string name="logout_button">Logout</string>
+    <string name="back_button">Back</string>
+    <string name="register_header_text">Register</string>
+
 </resources>

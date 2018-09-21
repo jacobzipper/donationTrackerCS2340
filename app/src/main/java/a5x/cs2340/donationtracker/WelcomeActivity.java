@@ -20,6 +20,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 goToLogin();
             }
         });
+        Button goToRegisterButton = findViewById(R.id.goToRegisterButton);
+        goToRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToRegister();
+            }
+        });
     }
 
     /**
@@ -29,5 +36,8 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent goToLoginIntent = new Intent(this, LoginActivity.class);
         startActivity(goToLoginIntent);
     }
-
+    protected void goToRegister() {
+        Intent goToRegisterIntent = new Intent(this, RegistrationActivity.class);
+        startActivity(goToRegisterIntent);
+    }
 }

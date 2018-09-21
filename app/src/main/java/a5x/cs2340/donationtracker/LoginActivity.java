@@ -94,7 +94,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
-
+        Button backToWelcomeButton = findViewById(R.id.fromLoginToWelcomeButton);
+        backToWelcomeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBackToWelcome();
+            }
+        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -102,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void createDummyCredentials() {
         validCredentials.put("user", sha256Hash("Password"));
     }
-    private String sha256Hash(String starting) {
+    private static String sha256Hash(String starting) {
         try {
             MessageDigest hasher = MessageDigest.getInstance("SHA-256");
             byte[] startingBytes = starting.getBytes("UTF-8");
@@ -320,6 +326,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USERNAME, username);
         startActivity(goToPostLoginIntent);
+    }
+    public static boolean checkExistingUsername(String username) {
+        return validCredentials.containsKey(username);
+    }
+    static void registerUser(String username, String password) {
+        validCredentials.put(username, sha256Hash(password));
+    }
+    protected void goBackToWelcome() {
+        Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
+        startActivity(backToWelcomeIntent);
     }
 }
 
