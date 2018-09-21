@@ -229,8 +229,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             usernames.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
-        addUsernamesToAutoComplete(usernames);
     }
 
     @Override
@@ -238,14 +236,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    private void addUsernamesToAutoComplete(List<String> usernamesCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, usernamesCollection);
-
-        mUsernameView.setAdapter(adapter);
-    }
 
     //Possibly remove once login is fully reconfigured to usernames and not email
     private interface ProfileQuery {
@@ -314,6 +304,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Transitions from the login screen to the post-login screen
+     * @param username the username of the successfully logged in person
+     */
     protected void goToPostLogin(String username) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USERNAME, username);

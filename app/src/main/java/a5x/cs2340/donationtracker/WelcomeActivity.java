@@ -21,6 +21,10 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Transitions from the welcome screen to the login screen
+     */
     protected void goToLogin() {
         Intent goToLoginIntent = new Intent(this, LoginActivity.class);
         startActivity(goToLoginIntent);

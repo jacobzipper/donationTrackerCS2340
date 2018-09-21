@@ -25,6 +25,10 @@ public class PostLoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Transitions back to the welcome screen
+     */
     protected void logoutBackToWelcome() {
         username = null;
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
