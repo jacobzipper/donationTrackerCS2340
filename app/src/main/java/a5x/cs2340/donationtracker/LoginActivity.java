@@ -31,7 +31,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -46,13 +50,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user"
-    };
+
+    private static HashMap<String, String> validCredentials = new HashMap<>();
+
     public static final String LOGGED_IN_USERNAME = "donationTracker.successfulUsername";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -72,7 +72,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
-
+        if (validCredentials.isEmpty()) {
+            createDummyCredentials();
+        }
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -97,8 +99,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
-
-
+    private void createDummyCredentials() {
+        validCredentials.put("user", sha256Hash("Password"));
+    }
+    private String sha256Hash(String starting) {
+        try {
+            MessageDigest hasher = MessageDigest.getInstance("SHA-256");
+            byte[] startingBytes = starting.getBytes("UTF-8");
+            hasher.update(startingBytes);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < startingBytes.length; i++) {
+                sb.append(Integer.toString((startingBytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch(Exception e) {
+            Log.d("Encryption", "Exception was thrown trying to hash");
+            return starting;
+        }
+    }
 
 
     /**
@@ -155,12 +173,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        for (String user : DUMMY_CREDENTIALS) {
-            if (user.equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return validCredentials.containsKey(username);
     }
 
     private boolean isPasswordValid(String password) {
@@ -274,13 +287,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                //FIX THIS LATER WITH ACTUAL AUTHENTICATION
-                return true;
-            }
+            return (sha256Hash(mPassword).equals(validCredentials.get(mUsername)));
 
-            // TODO: register the new account here.
-            return true;
         }
 
         @Override
