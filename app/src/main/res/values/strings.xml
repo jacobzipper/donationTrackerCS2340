@@ -16,4 +16,5 @@
     <string name="welcome_string">Welcome to the Donation Tracker!</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="welcome_button_to_login">Login</string>
+    <string name="logout_button">Logout</string>
 </resources>
