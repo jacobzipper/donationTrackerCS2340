@@ -36,6 +36,10 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent goToLoginIntent = new Intent(this, LoginActivity.class);
         startActivity(goToLoginIntent);
     }
+
+    /**
+     * Transitions from the welcome screen to the registration screen
+     */
     protected void goToRegister() {
         Intent goToRegisterIntent = new Intent(this, RegistrationActivity.class);
         startActivity(goToRegisterIntent);

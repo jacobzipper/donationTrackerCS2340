@@ -43,7 +43,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -105,9 +105,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    /**
+     * Adds dummy credentials "user:Password" to set of valid credentials
+     */
     private void createDummyCredentials() {
         validCredentials.put("user", sha256Hash("Password"));
     }
+
+    /**
+     * Convert string to hash using SHA-256 algorithm
+     * @param starting the string to convert
+     * @return the result of the hashing
+     */
     private static String sha256Hash(String starting) {
         try {
             MessageDigest hasher = MessageDigest.getInstance("SHA-256");
@@ -177,11 +186,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Checks if username is valid (currently just if the username is in the valid credentials set)
+     * @param username the username to check
+     * @return true if the username exists in the valid credentials
+     */
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
         return validCredentials.containsKey(username);
     }
 
+    /**
+     * Checks if the password meets password specs (currently just minimum length)
+     * @param password the password to check
+     * @return true if the password meets specifications
+     */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
@@ -223,49 +242,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
 
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> usernames = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            usernames.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-
-    //Possibly remove once login is fully reconfigured to usernames and not email
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -327,12 +304,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         goToPostLoginIntent.putExtra(LOGGED_IN_USERNAME, username);
         startActivity(goToPostLoginIntent);
     }
+
+    /**
+     * Public method to check if username exists in valid credentials
+     * @param username the username to check
+     * @return true if the username exists in the valid credentials
+     */
     public static boolean checkExistingUsername(String username) {
         return validCredentials.containsKey(username);
     }
+
+    /**
+     * Adds the passed in credentials to the valid credentials
+     * @param username the username to add
+     * @param password the plaintext password to hash and add
+     */
     static void registerUser(String username, String password) {
         validCredentials.put(username, sha256Hash(password));
     }
+
+    /**
+     * Transition back to the welcome screen
+     */
     protected void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);

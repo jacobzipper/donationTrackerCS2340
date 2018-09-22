@@ -37,6 +37,10 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Attempt to register the user with the currently entered credentials
+     */
     protected void attemptRegister() {
         usernameTextView.setError(null);
         passwordTextView.setError(null);
@@ -47,7 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String username = usernameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         String passwordVerify = passwordVerifyTextView.getText().toString();
-
+        //Error checking
         if (username.isEmpty()) {
             usernameTextView.setError(getString(R.string.error_field_required));
             focusView = usernameTextView;
@@ -76,16 +80,26 @@ public class RegistrationActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
+            //No errors, register the new credentials
             registerUser(username, password);
             Toast.makeText(this, "Registration Successful", Toast.LENGTH_LONG).show();
-
             goBackToWelcome();
         }
     }
+
+    /**
+     * Return to the welcome screen
+     */
     protected void goBackToWelcome() {
         Intent goBackToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(goBackToWelcomeIntent);
     }
+
+    /**
+     * Send username and password to LoginActivity store to be registered as valid
+     * @param username username to register
+     * @param password password to register
+     */
     protected void registerUser(String username, String password) {
         LoginActivity.registerUser(username, password);
     }
