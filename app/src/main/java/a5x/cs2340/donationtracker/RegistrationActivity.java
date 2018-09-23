@@ -1,11 +1,10 @@
 package a5x.cs2340.donationtracker;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +14,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView passwordVerifyTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
             usernameTextView.setError(getString(R.string.error_username_already_exists));
             focusView = usernameTextView;
             cancel = true;
-        } else if (password.length() <= 4) {
+        } else if (password.length() < Constants.MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
             cancel = true;
@@ -97,6 +97,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     /**
      * Send username and password to LoginActivity store to be registered as valid
+     *
      * @param username username to register
      * @param password password to register
      */

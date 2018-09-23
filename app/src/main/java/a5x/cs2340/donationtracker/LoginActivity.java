@@ -4,41 +4,23 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -109,11 +91,12 @@ public class LoginActivity extends AppCompatActivity {
      * Adds dummy credentials "user:Password" to set of valid credentials
      */
     private void createDummyCredentials() {
-        validCredentials.put("user", sha256Hash("Password"));
+        validCredentials.put("user", sha256Hash("pass"));
     }
 
     /**
      * Convert string to hash using SHA-256 algorithm
+     *
      * @param starting the string to convert
      * @return the result of the hashing
      */
@@ -127,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 sb.append(Integer.toString((startingBytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.d("Encryption", "Exception was thrown trying to hash");
             return starting;
         }
@@ -188,6 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Checks if username is valid (currently just if the username is in the valid credentials set)
+     *
      * @param username the username to check
      * @return true if the username exists in the valid credentials
      */
@@ -198,12 +182,13 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Checks if the password meets password specs (currently just minimum length)
+     *
      * @param password the password to check
      * @return true if the password meets specifications
      */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= Constants.MIN_PASSWORD_LENGTH;
     }
 
     /**
@@ -241,7 +226,6 @@ public class LoginActivity extends AppCompatActivity {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-
 
 
     /**
@@ -297,6 +281,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Transitions from the login screen to the post-login screen
+     *
      * @param username the username of the successfully logged in person
      */
     protected void goToPostLogin(String username) {
@@ -307,6 +292,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Public method to check if username exists in valid credentials
+     *
      * @param username the username to check
      * @return true if the username exists in the valid credentials
      */
@@ -316,6 +302,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Adds the passed in credentials to the valid credentials
+     *
      * @param username the username to add
      * @param password the plaintext password to hash and add
      */
