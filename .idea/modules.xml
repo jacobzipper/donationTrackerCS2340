@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DonationTracker.iml" filepath="$PROJECT_DIR$/DonationTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cs2340.iml" filepath="$PROJECT_DIR$/cs2340.iml" />
     </modules>
   </component>
 </project>

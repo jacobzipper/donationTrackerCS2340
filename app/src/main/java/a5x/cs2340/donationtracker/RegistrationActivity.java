@@ -1,12 +1,21 @@
 package a5x.cs2340.donationtracker;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import me.gosimple.nbvcxz.Nbvcxz;
+import me.gosimple.nbvcxz.scoring.Result;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -14,6 +23,14 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView passwordVerifyTextView;
+    private ProgressBar passwordStrengthMeter;
+    private TextView passwordStrengthIndicatorText;
+    private Nbvcxz passwordStrengthChecker = new Nbvcxz();
+    private final long VERY_WEAK_GUESSES = 1000000L;
+    private final long WEAK_GUESSES = 100000000L;
+    private final long AVERAGE_GUESSES = 1000000000L;
+    private final long STRONG_GUESSES = 10000000000L;
+    //private final long VERY_STRONG_GUESSES = 100000000000L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +51,20 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptRegister();
+            }
+        });
+        passwordStrengthMeter = findViewById(R.id.passwordStrengthMeter);
+        passwordStrengthIndicatorText = findViewById(R.id.passwordStrengthNotifier);
+        passwordTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updatePasswordStrength(s.toString());
             }
         });
     }
@@ -103,5 +134,41 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     protected void registerUser(String username, String password) {
         LoginActivity.registerUser(username, password);
+    }
+    /**
+     * Updates the progress bar with the strength of the currently input password
+     *
+     */
+    protected void updatePasswordStrength(String password) {
+        if (password.isEmpty()) {
+            passwordStrengthMeter.setVisibility(View.GONE);
+            passwordStrengthIndicatorText.setVisibility(View.GONE);
+        } else {
+            passwordStrengthMeter.setVisibility(View.VISIBLE);
+            passwordStrengthIndicatorText.setVisibility(View.VISIBLE);
+            Result passwordStrengthEstimate = passwordStrengthChecker.estimate(password);
+            long guesses = passwordStrengthEstimate.getGuesses().longValue();
+            if (guesses < VERY_WEAK_GUESSES) {
+                passwordStrengthMeter.setProgress(0);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
+                passwordStrengthIndicatorText.setText("Strength: Very Weak");
+            } else if (guesses < WEAK_GUESSES) {
+                passwordStrengthMeter.setProgress(25);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
+                passwordStrengthIndicatorText.setText("Strength: Weak");
+            } else if (guesses < AVERAGE_GUESSES) {
+                passwordStrengthMeter.setProgress(50);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+                passwordStrengthIndicatorText.setText("Strength: Average");
+            } else if (guesses < STRONG_GUESSES) {
+                passwordStrengthMeter.setProgress(75);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+                passwordStrengthIndicatorText.setText("Strength: Strong");
+            } else {
+                passwordStrengthMeter.setProgress(100);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+                passwordStrengthIndicatorText.setText("Strength: Very Strong");
+            }
+        }
     }
 }

@@ -52,6 +52,21 @@
             android:hint="@string/prompt_password"
             android:inputType="textPassword" />
 
+        <ProgressBar
+            android:id="@+id/passwordStrengthMeter"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/passwordStrengthNotifier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:visibility="gone" />
+
         <EditText
             android:id="@+id/registrationPasswordVerify"
             android:layout_width="match_parent"
