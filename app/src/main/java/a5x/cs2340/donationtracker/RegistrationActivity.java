@@ -9,16 +9,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
+
+import static a5x.cs2340.donationtracker.Constants.AVERAGE_GUESSES;
+import static a5x.cs2340.donationtracker.Constants.STRONG_GUESSES;
+import static a5x.cs2340.donationtracker.Constants.VERY_WEAK_GUESSES;
+import static a5x.cs2340.donationtracker.Constants.WEAK_GUESSES;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -29,11 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private ProgressBar passwordStrengthMeter;
     private TextView passwordStrengthIndicatorText;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
-    private final BigDecimal VERY_WEAK_GUESSES = new BigDecimal("1000000");
-    private final BigDecimal WEAK_GUESSES = new BigDecimal("100000000");
-    private final BigDecimal AVERAGE_GUESSES = new BigDecimal("1000000000");
-    private final BigDecimal STRONG_GUESSES = new BigDecimal("10000000000");
-    //private final BigDecimal VERY_STRONG_GUESSES = new BigDecimal("100000000000");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,23 +153,23 @@ public class RegistrationActivity extends AppCompatActivity {
             if (guesses.compareTo(VERY_WEAK_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(0);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
-                passwordStrengthIndicatorText.setText("Strength: Very Weak");
+                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_very_weak));
             } else if (guesses.compareTo(WEAK_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(25);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
-                passwordStrengthIndicatorText.setText("Strength: Weak");
+                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_weak));
             } else if (guesses.compareTo(AVERAGE_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(50);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText("Strength: Average");
+                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_average));
             } else if (guesses.compareTo(STRONG_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(75);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText("Strength: Strong");
+                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_strong));
             } else {
                 passwordStrengthMeter.setProgress(100);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText("Strength: Very Strong");
+                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_very_strong));
             }
         }
     }

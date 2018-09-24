@@ -8,24 +8,64 @@ public abstract class User implements Parcelable{
     private String lastName;
     private String username;
     private String passwordHash;
-    public User(String firstName, String lastName, String username, String passwordHash) {
+
+    /**
+     * Regular constructor and all passed parameters
+     *
+     * @param firstName the User's first name
+     * @param lastName the User's last name
+     * @param username the User's username
+     * @param passwordHash the User's hashed password
+     */
+    User(String firstName, String lastName, String username, String passwordHash) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.passwordHash = passwordHash;
     }
+
+    /**
+     * Accessor for first name
+     *
+     * @return first name
+     */
     public String getFirstName() {
         return firstName;
     }
+
+    /**
+     * Accessor for last name
+     *
+     * @return last name
+     */
     public String getLastName() {
         return lastName;
     }
+
+    /**
+     * Accessor for username
+     *
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
+
+    /**
+     * Checks if the hashed password passed in matches the stored hash
+     *
+     * @param passwordHash the pasesd in hash to check
+     * @return true if the password hashes match
+     */
     public boolean checkPassword(String passwordHash) {
         return this.passwordHash.equals(passwordHash);
     }
+
+    /**
+     * Returns a concatenation of first name and last name
+     *
+     * @return firstName and lastName concatenated with a space in between
+     */
     public String getName() {
         return firstName + " " + lastName;
     }
@@ -54,7 +94,13 @@ public abstract class User implements Parcelable{
         out.writeString(username);
         out.writeString(passwordHash);
     }
-    public User(Parcel parcel) {
+
+    /**
+     * Constructor from Parcel
+     *
+     * @param parcel the parcel to build the User from
+     */
+    User(Parcel parcel) {
         firstName = parcel.readString();
         lastName = parcel.readString();
         username = parcel.readString();

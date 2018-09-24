@@ -2,6 +2,7 @@ package a5x.cs2340.donationtracker;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.security.MessageDigest;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -28,22 +28,19 @@ import a5x.cs2340.donationtracker.users.RegularUser;
 import a5x.cs2340.donationtracker.users.User;
 import a5x.cs2340.donationtracker.users.UserSet;
 
+import static a5x.cs2340.donationtracker.Constants.AUTHENTICATION_UPPER_BOUND;
+
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
 
 
     private static UserSet validUsers = new UserSet();
     private static HashSet<String> validAuthenticationTokens = new HashSet<>();
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
-    private static final int AUTHENTICATION_UPPER_BOUND = 100000;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -60,12 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        mUsernameView = findViewById(R.id.username);
         //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
         if (validUsers.isEmpty()) {
             createDummyUser();
         }
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView =  findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -77,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mUsernameSignInButton = (Button) findViewById(R.id.username_sign_in_button);
+        Button mUsernameSignInButton = findViewById(R.id.username_sign_in_button);
         mUsernameSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,8 +111,8 @@ public class LoginActivity extends AppCompatActivity {
             byte[] startingBytes = starting.getBytes("UTF-8");
             hasher.update(startingBytes);
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < startingBytes.length; i++) {
-                sb.append(Integer.toString((startingBytes[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte startingByte : startingBytes) {
+                sb.append(Integer.toString((startingByte & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
         } catch (Exception e) {
@@ -127,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
+     * If there are form errors (invalid username, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
@@ -207,32 +204,25 @@ public class LoginActivity extends AppCompatActivity {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
 
@@ -240,13 +230,12 @@ public class LoginActivity extends AppCompatActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
+    @SuppressLint("StaticFieldLeak")
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mUsername;
         private final String mPassword;
         private final User user;
         UserLoginTask(String username, String password) {
-            mUsername = username;
             mPassword = password;
             this.user = validUsers.getUser(username);
         }
