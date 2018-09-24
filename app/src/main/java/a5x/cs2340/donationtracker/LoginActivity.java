@@ -26,6 +26,7 @@ import java.util.Random;
 
 import a5x.cs2340.donationtracker.users.RegularUser;
 import a5x.cs2340.donationtracker.users.User;
+import a5x.cs2340.donationtracker.users.UserSet;
 
 /**
  * A login screen that offers login via email/password.
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_READ_CONTACTS = 0;
 
 
-    private static HashSet<User> validUsers = new HashSet<>();
+    private static UserSet validUsers = new UserSet();
     private static HashSet<String> validAuthenticationTokens = new HashSet<>();
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
@@ -98,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
      * Adds dummy credentials "user:Password" to set of valid credentials
      */
     private void createDummyUser() {
-        validUsers.add(new RegularUser("FIRST", "LAST","user", sha256Hash("pass")));
+        validUsers.add(new RegularUser("DEFAULT", "USER","user", sha256Hash("pass")));
     }
 
     /**
@@ -184,12 +185,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        for (User user : validUsers) {
-            if (user.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return validUsers.containsUsername(username);
     }
 
     /**
@@ -252,13 +248,7 @@ public class LoginActivity extends AppCompatActivity {
         UserLoginTask(String username, String password) {
             mUsername = username;
             mPassword = password;
-            User tempUser = null;
-            for (User user : validUsers) {
-                if (user.getUsername().equals(mUsername)) {
-                    tempUser = user;
-                }
-            }
-            this.user = tempUser;
+            this.user = validUsers.getUser(username);
         }
 
         @Override
@@ -319,7 +309,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the username exists in the valid credentials
      */
     public static boolean checkExistingUsername(String username) {
-        return validUsers.contains(username);
+        return validUsers.containsUsername(username);
     }
 
     /**

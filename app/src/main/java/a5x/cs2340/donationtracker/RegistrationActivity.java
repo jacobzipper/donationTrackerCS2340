@@ -14,6 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
@@ -26,11 +29,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private ProgressBar passwordStrengthMeter;
     private TextView passwordStrengthIndicatorText;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
-    private final long VERY_WEAK_GUESSES = 1000000L;
-    private final long WEAK_GUESSES = 100000000L;
-    private final long AVERAGE_GUESSES = 1000000000L;
-    private final long STRONG_GUESSES = 10000000000L;
-    //private final long VERY_STRONG_GUESSES = 100000000000L;
+    private final BigDecimal VERY_WEAK_GUESSES = new BigDecimal("1000000");
+    private final BigDecimal WEAK_GUESSES = new BigDecimal("100000000");
+    private final BigDecimal AVERAGE_GUESSES = new BigDecimal("1000000000");
+    private final BigDecimal STRONG_GUESSES = new BigDecimal("10000000000");
+    //private final BigDecimal VERY_STRONG_GUESSES = new BigDecimal("100000000000");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,20 +150,20 @@ public class RegistrationActivity extends AppCompatActivity {
             passwordStrengthMeter.setVisibility(View.VISIBLE);
             passwordStrengthIndicatorText.setVisibility(View.VISIBLE);
             Result passwordStrengthEstimate = passwordStrengthChecker.estimate(password);
-            long guesses = passwordStrengthEstimate.getGuesses().longValue();
-            if (guesses < VERY_WEAK_GUESSES) {
+            BigDecimal guesses = passwordStrengthEstimate.getGuesses();
+            if (guesses.compareTo(VERY_WEAK_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(0);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
                 passwordStrengthIndicatorText.setText("Strength: Very Weak");
-            } else if (guesses < WEAK_GUESSES) {
+            } else if (guesses.compareTo(WEAK_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(25);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
                 passwordStrengthIndicatorText.setText("Strength: Weak");
-            } else if (guesses < AVERAGE_GUESSES) {
+            } else if (guesses.compareTo(AVERAGE_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(50);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                 passwordStrengthIndicatorText.setText("Strength: Average");
-            } else if (guesses < STRONG_GUESSES) {
+            } else if (guesses.compareTo(STRONG_GUESSES) < 0) {
                 passwordStrengthMeter.setProgress(75);
                 passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                 passwordStrengthIndicatorText.setText("Strength: Strong");
