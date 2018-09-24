@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
+import a5x.cs2340.donationtracker.users.RegularUser;
+import a5x.cs2340.donationtracker.users.User;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -35,9 +38,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_READ_CONTACTS = 0;
 
 
-    private static HashMap<String, String> validCredentials = new HashMap<>();
+    private static HashSet<User> validUsers = new HashSet<>();
     private static HashSet<String> validAuthenticationTokens = new HashSet<>();
-    public static final String LOGGED_IN_USERNAME = "donationTracker.successfulUsername";
+    public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
     private static final int AUTHENTICATION_UPPER_BOUND = 100000;
     /**
@@ -58,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
-        if (validCredentials.isEmpty()) {
-            createDummyCredentials();
+        if (validUsers.isEmpty()) {
+            createDummyUser();
         }
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -94,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Adds dummy credentials "user:Password" to set of valid credentials
      */
-    private void createDummyCredentials() {
-        validCredentials.put("user", sha256Hash("pass"));
+    private void createDummyUser() {
+        validUsers.add(new RegularUser("FIRST", "LAST","user", sha256Hash("pass")));
     }
 
     /**
@@ -181,7 +184,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        return validCredentials.containsKey(username);
+        for (User user : validUsers) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -240,10 +248,17 @@ public class LoginActivity extends AppCompatActivity {
 
         private final String mUsername;
         private final String mPassword;
-
+        private final User user;
         UserLoginTask(String username, String password) {
             mUsername = username;
             mPassword = password;
+            User tempUser = null;
+            for (User user : validUsers) {
+                if (user.getUsername().equals(mUsername)) {
+                    tempUser = user;
+                }
+            }
+            this.user = tempUser;
         }
 
         @Override
@@ -258,7 +273,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
 
-            return (sha256Hash(mPassword).equals(validCredentials.get(mUsername)));
+            return user.checkPassword(sha256Hash(mPassword));
 
         }
 
@@ -269,7 +284,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("test", "On PostExecute with success = " + success);
             if (success) {
                 Log.d("test", "Attempting to go to PostLogin");
-                goToPostLogin(mUsername);
+                goToPostLogin(user);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -286,11 +301,11 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Transitions from the login screen to the post-login screen
      *
-     * @param username the username of the successfully logged in person
+     * @param user the user of the successfully logged in person
      */
-    protected void goToPostLogin(String username) {
+    protected void goToPostLogin(User user) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
-        goToPostLoginIntent.putExtra(LOGGED_IN_USERNAME, username);
+        goToPostLoginIntent.putExtra(LOGGED_IN_USER, user);
         String authenticationKey = sha256Hash(Integer.toString((new Random()).nextInt(AUTHENTICATION_UPPER_BOUND)));
         goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, authenticationKey);
         validAuthenticationTokens.add(authenticationKey);
@@ -304,7 +319,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the username exists in the valid credentials
      */
     public static boolean checkExistingUsername(String username) {
-        return validCredentials.containsKey(username);
+        return validUsers.contains(username);
     }
 
     /**
@@ -314,7 +329,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password the plaintext password to hash and add
      */
     static void registerUser(String username, String password) {
-        validCredentials.put(username, sha256Hash(password));
+        validUsers.add(new RegularUser("FIRST", "LAST", username, sha256Hash(password)));
     }
 
     /**

@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import a5x.cs2340.donationtracker.users.User;
+
 public class PostLoginActivity extends AppCompatActivity {
-    protected String username;
+    protected User user;
     private String authenticationKey;
 
     @Override
@@ -18,10 +20,10 @@ public class PostLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_login);
         Intent loginIntent = getIntent();
-        username = loginIntent.getStringExtra(LoginActivity.LOGGED_IN_USERNAME);
+        user = loginIntent.getParcelableExtra(LoginActivity.LOGGED_IN_USER);
         authenticationKey = loginIntent.getStringExtra(LoginActivity.CURRENT_AUTHENTICATION_KEY);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
-        postLoginTextView.setText("Welcome " + username);
+        postLoginTextView.setText("Welcome " + user.getUsername());
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +37,7 @@ public class PostLoginActivity extends AppCompatActivity {
      * Transitions back to the welcome screen
      */
     protected void logoutBackToWelcome() {
-        username = null;
+        user = null;
         LoginActivity.removeKey(authenticationKey);
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
