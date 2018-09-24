@@ -23,7 +23,7 @@ public class PostLoginActivity extends AppCompatActivity {
         user = loginIntent.getParcelableExtra(LoginActivity.LOGGED_IN_USER);
         authenticationKey = loginIntent.getStringExtra(LoginActivity.CURRENT_AUTHENTICATION_KEY);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
-        postLoginTextView.setText(getString(R.string.post_login_welcome_string, user.getUsername()));
+        postLoginTextView.setText(getString(R.string.post_login_welcome_string, user.getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

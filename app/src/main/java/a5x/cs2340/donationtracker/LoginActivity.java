@@ -307,8 +307,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param username the username to add
      * @param password the plaintext password to hash and add
      */
-    static void registerUser(String username, String password) {
-        validUsers.add(new RegularUser("FIRST", "LAST", username, sha256Hash(password)));
+    static void registerUser(String firstName, String lastName, String username, String password) {
+        validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
     }
 
     /**

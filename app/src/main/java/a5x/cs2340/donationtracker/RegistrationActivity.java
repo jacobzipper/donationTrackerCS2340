@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,7 +27,8 @@ import static a5x.cs2340.donationtracker.Constants.WEAK_GUESSES;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-
+    private TextView firstNameTextView;
+    private TextView lastNameTextView;
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView passwordVerifyTextView;
@@ -38,6 +41,8 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        firstNameTextView = findViewById(R.id.registrationFirstName);
+        lastNameTextView = findViewById(R.id.registrationLastName);
         usernameTextView = findViewById(R.id.registrationUserName);
         passwordTextView = findViewById(R.id.registrationPassword);
         passwordVerifyTextView = findViewById(R.id.registrationPasswordVerify);
@@ -69,23 +74,45 @@ public class RegistrationActivity extends AppCompatActivity {
                 updatePasswordStrength(s.toString());
             }
         });
+        passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     /**
      * Attempt to register the user with the currently entered credentials
      */
     protected void attemptRegister() {
+        firstNameTextView.setError(null);
+        lastNameTextView.setError(null);
         usernameTextView.setError(null);
         passwordTextView.setError(null);
         passwordVerifyTextView.setError(null);
 
         View focusView = null;
         boolean cancel = false;
+        String firstName = firstNameTextView.getText().toString();
+        String lastName = lastNameTextView.getText().toString();
         String username = usernameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         String passwordVerify = passwordVerifyTextView.getText().toString();
         //Error checking
-        if (username.isEmpty()) {
+        if (firstName.isEmpty()) {
+            firstNameTextView.setError(getString(R.string.error_field_required));
+            focusView = firstNameTextView;
+            cancel = true;
+        } else if (lastName.isEmpty()) {
+            lastNameTextView.setError(getString(R.string.error_field_required));
+            focusView = lastNameTextView;
+            cancel = true;
+        } else if (username.isEmpty()) {
             usernameTextView.setError(getString(R.string.error_field_required));
             focusView = usernameTextView;
             cancel = true;
@@ -114,7 +141,7 @@ public class RegistrationActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             //No errors, register the new credentials
-            registerUser(username, password);
+            registerUser(firstName, lastName, username, password);
             Toast.makeText(this, "Registration Successful", Toast.LENGTH_LONG).show();
             goBackToWelcome();
         }
@@ -134,8 +161,8 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param username username to register
      * @param password password to register
      */
-    protected void registerUser(String username, String password) {
-        LoginActivity.registerUser(username, password);
+    protected void registerUser(String firstName, String lastName, String username, String password) {
+        LoginActivity.registerUser(firstName, lastName, username, password);
     }
     /**
      * Updates the progress bar with the strength of the currently input password
