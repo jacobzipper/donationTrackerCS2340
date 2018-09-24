@@ -24,9 +24,12 @@ import java.security.MessageDigest;
 import java.util.HashSet;
 import java.util.Random;
 
+import a5x.cs2340.donationtracker.users.Admin;
+import a5x.cs2340.donationtracker.users.LocationEmployee;
 import a5x.cs2340.donationtracker.users.RegularUser;
 import a5x.cs2340.donationtracker.users.User;
 import a5x.cs2340.donationtracker.users.UserSet;
+import a5x.cs2340.donationtracker.users.UserType;
 
 import static a5x.cs2340.donationtracker.Constants.AUTHENTICATION_UPPER_BOUND;
 
@@ -307,8 +310,21 @@ public class LoginActivity extends AppCompatActivity {
      * @param username the username to add
      * @param password the plaintext password to hash and add
      */
-    static void registerUser(String firstName, String lastName, String username, String password) {
-        validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
+    static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
+        switch(type) {
+            case REGULAR_USER:
+                validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
+                break;
+            case ADMIN:
+                validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
+                break;
+            case LOCATION_EMPLOYEE:
+                validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
+                break;
+            default:
+                validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
+        }
+
     }
 
     /**

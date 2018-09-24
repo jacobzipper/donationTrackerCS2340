@@ -31,6 +31,6 @@
     <string name="password_strength_average">Strength: Average</string>
     <string name="password_strength_strong">Strength: Strong</string>
     <string name="password_strength_very_strong">Strength: Very Strong</string>
-    <string name="post_login_welcome_string">Welcome %1$s!</string>
+    <string name="post_login_welcome_string">Welcome %1$s %2$s!</string>
 
 </resources>

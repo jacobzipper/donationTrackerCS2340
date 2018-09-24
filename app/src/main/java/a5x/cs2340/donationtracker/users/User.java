@@ -60,6 +60,7 @@ public abstract class User implements Parcelable{
     public boolean checkPassword(String passwordHash) {
         return this.passwordHash.equals(passwordHash);
     }
+    public abstract UserType getUserType();
 
     /**
      * Returns a concatenation of first name and last name

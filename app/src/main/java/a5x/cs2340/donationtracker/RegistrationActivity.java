@@ -10,13 +10,16 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
 
+import a5x.cs2340.donationtracker.users.UserType;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
@@ -34,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView passwordVerifyTextView;
     private ProgressBar passwordStrengthMeter;
     private TextView passwordStrengthIndicatorText;
+    private Spinner userTypeSpinner;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
 
 
@@ -48,6 +52,10 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordVerifyTextView = findViewById(R.id.registrationPasswordVerify);
         Button registerButton = findViewById(R.id.registerButton);
         Button backButton = findViewById(R.id.registerBackButton);
+        userTypeSpinner = findViewById(R.id.registrationUserTypeSpinner);
+        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, UserType.values());
+        userTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userTypeSpinner.setAdapter(userTypeArrayAdapter);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +111,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String username = usernameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         String passwordVerify = passwordVerifyTextView.getText().toString();
+        UserType userType = (UserType) userTypeSpinner.getSelectedItem();
         //Error checking
         if (firstName.isEmpty()) {
             firstNameTextView.setError(getString(R.string.error_field_required));
@@ -141,7 +150,7 @@ public class RegistrationActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             //No errors, register the new credentials
-            registerUser(firstName, lastName, username, password);
+            registerUser(firstName, lastName, username, password, userType);
             Toast.makeText(this, "Registration Successful", Toast.LENGTH_LONG).show();
             goBackToWelcome();
         }
@@ -161,8 +170,8 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param username username to register
      * @param password password to register
      */
-    protected void registerUser(String firstName, String lastName, String username, String password) {
-        LoginActivity.registerUser(firstName, lastName, username, password);
+    protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
+        LoginActivity.registerUser(firstName, lastName, username, password, type);
     }
     /**
      * Updates the progress bar with the strength of the currently input password

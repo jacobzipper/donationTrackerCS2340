@@ -1,5 +1,6 @@
 package a5x.cs2340.donationtracker;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class PostLoginActivity extends AppCompatActivity {
     protected User user;
     private String authenticationKey;
 
+    @SuppressLint("StringFormatMatches")//This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +25,7 @@ public class PostLoginActivity extends AppCompatActivity {
         user = loginIntent.getParcelableExtra(LoginActivity.LOGGED_IN_USER);
         authenticationKey = loginIntent.getStringExtra(LoginActivity.CURRENT_AUTHENTICATION_KEY);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
-        postLoginTextView.setText(getString(R.string.post_login_welcome_string, user.getName()));
+        postLoginTextView.setText(getString(R.string.post_login_welcome_string, user.getUserType().getLabel(), user.getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
