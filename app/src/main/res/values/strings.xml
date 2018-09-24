@@ -23,5 +23,6 @@
     <string name="logout_button">Logout</string>
     <string name="back_button">Back</string>
     <string name="register_header_text">Register</string>
+    <string name="invalid_auth_token">Session invalid, please log back in</string>
 
 </resources>

@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 /**
  * A login screen that offers login via email/password.
@@ -34,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private static HashMap<String, String> validCredentials = new HashMap<>();
-
+    private static HashSet<String> validAuthenticationTokens = new HashSet<>();
     public static final String LOGGED_IN_USERNAME = "donationTracker.successfulUsername";
+    public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
+    private static final int AUTHENTICATION_UPPER_BOUND = 100000;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -287,6 +291,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void goToPostLogin(String username) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USERNAME, username);
+        String authenticationKey = sha256Hash(Integer.toString((new Random()).nextInt(AUTHENTICATION_UPPER_BOUND)));
+        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, authenticationKey);
+        validAuthenticationTokens.add(authenticationKey);
         startActivity(goToPostLoginIntent);
     }
 
@@ -316,6 +323,25 @@ public class LoginActivity extends AppCompatActivity {
     protected void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
+    }
+
+    /**
+     * Validates whether the passed key is a valid authentication key
+     *
+     * @param key the key to check
+     * @return true if the key is currently valid
+     */
+    static boolean checkKey(String key) {
+        return validAuthenticationTokens.contains(key);
+    }
+
+    /**
+     * Removes the key from the valid set
+     *
+     * @param key the key to remove
+     */
+    static void removeKey(String key) {
+        validAuthenticationTokens.remove(key);
     }
 }
 
