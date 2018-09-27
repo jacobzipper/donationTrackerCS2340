@@ -26,6 +26,7 @@ import java.util.Random;
 
 import a5x.cs2340.donationtracker.users.Admin;
 import a5x.cs2340.donationtracker.users.LocationEmployee;
+import a5x.cs2340.donationtracker.users.Manager;
 import a5x.cs2340.donationtracker.users.RegularUser;
 import a5x.cs2340.donationtracker.users.User;
 import a5x.cs2340.donationtracker.users.UserSet;
@@ -320,6 +321,9 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case LOCATION_EMPLOYEE:
                 validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
+                break;
+            case MANAGER:
+                validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
                 break;
             default:
                 validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
