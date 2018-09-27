@@ -24,10 +24,10 @@ import java.security.MessageDigest;
 import java.util.HashSet;
 import java.util.Random;
 
+import a5x.cs2340.donationtracker.users.Account;
 import a5x.cs2340.donationtracker.users.Admin;
 import a5x.cs2340.donationtracker.users.LocationEmployee;
 import a5x.cs2340.donationtracker.users.Manager;
-import a5x.cs2340.donationtracker.users.RegularUser;
 import a5x.cs2340.donationtracker.users.User;
 import a5x.cs2340.donationtracker.users.UserSet;
 import a5x.cs2340.donationtracker.users.UserType;
@@ -97,10 +97,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds dummy credentials "user:Password" to set of valid credentials
+     * Adds dummy credentials "account:Password" to set of valid credentials
      */
     private void createDummyUser() {
-        validUsers.add(new RegularUser("DEFAULT", "USER","user", sha256Hash("pass")));
+        validUsers.add(new User("DEFAULT", "USER","account", sha256Hash("pass")));
     }
 
     /**
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
+        // Check for a valid password, if the account entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // perform the account login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
@@ -232,16 +232,16 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * the account.
      */
     @SuppressLint("StaticFieldLeak")
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mPassword;
-        private final User user;
+        private final Account account;
         UserLoginTask(String username, String password) {
             mPassword = password;
-            this.user = validUsers.getUser(username);
+            this.account = validUsers.getUser(username);
         }
 
         @Override
@@ -256,7 +256,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
 
-            return user.checkPassword(sha256Hash(mPassword));
+            return account.checkPassword(sha256Hash(mPassword));
 
         }
 
@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("test", "On PostExecute with success = " + success);
             if (success) {
                 Log.d("test", "Attempting to go to PostLogin");
-                goToPostLogin(user);
+                goToPostLogin(account);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -284,11 +284,11 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Transitions from the login screen to the post-login screen
      *
-     * @param user the user of the successfully logged in person
+     * @param account the account of the successfully logged in person
      */
-    protected void goToPostLogin(User user) {
+    protected void goToPostLogin(Account account) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
-        goToPostLoginIntent.putExtra(LOGGED_IN_USER, user);
+        goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
         String authenticationKey = sha256Hash(Integer.toString((new Random()).nextInt(AUTHENTICATION_UPPER_BOUND)));
         goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, authenticationKey);
         validAuthenticationTokens.add(authenticationKey);
@@ -314,7 +314,7 @@ public class LoginActivity extends AppCompatActivity {
     static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
         switch(type) {
             case REGULAR_USER:
-                validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
+                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
                 break;
             case ADMIN:
                 validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
@@ -326,7 +326,7 @@ public class LoginActivity extends AppCompatActivity {
                 validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
                 break;
             default:
-                validUsers.add(new RegularUser(firstName, lastName, username, sha256Hash(password)));
+                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
         }
 
     }

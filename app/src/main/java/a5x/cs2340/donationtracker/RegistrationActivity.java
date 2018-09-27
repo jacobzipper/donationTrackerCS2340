@@ -95,7 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempt to register the user with the currently entered credentials
+     * Attempt to register the account with the currently entered credentials
      */
     protected void attemptRegister() {
         firstNameTextView.setError(null);

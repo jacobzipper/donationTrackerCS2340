@@ -3,12 +3,8 @@ package a5x.cs2340.donationtracker.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public abstract class User implements Parcelable{
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String passwordHash;
-
+public class User extends Account {
+    private static UserType userType = UserType.REGULAR_USER;
     /**
      * Regular constructor and all passed parameters
      *
@@ -17,95 +13,29 @@ public abstract class User implements Parcelable{
      * @param username the User's username
      * @param passwordHash the User's hashed password
      */
-    User(String firstName, String lastName, String username, String passwordHash) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.passwordHash = passwordHash;
+    public User(String firstName, String lastName, String username, String passwordHash) {
+        super(firstName, lastName, username, passwordHash);
     }
 
     /**
-     * Accessor for first name
+     * Parcel constructor for User
      *
-     * @return first name
+     * @param in the Parcel to construct from
      */
-    public String getFirstName() {
-        return firstName;
+    private User(Parcel in) {
+        super(in);
     }
 
-    /**
-     * Accessor for last name
-     *
-     * @return last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
 
-    /**
-     * Accessor for username
-     *
-     * @return username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Checks if the hashed password passed in matches the stored hash
-     *
-     * @param passwordHash the pasesd in hash to check
-     * @return true if the password hashes match
-     */
-    public boolean checkPassword(String passwordHash) {
-        return this.passwordHash.equals(passwordHash);
-    }
-    public abstract UserType getUserType();
-
-    /**
-     * Returns a concatenation of first name and last name
-     *
-     * @return firstName and lastName concatenated with a space in between
-     */
-    public String getName() {
-        return firstName + " " + lastName;
-    }
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) {
-            return false;
+    public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        public Account createFromParcel(Parcel in) {
+            return new User((in));
         }
-        if (other == this) {
-            return true;
+        public Account[] newArray(int size) {
+            return new User[size];
         }
-        return other instanceof User && username.equals(((User) other).username);
+    };
+    public UserType getUserType() {
+        return userType;
     }
-    @Override
-    public int hashCode() {
-        return username.hashCode();
-    }
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(firstName);
-        out.writeString(lastName);
-        out.writeString(username);
-        out.writeString(passwordHash);
-    }
-
-    /**
-     * Constructor from Parcel
-     *
-     * @param parcel the parcel to build the User from
-     */
-    User(Parcel parcel) {
-        firstName = parcel.readString();
-        lastName = parcel.readString();
-        username = parcel.readString();
-        passwordHash = parcel.readString();
-    }
-
 }

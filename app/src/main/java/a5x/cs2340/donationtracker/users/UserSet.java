@@ -3,16 +3,16 @@ package a5x.cs2340.donationtracker.users;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
-public class UserSet extends HashSet<User> {
+public class UserSet extends HashSet<Account> {
     /**
-     * Checks if a user with the passed username is in the UserSet
+     * Checks if a account with the passed username is in the UserSet
      *
      * @param username the username to check
-     * @return true if a user with a matching username is in the UserSet
+     * @return true if a account with a matching username is in the UserSet
      */
     public boolean containsUsername(String username) {
-        for (User user : this) {
-            if (user.getUsername().equals(username)) {
+        for (Account account : this) {
+            if (account.getUsername().equals(username)) {
                 return true;
             }
         }
@@ -20,17 +20,17 @@ public class UserSet extends HashSet<User> {
     }
 
     /**
-     * Returns a user with the same username as the passed in username
+     * Returns a account with the same username as the passed in username
      *
-     * @param username the username of the user to find
-     * @return a user with username equal to what was passed in
+     * @param username the username of the account to find
+     * @return a account with username equal to what was passed in
      */
-    public User getUser(String username) {
-        for (User user : this) {
-            if (username.equals(user.getUsername())) {
-                return user;
+    public Account getUser(String username) {
+        for (Account account : this) {
+            if (username.equals(account.getUsername())) {
+                return account;
             }
         }
-        throw new NoSuchElementException("User was not in the UserSet");
+        throw new NoSuchElementException("Account was not in the UserSet");
     }
 }
