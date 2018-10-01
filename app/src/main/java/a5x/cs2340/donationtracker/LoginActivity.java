@@ -42,6 +42,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity {
 
     private static HashSet<String> validAuthenticationTokens = new HashSet<>();
+
+    // Constants representing identifiers for data to be passed with Intent to PostLogin
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
 
@@ -70,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
         //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
-        mPasswordView =  findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -159,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the username exists in the valid credentials
      */
     private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
         return username.length() >= Constants.MIN_USERNAME_LENGTH;
     }
 
@@ -170,7 +171,6 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the password meets specifications
      */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() >= Constants.MIN_PASSWORD_LENGTH;
     }
 
@@ -215,6 +215,7 @@ public class LoginActivity extends AppCompatActivity {
         private final String mUsername;
         private Account account;
         private String jwt;
+
         UserLoginTask(String username, String password) {
             mPassword = password;
             mUsername = username;
@@ -222,7 +223,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
             Response<LoginResponse> loginAttempt;
             try {
                 loginAttempt = service.login(new LoginBody(mUsername, mPassword)).execute();
@@ -233,10 +233,9 @@ public class LoginActivity extends AppCompatActivity {
 
             // TODO: Error messages for each error code from backend
             LoginResponse loginResponse = loginAttempt.body();
-            if (loginAttempt.code() == 200 && loginResponse.getError() == 0) {
-                Log.d("test", loginResponse.getMsg());
+            if (loginAttempt.code() == 200 && loginResponse != null && loginResponse.getError() == 0) {
                 jwt = loginResponse.getJwt();
-                switch(loginResponse.getRole()) {
+                switch (loginResponse.getRole()) {
                     case "admins":
                         account = new Admin(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
                         break;
@@ -263,9 +262,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-            Log.d("test", "On PostExecute with success = " + success);
             if (success) {
-                Log.d("test", "Attempting to go to PostLogin");
                 goToPostLogin(account, jwt);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -291,32 +288,6 @@ public class LoginActivity extends AppCompatActivity {
         goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);
         startActivity(goToPostLoginIntent);
     }
-
-//    /**
-//     * Adds the passed in credentials to the valid credentials
-//     *
-//     * @param username the username to add
-//     * @param password the plaintext password to hash and add
-//     */
-//    static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-//        switch(type) {
-//            case REGULAR_USER:
-//                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-//                break;
-//            case ADMIN:
-//                validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
-//                break;
-//            case LOCATION_EMPLOYEE:
-//                validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
-//                break;
-//            case MANAGER:
-//                validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
-//                break;
-//            default:
-//                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-//        }
-//
-//    }
 
     /**
      * Transition back to the welcome screen

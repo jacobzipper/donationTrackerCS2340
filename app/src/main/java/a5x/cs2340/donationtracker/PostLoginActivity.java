@@ -14,7 +14,7 @@ public class PostLoginActivity extends AppCompatActivity {
     protected Account account;
     private String authenticationKey;
 
-    @SuppressLint("StringFormatMatches")//This fixes an android studio bug
+    @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

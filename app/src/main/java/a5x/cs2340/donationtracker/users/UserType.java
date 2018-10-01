@@ -6,9 +6,11 @@ public enum UserType {
     LOCATION_EMPLOYEE("Location Employee"),
     MANAGER("Manager");
     private String label;
+
     UserType(String label) {
         this.label = label;
     }
+
     public String getLabel() {
         return label;
     }
@@ -27,6 +29,7 @@ public enum UserType {
                 return "users";
         }
     }
+
     @Override
     public String toString() {
         return label;

@@ -91,10 +91,12 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordStrengthIndicatorText = findViewById(R.id.passwordStrengthNotifier);
         passwordTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -207,6 +209,7 @@ public class RegistrationActivity extends AppCompatActivity {
         private final String mFirstname;
         private final String mLastname;
         private final String mRole;
+
         UserRegistrationTask(String username, String password, String firstname, String lastname, String role) {
             mPassword = password;
             mUsername = username;
@@ -241,9 +244,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         }
     }
+
     /**
      * Updates the progress bar with the strength of the currently input password
-     *
      */
     protected void updatePasswordStrength(String password) {
         if (password.isEmpty()) {
