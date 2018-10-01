@@ -1,8 +1,10 @@
 package a5x.cs2340.donationtracker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,11 +19,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import a5x.cs2340.donationtracker.users.UserType;
+import a5x.cs2340.donationtracker.webservice.RestService;
+import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
+import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static a5x.cs2340.donationtracker.Constants.AVERAGE_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.STRONG_GUESSES;
@@ -39,6 +48,16 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView passwordStrengthIndicatorText;
     private Spinner userTypeSpinner;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
+
+    private UserRegistrationTask mAuthTask = null;
+
+
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(Constants.API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    private RestService service = retrofit.create(RestService.class);
 
 
     @Override
@@ -133,10 +152,10 @@ public class RegistrationActivity extends AppCompatActivity {
             passwordVerifyTextView.setError(getString(R.string.error_field_required));
             focusView = passwordVerifyTextView;
             cancel = true;
-        } else if (LoginActivity.checkExistingUsername(username)) {
-            usernameTextView.setError(getString(R.string.error_username_already_exists));
-            focusView = usernameTextView;
-            cancel = true;
+//        } else if (LoginActivity.checkExistingUsername(username)) {
+//            usernameTextView.setError(getString(R.string.error_username_already_exists));
+//            focusView = usernameTextView;
+//            cancel = true;
         } else if (password.length() < Constants.MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
@@ -171,7 +190,56 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param password password to register
      */
     protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        LoginActivity.registerUser(firstName, lastName, username, password, type);
+//        LoginActivity.registerUser(firstName, lastName, username, password, type);
+        mAuthTask = new UserRegistrationTask(username, password, firstName, lastName, type.getAPIType());
+        mAuthTask.execute((Void) null);
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the account.
+     */
+    @SuppressLint("StaticFieldLeak")
+    public class UserRegistrationTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mPassword;
+        private final String mUsername;
+        private final String mFirstname;
+        private final String mLastname;
+        private final String mRole;
+        UserRegistrationTask(String username, String password, String firstname, String lastname, String role) {
+            mPassword = password;
+            mUsername = username;
+            mFirstname = firstname;
+            mLastname = lastname;
+            mRole = role;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Response<StandardResponse> registrationAttempt;
+            try {
+                registrationAttempt = service.register(new RegistrationBody(mUsername, mPassword, mRole, mFirstname, mLastname)).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            // TODO Handle errors
+            if (registrationAttempt.code() != 200) {
+                // Do something
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
     /**
      * Updates the progress bar with the strength of the currently input password

@@ -12,6 +12,21 @@ public enum UserType {
     public String getLabel() {
         return label;
     }
+
+    public String getAPIType() {
+        switch (label) {
+            case "User":
+                return "users";
+            case "Admin":
+                return "admins";
+            case "Location Employee":
+                return "employees";
+            case "Manager":
+                return "managers";
+            default:
+                return "users";
+        }
+    }
     @Override
     public String toString() {
         return label;

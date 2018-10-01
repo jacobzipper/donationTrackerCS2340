@@ -20,30 +20,37 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.security.MessageDigest;
+import java.io.IOException;
 import java.util.HashSet;
-import java.util.Random;
 
 import a5x.cs2340.donationtracker.users.Account;
 import a5x.cs2340.donationtracker.users.Admin;
 import a5x.cs2340.donationtracker.users.LocationEmployee;
 import a5x.cs2340.donationtracker.users.Manager;
 import a5x.cs2340.donationtracker.users.User;
-import a5x.cs2340.donationtracker.users.UserSet;
-import a5x.cs2340.donationtracker.users.UserType;
+import a5x.cs2340.donationtracker.webservice.RestService;
+import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import static a5x.cs2340.donationtracker.Constants.AUTHENTICATION_UPPER_BOUND;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-
-    private static UserSet validUsers = new UserSet();
     private static HashSet<String> validAuthenticationTokens = new HashSet<>();
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
+
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(Constants.API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    private RestService service = retrofit.create(RestService.class);
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -63,9 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
         //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
-        if (validUsers.isEmpty()) {
-            createDummyUser();
-        }
         mPasswordView =  findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -95,36 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-    /**
-     * Adds dummy credentials "account:Password" to set of valid credentials
-     */
-    private void createDummyUser() {
-        validUsers.add(new User("DEFAULT", "USER","account", sha256Hash("pass")));
-    }
-
-    /**
-     * Convert string to hash using SHA-256 algorithm
-     *
-     * @param starting the string to convert
-     * @return the result of the hashing
-     */
-    private static String sha256Hash(String starting) {
-        try {
-            MessageDigest hasher = MessageDigest.getInstance("SHA-256");
-            byte[] startingBytes = starting.getBytes("UTF-8");
-            hasher.update(startingBytes);
-            StringBuilder sb = new StringBuilder();
-            for (byte startingByte : startingBytes) {
-                sb.append(Integer.toString((startingByte & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            Log.d("Encryption", "Exception was thrown trying to hash");
-            return starting;
-        }
-    }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -186,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        return validUsers.containsUsername(username);
+        return username.length() >= Constants.MIN_USERNAME_LENGTH;
     }
 
     /**
@@ -238,25 +212,50 @@ public class LoginActivity extends AppCompatActivity {
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mPassword;
-        private final Account account;
+        private final String mUsername;
+        private Account account;
+        private String jwt;
         UserLoginTask(String username, String password) {
             mPassword = password;
-            this.account = validUsers.getUser(username);
+            mUsername = username;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            Response<LoginResponse> loginAttempt;
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                Log.d("test", "oops");
+                loginAttempt = service.login(new LoginBody(mUsername, mPassword)).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
                 return false;
             }
 
-            return account.checkPassword(sha256Hash(mPassword));
+            // TODO: Error messages for each error code from backend
+            LoginResponse loginResponse = loginAttempt.body();
+            if (loginAttempt.code() == 200 && loginResponse.getError() == 0) {
+                Log.d("test", loginResponse.getMsg());
+                jwt = loginResponse.getJwt();
+                switch(loginResponse.getRole()) {
+                    case "admins":
+                        account = new Admin(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
+                        break;
+                    case "users":
+                        account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
+                        break;
+                    case "employees":
+                        account = new LocationEmployee(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
+                        break;
+                    case "managers":
+                        account = new Manager(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
+                        break;
+                    default:
+                        account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
+                        break;
+                }
+                return true;
+            }
+            return false;
 
         }
 
@@ -267,7 +266,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("test", "On PostExecute with success = " + success);
             if (success) {
                 Log.d("test", "Attempting to go to PostLogin");
-                goToPostLogin(account);
+                goToPostLogin(account, jwt);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -286,50 +285,38 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param account the account of the successfully logged in person
      */
-    protected void goToPostLogin(Account account) {
+    protected void goToPostLogin(Account account, String jwt) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
-        String authenticationKey = sha256Hash(Integer.toString((new Random()).nextInt(AUTHENTICATION_UPPER_BOUND)));
-        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, authenticationKey);
-        validAuthenticationTokens.add(authenticationKey);
+        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);
         startActivity(goToPostLoginIntent);
     }
 
-    /**
-     * Public method to check if username exists in valid credentials
-     *
-     * @param username the username to check
-     * @return true if the username exists in the valid credentials
-     */
-    public static boolean checkExistingUsername(String username) {
-        return validUsers.containsUsername(username);
-    }
-
-    /**
-     * Adds the passed in credentials to the valid credentials
-     *
-     * @param username the username to add
-     * @param password the plaintext password to hash and add
-     */
-    static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        switch(type) {
-            case REGULAR_USER:
-                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case ADMIN:
-                validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case LOCATION_EMPLOYEE:
-                validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case MANAGER:
-                validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
-                break;
-            default:
-                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-        }
-
-    }
+//    /**
+//     * Adds the passed in credentials to the valid credentials
+//     *
+//     * @param username the username to add
+//     * @param password the plaintext password to hash and add
+//     */
+//    static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
+//        switch(type) {
+//            case REGULAR_USER:
+//                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
+//                break;
+//            case ADMIN:
+//                validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
+//                break;
+//            case LOCATION_EMPLOYEE:
+//                validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
+//                break;
+//            case MANAGER:
+//                validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
+//                break;
+//            default:
+//                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
+//        }
+//
+//    }
 
     /**
      * Transition back to the welcome screen
