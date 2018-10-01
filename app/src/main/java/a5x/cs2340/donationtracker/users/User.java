@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 public class User extends Account {
     private static UserType userType = UserType.REGULAR_USER;
+
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName the User's first name
-     * @param lastName the User's last name
-     * @param username the User's username
+     * @param firstName    the User's first name
+     * @param lastName     the User's last name
+     * @param username     the User's username
      * @param passwordHash the User's hashed password
      */
     public User(String firstName, String lastName, String username, String passwordHash) {
@@ -31,10 +32,12 @@ public class User extends Account {
         public Account createFromParcel(Parcel in) {
             return new User((in));
         }
+
         public Account[] newArray(int size) {
             return new User[size];
         }
     };
+
     public UserType getUserType() {
         return userType;
     }

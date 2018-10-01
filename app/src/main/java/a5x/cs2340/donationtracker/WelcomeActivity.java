@@ -1,11 +1,19 @@
 package a5x.cs2340.donationtracker;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -27,6 +35,19 @@ public class WelcomeActivity extends AppCompatActivity {
                 goToRegister();
             }
         });
+
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.INTERNET)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {/* ... */}
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                }).check();
     }
 
     /**

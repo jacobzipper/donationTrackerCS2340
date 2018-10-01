@@ -11,12 +11,7 @@ public class UserSet extends HashSet<Account> {
      * @return true if a account with a matching username is in the UserSet
      */
     public boolean containsUsername(String username) {
-        for (Account account : this) {
-            if (account.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return this.contains(username);
     }
 
     /**

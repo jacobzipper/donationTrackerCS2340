@@ -3,7 +3,7 @@ package a5x.cs2340.donationtracker.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public abstract class Account implements Parcelable{
+public abstract class Account implements Parcelable {
     private String firstName;
     private String lastName;
     private String username;
@@ -12,9 +12,9 @@ public abstract class Account implements Parcelable{
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName the Account's first name
-     * @param lastName the Account's last name
-     * @param username the Account's username
+     * @param firstName    the Account's first name
+     * @param lastName     the Account's last name
+     * @param username     the Account's username
      * @param passwordHash the Account's hashed password
      */
     Account(String firstName, String lastName, String username, String passwordHash) {
@@ -60,6 +60,7 @@ public abstract class Account implements Parcelable{
     public boolean checkPassword(String passwordHash) {
         return this.passwordHash.equals(passwordHash);
     }
+
     public abstract UserType getUserType();
 
     /**
@@ -70,6 +71,7 @@ public abstract class Account implements Parcelable{
     public String getName() {
         return firstName + " " + lastName;
     }
+
     @Override
     public boolean equals(Object other) {
         if (other == null) {
@@ -80,14 +82,17 @@ public abstract class Account implements Parcelable{
         }
         return other instanceof Account && username.equals(((Account) other).username);
     }
+
     @Override
     public int hashCode() {
         return username.hashCode();
     }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(firstName);

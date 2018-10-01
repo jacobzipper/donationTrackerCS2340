@@ -1,10 +1,8 @@
 package a5x.cs2340.donationtracker;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +14,7 @@ public class PostLoginActivity extends AppCompatActivity {
     protected Account account;
     private String authenticationKey;
 
-    @SuppressLint("StringFormatMatches")//This fixes an android studio bug
+    @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,23 +38,7 @@ public class PostLoginActivity extends AppCompatActivity {
      */
     protected void logoutBackToWelcome() {
         account = null;
-        LoginActivity.removeKey(authenticationKey);
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!LoginActivity.checkKey(authenticationKey)) {
-            AlertDialog.Builder errorDialogBuilder = (new AlertDialog.Builder(this))
-                    .setMessage(getString(R.string.invalid_auth_token)).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            logoutBackToWelcome();
-                        }
-                    });
-            errorDialogBuilder.show();
-
-        }
     }
 }
