@@ -48,6 +48,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView passwordStrengthIndicatorText;
     private Spinner userTypeSpinner;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
+    private long strengthLastChecked = System.currentTimeMillis();
+    private static final long STRENGTH_CHECK_INVERVAL = 1000;
 
     private UserRegistrationTask mAuthTask = null;
 
@@ -100,7 +102,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                updatePasswordStrength(s.toString());
+                long currTime = System.currentTimeMillis();
+                strengthLastChecked = currTime;
+                new PasswordStrengthTask(s.toString()).execute();
             }
         });
         passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -192,9 +196,83 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param password password to register
      */
     protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-//        LoginActivity.registerUser(firstName, lastName, username, password, type);
         mAuthTask = new UserRegistrationTask(username, password, firstName, lastName, type.getAPIType());
         mAuthTask.execute((Void) null);
+    }
+
+    public enum PasswordStrength {
+        NONE(0, 0, Color.BLACK),
+        VERY_WEAK(0, R.string.password_strength_very_weak, Color.RED),
+        WEAK(25, R.string.password_strength_weak, Color.RED),
+        AVERAGE(50, R.string.password_strength_average, Color.YELLOW),
+        STRONG(75, R.string.password_strength_strong, Color.GREEN),
+        VERY_STRONG(100, R.string.password_strength_very_strong, Color.GREEN);
+
+        private int progress;
+        private int stringId;
+        private int color;
+
+        PasswordStrength(int progress, int stringId, int color) {
+            this.progress = progress;
+            this.stringId = stringId;
+            this.color = color;
+        }
+    }
+
+    /**
+     * Async task to update the password strength
+     */
+    @SuppressLint("StaticFieldLeak")
+    public class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
+
+        private String password;
+
+        public PasswordStrengthTask(String password) {
+            this.password = password;
+        }
+
+        @Override
+        protected PasswordStrength doInBackground(Void... params) {
+            return updatePasswordStrength(password);
+        }
+
+        @Override
+        protected void onPostExecute(PasswordStrength strength) {
+            if (strength == PasswordStrength.NONE) {
+                passwordStrengthMeter.setVisibility(View.GONE);
+                passwordStrengthIndicatorText.setVisibility(View.GONE);
+            } else {
+                passwordStrengthMeter.setVisibility(View.VISIBLE);
+                passwordStrengthIndicatorText.setVisibility(View.VISIBLE);
+                passwordStrengthMeter.setProgress(strength.progress);
+                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(strength.color));
+                passwordStrengthIndicatorText.setText(getString(strength.stringId));
+            }
+        }
+
+        /**
+         * Updates the progress bar with the strength of the currently input password
+         */
+        private PasswordStrength updatePasswordStrength(String password) {
+            if (password.isEmpty()) {
+                return PasswordStrength.NONE;
+            } else {
+                Result passwordStrengthEstimate = passwordStrengthChecker.estimate(password);
+                BigDecimal guesses = passwordStrengthEstimate.getGuesses();
+                if (guesses.compareTo(VERY_WEAK_GUESSES) < 0) {
+                    return PasswordStrength.VERY_WEAK;
+                } else if (guesses.compareTo(WEAK_GUESSES) < 0) {
+                    return PasswordStrength.WEAK;
+                } else if (guesses.compareTo(AVERAGE_GUESSES) < 0) {
+                    return PasswordStrength.AVERAGE;
+                } else if (guesses.compareTo(STRONG_GUESSES) < 0) {
+                    return PasswordStrength.STRONG;
+                } else {
+                    return PasswordStrength.VERY_STRONG;
+                }
+            }
+        }
+
     }
 
     /**
@@ -242,42 +320,6 @@ public class RegistrationActivity extends AppCompatActivity {
         @Override
         protected void onCancelled() {
 
-        }
-    }
-
-    /**
-     * Updates the progress bar with the strength of the currently input password
-     */
-    protected void updatePasswordStrength(String password) {
-        if (password.isEmpty()) {
-            passwordStrengthMeter.setVisibility(View.GONE);
-            passwordStrengthIndicatorText.setVisibility(View.GONE);
-        } else {
-            passwordStrengthMeter.setVisibility(View.VISIBLE);
-            passwordStrengthIndicatorText.setVisibility(View.VISIBLE);
-            Result passwordStrengthEstimate = passwordStrengthChecker.estimate(password);
-            BigDecimal guesses = passwordStrengthEstimate.getGuesses();
-            if (guesses.compareTo(VERY_WEAK_GUESSES) < 0) {
-                passwordStrengthMeter.setProgress(0);
-                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
-                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_very_weak));
-            } else if (guesses.compareTo(WEAK_GUESSES) < 0) {
-                passwordStrengthMeter.setProgress(25);
-                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.RED));
-                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_weak));
-            } else if (guesses.compareTo(AVERAGE_GUESSES) < 0) {
-                passwordStrengthMeter.setProgress(50);
-                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_average));
-            } else if (guesses.compareTo(STRONG_GUESSES) < 0) {
-                passwordStrengthMeter.setProgress(75);
-                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_strong));
-            } else {
-                passwordStrengthMeter.setProgress(100);
-                passwordStrengthMeter.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-                passwordStrengthIndicatorText.setText(getString(R.string.password_strength_very_strong));
-            }
         }
     }
 }

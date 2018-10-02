@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import a5x.cs2340.donationtracker.users.Account;
 import a5x.cs2340.donationtracker.users.Admin;
@@ -40,8 +38,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-    private static HashSet<String> validAuthenticationTokens = new HashSet<>();
 
     // Constants representing identifiers for data to be passed with Intent to PostLogin
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
@@ -295,25 +291,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
-    }
-
-    /**
-     * Validates whether the passed key is a valid authentication key
-     *
-     * @param key the key to check
-     * @return true if the key is currently valid
-     */
-    static boolean checkKey(String key) {
-        return validAuthenticationTokens.contains(key);
-    }
-
-    /**
-     * Removes the key from the valid set
-     *
-     * @param key the key to remove
-     */
-    static void removeKey(String key) {
-        validAuthenticationTokens.remove(key);
     }
 }
 
