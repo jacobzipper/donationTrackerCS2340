@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import a5x.cs2340.donationtracker.users.UserType;
 import a5x.cs2340.donationtracker.webservice.RestService;
@@ -33,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static a5x.cs2340.donationtracker.Constants.AVERAGE_GUESSES;
+import static a5x.cs2340.donationtracker.Constants.REGISTRATION_PASSWORD_CHECK_DELAY;
 import static a5x.cs2340.donationtracker.Constants.STRONG_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.VERY_WEAK_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.WEAK_GUESSES;
@@ -48,8 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView passwordStrengthIndicatorText;
     private Spinner userTypeSpinner;
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
-    private long strengthLastChecked = System.currentTimeMillis();
-    private static final long STRENGTH_CHECK_INVERVAL = 1000;
+    private Timer strengthTimer = new Timer();
 
     private UserRegistrationTask mAuthTask = null;
 
@@ -102,9 +104,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                long currTime = System.currentTimeMillis();
-                strengthLastChecked = currTime;
-                new PasswordStrengthTask(s.toString()).execute();
+                strengthTimer.cancel();
+                strengthTimer.purge();
+                strengthTimer = new Timer();
+                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))), REGISTRATION_PASSWORD_CHECK_DELAY);
             }
         });
         passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -118,7 +121,15 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-
+    private TimerTask getNewTimerTask(final PasswordStrengthTask strengthTask) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                strengthTask.execute();
+                cancel();
+            }
+        };
+    }
     /**
      * Attempt to register the account with the currently entered credentials
      */
