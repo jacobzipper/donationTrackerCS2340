@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.users.Account;
 
 public class PostLoginActivity extends AppCompatActivity {

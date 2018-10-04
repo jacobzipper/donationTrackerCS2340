@@ -1,11 +1,9 @@
-package a5x.cs2340.donationtracker;
+package a5x.cs2340.donationtracker.activities.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,20 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.IOException;
-
+import a5x.cs2340.donationtracker.Constants;
+import a5x.cs2340.donationtracker.PostLoginActivity;
+import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.users.Account;
-import a5x.cs2340.donationtracker.users.Admin;
-import a5x.cs2340.donationtracker.users.LocationEmployee;
-import a5x.cs2340.donationtracker.users.Manager;
-import a5x.cs2340.donationtracker.users.User;
-import a5x.cs2340.donationtracker.webservice.RestService;
-import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
-import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 /**
  * A login screen that offers login via email/password.
@@ -43,17 +32,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
 
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(Constants.API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-    private RestService service = retrofit.create(RestService.class);
-
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private AccountLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -145,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
+            mAuthTask = new AccountLoginTask(this, username, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -174,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    protected void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -199,78 +181,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the account.
-     */
-    @SuppressLint("StaticFieldLeak")
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mPassword;
-        private final String mUsername;
-        private Account account;
-        private String jwt;
-
-        UserLoginTask(String username, String password) {
-            mPassword = password;
-            mUsername = username;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Response<LoginResponse> loginAttempt;
-            try {
-                loginAttempt = service.login(new LoginBody(mUsername, mPassword)).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            // TODO: Error messages for each error code from backend
-            LoginResponse loginResponse = loginAttempt.body();
-            if (loginAttempt.code() == 200 && loginResponse != null && loginResponse.getError() == 0) {
-                jwt = loginResponse.getJwt();
-                switch (loginResponse.getRole()) {
-                    case "admins":
-                        account = new Admin(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                        break;
-                    case "users":
-                        account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                        break;
-                    case "employees":
-                        account = new LocationEmployee(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                        break;
-                    case "managers":
-                        account = new Manager(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                        break;
-                    default:
-                        account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                        break;
-                }
-                return true;
-            }
-            return false;
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-            if (success) {
-                goToPostLogin(account, jwt);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    protected void indicateIncorrectPassword() {
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
     }
 
     /**

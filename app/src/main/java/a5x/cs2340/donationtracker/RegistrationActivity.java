@@ -25,7 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import a5x.cs2340.donationtracker.users.UserType;
-import a5x.cs2340.donationtracker.webservice.RestService;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import me.gosimple.nbvcxz.Nbvcxz;
@@ -61,7 +61,7 @@ public class RegistrationActivity extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    private RestService service = retrofit.create(RestService.class);
+    private AccountService service = retrofit.create(AccountService.class);
 
 
     @Override
@@ -121,6 +121,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
     private TimerTask getNewTimerTask(final PasswordStrengthTask strengthTask) {
         return new TimerTask() {
             @Override
@@ -130,6 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
     }
+
     /**
      * Attempt to register the account with the currently entered credentials
      */

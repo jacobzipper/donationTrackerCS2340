@@ -15,6 +15,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import a5x.cs2340.donationtracker.activities.login.LoginActivity;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override
