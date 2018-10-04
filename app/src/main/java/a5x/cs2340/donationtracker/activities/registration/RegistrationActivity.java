@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker;
+package a5x.cs2340.donationtracker.activities.registration;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,20 +19,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import a5x.cs2340.donationtracker.users.UserType;
-import a5x.cs2340.donationtracker.webservice.AccountService;
-import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
-import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
+import a5x.cs2340.donationtracker.Constants;
+import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.WelcomeActivity;
+import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
+import a5x.cs2340.donationtracker.models.users.UserType;
+import a5x.cs2340.donationtracker.webservice.Webservice;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static a5x.cs2340.donationtracker.Constants.AVERAGE_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.REGISTRATION_PASSWORD_CHECK_DELAY;
@@ -53,20 +51,15 @@ public class RegistrationActivity extends AppCompatActivity {
     private Nbvcxz passwordStrengthChecker = new Nbvcxz();
     private Timer strengthTimer = new Timer();
 
-    private UserRegistrationTask mAuthTask = null;
-
-
-    private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(Constants.API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-    private AccountService service = retrofit.create(AccountService.class);
-
+    private AccountRegistrationTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Webservice.isLoggedIn()) {
+            startActivity(new Intent(this, PostLoginActivity.class));
+            return;
+        }
         setContentView(R.layout.activity_registration);
         firstNameTextView = findViewById(R.id.registrationFirstName);
         lastNameTextView = findViewById(R.id.registrationLastName);
@@ -209,7 +202,7 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param password password to register
      */
     protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        mAuthTask = new UserRegistrationTask(username, password, firstName, lastName, type.getAPIType());
+        mAuthTask = new AccountRegistrationTask(username, password, firstName, lastName, type.getAPIType());
         mAuthTask.execute((Void) null);
     }
 
@@ -286,53 +279,5 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the account.
-     */
-    @SuppressLint("StaticFieldLeak")
-    public class UserRegistrationTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mPassword;
-        private final String mUsername;
-        private final String mFirstname;
-        private final String mLastname;
-        private final String mRole;
-
-        UserRegistrationTask(String username, String password, String firstname, String lastname, String role) {
-            mPassword = password;
-            mUsername = username;
-            mFirstname = firstname;
-            mLastname = lastname;
-            mRole = role;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Response<StandardResponse> registrationAttempt;
-            try {
-                registrationAttempt = service.register(new RegistrationBody(mUsername, mPassword, mRole, mFirstname, mLastname)).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-            // TODO Handle errors
-            if (registrationAttempt.code() != 200) {
-                // Do something
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-        }
-
-        @Override
-        protected void onCancelled() {
-
-        }
     }
 }

@@ -1,7 +1,7 @@
 package a5x.cs2340.donationtracker.webservice;
 
 import a5x.cs2340.donationtracker.Constants;
-import a5x.cs2340.donationtracker.users.Account;
+import a5x.cs2340.donationtracker.models.users.Account;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -31,6 +31,14 @@ public class Webservice {
     }
 
     public static boolean isLoggedIn() {
-        return accountLoggedIn == null;
+        return accountLoggedIn != null;
+    }
+
+    public static Account getAccountLoggedIn() {
+        return accountLoggedIn;
+    }
+
+    public static String getJwtToken() {
+        return jwtToken;
     }
 }

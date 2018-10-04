@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker.users;
+package a5x.cs2340.donationtracker.models.users;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker;
+package a5x.cs2340.donationtracker.activities.postlogin;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,23 +8,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
-import a5x.cs2340.donationtracker.users.Account;
+import a5x.cs2340.donationtracker.webservice.Webservice;
 
 public class PostLoginActivity extends AppCompatActivity {
-    protected Account account;
-    private String authenticationKey;
-
     @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Webservice.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            return;
+        }
         setContentView(R.layout.activity_post_login);
-        Intent loginIntent = getIntent();
-        account = loginIntent.getParcelableExtra(LoginActivity.LOGGED_IN_USER);
-        authenticationKey = loginIntent.getStringExtra(LoginActivity.CURRENT_AUTHENTICATION_KEY);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
-        postLoginTextView.setText(getString(R.string.post_login_welcome_string, account.getUserType().getLabel(), account.getName()));
+        postLoginTextView.setText(getString(R.string.post_login_welcome_string, Webservice.getAccountLoggedIn().getUserType().getLabel(), Webservice.getAccountLoggedIn().getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +38,7 @@ public class PostLoginActivity extends AppCompatActivity {
      * Transitions back to the welcome screen
      */
     protected void logoutBackToWelcome() {
-        account = null;
+        Webservice.logOut();
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
     }

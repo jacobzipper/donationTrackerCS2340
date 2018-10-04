@@ -6,11 +6,11 @@ import android.os.AsyncTask;
 import java.io.IOException;
 
 import a5x.cs2340.donationtracker.R;
-import a5x.cs2340.donationtracker.users.Account;
-import a5x.cs2340.donationtracker.users.Admin;
-import a5x.cs2340.donationtracker.users.LocationEmployee;
-import a5x.cs2340.donationtracker.users.Manager;
-import a5x.cs2340.donationtracker.users.User;
+import a5x.cs2340.donationtracker.models.users.Account;
+import a5x.cs2340.donationtracker.models.users.Admin;
+import a5x.cs2340.donationtracker.models.users.LocationEmployee;
+import a5x.cs2340.donationtracker.models.users.Manager;
+import a5x.cs2340.donationtracker.models.users.User;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
@@ -62,6 +62,7 @@ public class AccountLoginTask extends AsyncTask<Void, Void, Boolean> {
                     account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
                     break;
             }
+            Webservice.logIn(account, jwt);
             return true;
         }
         return false;

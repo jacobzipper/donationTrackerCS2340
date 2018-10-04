@@ -16,6 +16,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
+import a5x.cs2340.donationtracker.activities.registration.RegistrationActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 

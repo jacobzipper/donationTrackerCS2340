@@ -1,44 +1,45 @@
-package a5x.cs2340.donationtracker.users;
+package a5x.cs2340.donationtracker.models.users;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User extends Account {
-    private static UserType userType = UserType.REGULAR_USER;
+public class Admin extends Account {
+    private static UserType userType = UserType.ADMIN;
 
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName    the User's first name
-     * @param lastName     the User's last name
-     * @param username     the User's username
-     * @param passwordHash the User's hashed password
+     * @param firstName    the Admin's first name
+     * @param lastName     the Admin's last name
+     * @param username     the Admin's username
+     * @param passwordHash the Admin's hashed password
      */
-    public User(String firstName, String lastName, String username, String passwordHash) {
+    public Admin(String firstName, String lastName, String username, String passwordHash) {
         super(firstName, lastName, username, passwordHash);
     }
 
     /**
-     * Parcel constructor for User
+     * Parcel constructor for Admin
      *
      * @param in the Parcel to construct from
      */
-    private User(Parcel in) {
+    private Admin(Parcel in) {
         super(in);
     }
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         public Account createFromParcel(Parcel in) {
-            return new User((in));
+            return new Admin((in));
         }
 
         public Account[] newArray(int size) {
-            return new User[size];
+            return new Admin[size];
         }
     };
 
     public UserType getUserType() {
         return userType;
     }
+
 }

@@ -18,10 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import a5x.cs2340.donationtracker.Constants;
-import a5x.cs2340.donationtracker.PostLoginActivity;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
-import a5x.cs2340.donationtracker.users.Account;
+import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
+import a5x.cs2340.donationtracker.models.users.Account;
+import a5x.cs2340.donationtracker.webservice.Webservice;
 
 /**
  * A login screen that offers login via email/password.
@@ -46,10 +47,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // If user is logged in we go directly to the PostLogin screen
+        if (Webservice.isLoggedIn()) {
+            startActivity(new Intent(this, PostLoginActivity.class));
+            return;
+        }
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
-        //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

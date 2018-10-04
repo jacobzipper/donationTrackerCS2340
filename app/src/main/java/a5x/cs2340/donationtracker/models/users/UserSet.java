@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker.users;
+package a5x.cs2340.donationtracker.models.users;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
