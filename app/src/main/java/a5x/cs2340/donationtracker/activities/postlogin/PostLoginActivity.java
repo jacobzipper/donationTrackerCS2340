@@ -14,6 +14,8 @@ import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 
 public class PostLoginActivity extends AppCompatActivity {
+    private GetLocationsTask mGetLocationsTask = null;
+
     @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,15 @@ public class PostLoginActivity extends AppCompatActivity {
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string, Webservice.getAccountLoggedIn().getUserType().getLabel(), Webservice.getAccountLoggedIn().getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
+        mGetLocationsTask = new GetLocationsTask(this);
+        mGetLocationsTask.execute((Void) null);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logoutBackToWelcome();
+                if (mGetLocationsTask != null) {
+                    mGetLocationsTask.cancel(true);
+                }
             }
         });
     }
