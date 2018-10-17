@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker.users;
+package a5x.cs2340.donationtracker.models.users;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -11,12 +11,7 @@ public class UserSet extends HashSet<Account> {
      * @return true if a account with a matching username is in the UserSet
      */
     public boolean containsUsername(String username) {
-        for (Account account : this) {
-            if (account.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return this.contains(username);
     }
 
     /**

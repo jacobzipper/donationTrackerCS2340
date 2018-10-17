@@ -1,16 +1,13 @@
-package a5x.cs2340.donationtracker;
+package a5x.cs2340.donationtracker.activities.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,35 +17,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.security.MessageDigest;
-import java.util.HashSet;
-import java.util.Random;
-
-import a5x.cs2340.donationtracker.users.Account;
-import a5x.cs2340.donationtracker.users.Admin;
-import a5x.cs2340.donationtracker.users.LocationEmployee;
-import a5x.cs2340.donationtracker.users.Manager;
-import a5x.cs2340.donationtracker.users.User;
-import a5x.cs2340.donationtracker.users.UserSet;
-import a5x.cs2340.donationtracker.users.UserType;
-
-import static a5x.cs2340.donationtracker.Constants.AUTHENTICATION_UPPER_BOUND;
+import a5x.cs2340.donationtracker.Constants;
+import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.WelcomeActivity;
+import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
+import a5x.cs2340.donationtracker.models.users.Account;
+import a5x.cs2340.donationtracker.webservice.Webservice;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-
-    private static UserSet validUsers = new UserSet();
-    private static HashSet<String> validAuthenticationTokens = new HashSet<>();
+    // Constants representing identifiers for data to be passed with Intent to PostLogin
     public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private AccountLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -59,14 +47,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // If user is logged in we go directly to the PostLogin screen
+        if (Webservice.isLoggedIn()) {
+            startActivity(new Intent(this, PostLoginActivity.class));
+            return;
+        }
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
-        //populateAutoComplete(); //Uncomment if we implement autocompletion of usernames
-        if (validUsers.isEmpty()) {
-            createDummyUser();
-        }
-        mPasswordView =  findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -95,36 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-    /**
-     * Adds dummy credentials "account:Password" to set of valid credentials
-     */
-    private void createDummyUser() {
-        validUsers.add(new User("DEFAULT", "USER","account", sha256Hash("pass")));
-    }
-
-    /**
-     * Convert string to hash using SHA-256 algorithm
-     *
-     * @param starting the string to convert
-     * @return the result of the hashing
-     */
-    private static String sha256Hash(String starting) {
-        try {
-            MessageDigest hasher = MessageDigest.getInstance("SHA-256");
-            byte[] startingBytes = starting.getBytes("UTF-8");
-            hasher.update(startingBytes);
-            StringBuilder sb = new StringBuilder();
-            for (byte startingByte : startingBytes) {
-                sb.append(Integer.toString((startingByte & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            Log.d("Encryption", "Exception was thrown trying to hash");
-            return starting;
-        }
-    }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -173,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
+            mAuthTask = new AccountLoginTask(this, username, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -185,8 +144,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the username exists in the valid credentials
      */
     private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
-        return validUsers.containsUsername(username);
+        return username.length() >= Constants.MIN_USERNAME_LENGTH;
     }
 
     /**
@@ -196,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the password meets specifications
      */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() >= Constants.MIN_PASSWORD_LENGTH;
     }
 
@@ -204,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    protected void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -229,56 +186,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the account.
-     */
-    @SuppressLint("StaticFieldLeak")
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mPassword;
-        private final Account account;
-        UserLoginTask(String username, String password) {
-            mPassword = password;
-            this.account = validUsers.getUser(username);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                Log.d("test", "oops");
-                return false;
-            }
-
-            return account.checkPassword(sha256Hash(mPassword));
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-            Log.d("test", "On PostExecute with success = " + success);
-            if (success) {
-                Log.d("test", "Attempting to go to PostLogin");
-                goToPostLogin(account);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    protected void indicateIncorrectPassword() {
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
     }
 
     /**
@@ -286,49 +195,11 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param account the account of the successfully logged in person
      */
-    protected void goToPostLogin(Account account) {
+    protected void goToPostLogin(Account account, String jwt) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
-        String authenticationKey = sha256Hash(Integer.toString((new Random()).nextInt(AUTHENTICATION_UPPER_BOUND)));
-        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, authenticationKey);
-        validAuthenticationTokens.add(authenticationKey);
+        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);
         startActivity(goToPostLoginIntent);
-    }
-
-    /**
-     * Public method to check if username exists in valid credentials
-     *
-     * @param username the username to check
-     * @return true if the username exists in the valid credentials
-     */
-    public static boolean checkExistingUsername(String username) {
-        return validUsers.containsUsername(username);
-    }
-
-    /**
-     * Adds the passed in credentials to the valid credentials
-     *
-     * @param username the username to add
-     * @param password the plaintext password to hash and add
-     */
-    static void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        switch(type) {
-            case REGULAR_USER:
-                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case ADMIN:
-                validUsers.add(new Admin(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case LOCATION_EMPLOYEE:
-                validUsers.add(new LocationEmployee(firstName, lastName, username, sha256Hash(password)));
-                break;
-            case MANAGER:
-                validUsers.add(new Manager(firstName, lastName, username, sha256Hash(password)));
-                break;
-            default:
-                validUsers.add(new User(firstName, lastName, username, sha256Hash(password)));
-        }
-
     }
 
     /**
@@ -337,25 +208,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
-    }
-
-    /**
-     * Validates whether the passed key is a valid authentication key
-     *
-     * @param key the key to check
-     * @return true if the key is currently valid
-     */
-    static boolean checkKey(String key) {
-        return validAuthenticationTokens.contains(key);
-    }
-
-    /**
-     * Removes the key from the valid set
-     *
-     * @param key the key to remove
-     */
-    static void removeKey(String key) {
-        validAuthenticationTokens.remove(key);
     }
 }
 

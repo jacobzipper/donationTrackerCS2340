@@ -1,16 +1,17 @@
-package a5x.cs2340.donationtracker.users;
+package a5x.cs2340.donationtracker.models.users;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Manager extends Account {
     private static UserType userType = UserType.MANAGER;
+
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName the Manager's first name
-     * @param lastName the Manager's last name
-     * @param username the Manager's username
+     * @param firstName    the Manager's first name
+     * @param lastName     the Manager's last name
+     * @param username     the Manager's username
      * @param passwordHash the Manager's hashed password
      */
     public Manager(String firstName, String lastName, String username, String passwordHash) {
@@ -31,10 +32,12 @@ public class Manager extends Account {
         public Account createFromParcel(Parcel in) {
             return new Manager((in));
         }
+
         public Account[] newArray(int size) {
             return new Manager[size];
         }
     };
+
     public UserType getUserType() {
         return userType;
     }
