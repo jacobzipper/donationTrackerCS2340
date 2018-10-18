@@ -29,6 +29,7 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
@@ -202,7 +203,7 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param password password to register
      */
     protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        mAuthTask = new AccountRegistrationTask(username, password, firstName, lastName, type.getAPIType());
+        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username, password, type.getAPIType(), firstName, lastName));
         mAuthTask.execute((Void) null);
     }
 

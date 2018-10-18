@@ -1,7 +1,6 @@
 package a5x.cs2340.donationtracker.activities.login;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 
 import java.io.IOException;
 
@@ -12,76 +11,63 @@ import a5x.cs2340.donationtracker.models.users.LocationEmployee;
 import a5x.cs2340.donationtracker.models.users.Manager;
 import a5x.cs2340.donationtracker.models.users.User;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak")
-public class AccountLoginTask extends AsyncTask<Void, Void, Boolean> {
-    private final LoginActivity mContext;
-    private final String mPassword;
-    private final String mUsername;
+public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, LoginResponse> {
     private Account account;
     private String jwt;
 
-    public AccountLoginTask(LoginActivity context, String username, String password) {
-        mContext = context;
-        mPassword = password;
-        mUsername = username;
-    }
-
-    @Override
-    protected Boolean doInBackground(Void... params) {
-        Response<LoginResponse> loginAttempt;
-        try {
-            loginAttempt = Webservice.accountService.login(new LoginBody(mUsername, mPassword)).execute();
-        } catch (IOException e) {
-            // TODO: Graceful error handling
-            e.printStackTrace();
-            return false;
-        }
-
-        // TODO: Error messages for each error code from backend
-        LoginResponse loginResponse = loginAttempt.body();
-        if (loginAttempt.code() == 200 && loginResponse != null && loginResponse.getError() == 0) {
-            jwt = loginResponse.getJwt();
-            switch (loginResponse.getRole()) {
-                case "admins":
-                    account = new Admin(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                    break;
-                case "users":
-                    account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                    break;
-                case "employees":
-                    account = new LocationEmployee(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                    break;
-                case "managers":
-                    account = new Manager(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                    break;
-                default:
-                    account = new User(loginResponse.getFirstname(), loginResponse.getLastname(), mUsername, mPassword);
-                    break;
-            }
-            Webservice.logIn(account, jwt);
-            return true;
-        }
-        return false;
-
-    }
-
-    @Override
-    protected void onPostExecute(final Boolean success) {
-        mContext.showProgress(false);
-        if (success) {
-            mContext.goToPostLogin(account, jwt);
-        } else {
-            mContext.indicateIncorrectPassword();
-            mContext.findViewById(R.id.username).requestFocus();
-        }
+    public AccountLoginTask(LoginActivity activity, LoginBody body) {
+        super(activity, body);
     }
 
     @Override
     protected void onCancelled() {
         mContext.showProgress(false);
+    }
+
+    @Override
+    public Response<LoginResponse> doRequest(LoginBody body) throws IOException {
+        return Webservice.accountService.login(body).execute();
+    }
+
+    @Override
+    public void useResponse(LoginResponse response) {
+        jwt = response.getJwt();
+        switch (response.getRole()) {
+            case "admins":
+                account = new Admin(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                break;
+            case "users":
+                account = new User(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                break;
+            case "employees":
+                account = new LocationEmployee(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                break;
+            case "managers":
+                account = new Manager(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                break;
+            default:
+                account = new User(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                break;
+        }
+        Webservice.logIn(account, jwt);
+    }
+
+    @Override
+    public void uiSuccess() {
+        mContext.showProgress(false);
+        mContext.goToPostLogin(account, jwt);
+    }
+
+    @Override
+    public void uiFailure() {
+        mContext.showProgress(false);
+        mContext.indicateIncorrectPassword();
+        mContext.findViewById(R.id.username).requestFocus();
     }
 }

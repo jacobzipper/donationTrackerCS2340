@@ -23,6 +23,7 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 
 /**
  * A login screen that offers login via email/password.
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new AccountLoginTask(this, username, password);
+            mAuthTask = new AccountLoginTask(this, new LoginBody(username, password));
             mAuthTask.execute((Void) null);
         }
     }

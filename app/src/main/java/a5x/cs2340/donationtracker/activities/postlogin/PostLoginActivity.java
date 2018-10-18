@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,15 +27,12 @@ public class PostLoginActivity extends AppCompatActivity {
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string, Webservice.getAccountLoggedIn().getUserType().getLabel(), Webservice.getAccountLoggedIn().getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
-        mGetLocationsTask = new GetLocationsTask(this);
+        mGetLocationsTask = new GetLocationsTask(this, null);
         mGetLocationsTask.execute((Void) null);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logoutBackToWelcome();
-                if (mGetLocationsTask != null) {
-                    mGetLocationsTask.cancel(true);
-                }
+        logoutButton.setOnClickListener(view -> {
+            logoutBackToWelcome();
+            if (mGetLocationsTask != null) {
+                mGetLocationsTask.cancel(true);
             }
         });
     }
