@@ -33,4 +33,14 @@
     <string name="password_strength_very_strong">Strength: Very Strong</string>
     <string name="post_login_welcome_string">Welcome %1$s %2$s!</string>
 
+
+    <string name="location_default_name">Name</string>
+    <string name="location_default_latitude">Latitude</string>
+    <string name="location_default_longitude">Longitude</string>
+    <string name="location_default_type">Type</string>
+    <string name="location_default_address">Address</string>
+    <string name="location_default_phone">Phone</string>
+    <string name="location_dialog_close_button">Close</string>
+    <string name="location_dialog_add_donation">Add Donation</string>
+    <string name="location_dialog_view_donations">View Donations</string>
 </resources>

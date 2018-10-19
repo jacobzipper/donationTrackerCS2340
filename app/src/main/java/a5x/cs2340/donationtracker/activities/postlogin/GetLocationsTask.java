@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.models.users.LocationEmployee;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
@@ -59,10 +61,18 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
             ((TextView) dialog.findViewById(R.id.phone)).setText(location.getPhone());
             ((TextView) dialog.findViewById(R.id.address)).setText(location.getAddress());
 
-            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            Button dialogCloseButton = dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(v -> dialog.dismiss());
-
+            dialogCloseButton.setOnClickListener(v -> dialog.dismiss());
+            Button addDonationButton = dialog.findViewById(R.id.dialogAddDonationButton);
+            Button viewDonationsButton = dialog.findViewById(R.id.dialogViewDonationsButton);
+            if (Webservice.getAccountLoggedIn() instanceof LocationEmployee) {
+                viewDonationsButton.setVisibility(View.VISIBLE);
+                addDonationButton.setVisibility(View.VISIBLE);
+            } else {
+                addDonationButton.setVisibility(View.GONE);
+                viewDonationsButton.setVisibility(View.GONE);
+            }
             dialog.show();
         });
     }
