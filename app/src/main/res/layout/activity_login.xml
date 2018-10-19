@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/aldrich"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
