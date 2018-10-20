@@ -2,6 +2,7 @@ package a5x.cs2340.donationtracker.activities.postlogin;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.View;
@@ -80,5 +81,9 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
     @Override
     public void uiFailure() {
 
+    }
+    private void toAddDonation() {
+        Intent toAddDonationIntent = new Intent(mContext, AddDonationActivity.class);
+        mContext.startActivity(toAddDonationIntent);
     }
 }
