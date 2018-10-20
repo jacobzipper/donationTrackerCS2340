@@ -43,4 +43,13 @@
     <string name="location_dialog_close_button">Close</string>
     <string name="location_dialog_add_donation">Add Donation</string>
     <string name="location_dialog_view_donations">View Donations</string>
+
+    <string name="donation_add_header">Enter Donation Info</string>
+    <string name="donation_name_prompt">Name</string>
+    <string name="donation_description_prompt">Description</string>
+    <string name="donation_value_prompt">Estimated Value (In Dollars)</string>
+    <string name="donation_comments_prompt">Additional Comments (Optional)</string>
+    <string name="donation_add_button">Add</string>
+    <string name="donation_cancel_button">Cancel</string>
+
 </resources>
