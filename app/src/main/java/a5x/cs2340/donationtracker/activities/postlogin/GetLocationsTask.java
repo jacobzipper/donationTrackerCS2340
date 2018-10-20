@@ -66,7 +66,9 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
             // if button is clicked, close the custom dialog
             dialogCloseButton.setOnClickListener(v -> dialog.dismiss());
             Button addDonationButton = dialog.findViewById(R.id.dialogAddDonationButton);
+            addDonationButton.setOnClickListener(v -> toAddDonation());
             Button viewDonationsButton = dialog.findViewById(R.id.dialogViewDonationsButton);
+            viewDonationsButton.setOnClickListener(v -> toViewDonations());
             if (Webservice.getAccountLoggedIn() instanceof LocationEmployee) {
                 viewDonationsButton.setVisibility(View.VISIBLE);
                 addDonationButton.setVisibility(View.VISIBLE);
@@ -85,5 +87,9 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
     private void toAddDonation() {
         Intent toAddDonationIntent = new Intent(mContext, AddDonationActivity.class);
         mContext.startActivity(toAddDonationIntent);
+    }
+    private void toViewDonations() {
+        Intent toViewDonationsIntent = new Intent(mContext, ViewDonationsActivity.class);
+        mContext.startActivity(toViewDonationsIntent);
     }
 }

@@ -51,5 +51,6 @@
     <string name="donation_comments_prompt">Additional Comments (Optional)</string>
     <string name="donation_add_button">Add</string>
     <string name="donation_cancel_button">Cancel</string>
+    <string name="donation_view_back">Back</string>
 
 </resources>
