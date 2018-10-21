@@ -14,11 +14,13 @@ public class Webservice {
 
     // Services
     public static AccountService accountService;
+    public static DonationService donationService;
 
 
     static {
         retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
         accountService = retrofit.create(AccountService.class);
+        donationService = retrofit.create(DonationService.class);
     }
 
     public static void logIn(Account acc, String jwt) {

@@ -28,7 +28,7 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity, Obje
     }
     @Override
     public Response<GetDonationsResponse> doRequest(Object body) throws IOException {
-        return Webservice.donationService.getDonations(Webservice.getJwtToken());
+        return Webservice.donationService.getDonations(Webservice.getJwtToken()).execute();
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
