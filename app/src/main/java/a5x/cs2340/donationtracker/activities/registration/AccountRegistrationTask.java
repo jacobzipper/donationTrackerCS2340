@@ -15,8 +15,13 @@ import retrofit2.Response;
  * the account.
  */
 @SuppressLint("StaticFieldLeak")
-public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity, RegistrationBody, StandardResponse> {
-
+public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity,
+        RegistrationBody, StandardResponse> {
+    /**
+     * Creates a new AccountRegistrationTask with the given context and body
+     * @param activity The RegistrationActivity to use as the context
+     * @param body The RegistrationBody to attempt to register
+     */
     public AccountRegistrationTask(RegistrationActivity activity, RegistrationBody body) {
         super(activity, body);
     }

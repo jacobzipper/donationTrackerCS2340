@@ -12,7 +12,8 @@ import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak")
-public abstract class WebserviceTask<S extends Activity, T, U extends StandardResponse> extends AsyncTask<Void, Void, Boolean> {
+public abstract class WebserviceTask<S extends Activity, T,
+        U extends StandardResponse> extends AsyncTask<Void, Void, Boolean> {
     protected final S mContext;
     protected final T mBody;
 

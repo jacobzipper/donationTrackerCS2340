@@ -18,7 +18,8 @@ public class Webservice {
 
 
     static {
-        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).
+                addConverterFactory(GsonConverterFactory.create()).build();
         accountService = retrofit.create(AccountService.class);
         donationService = retrofit.create(DonationService.class);
     }

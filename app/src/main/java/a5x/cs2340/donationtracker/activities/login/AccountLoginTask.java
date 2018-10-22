@@ -16,11 +16,20 @@ import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
 import retrofit2.Response;
 
+/**
+ * Represents an asynchronous login task used to authenticate
+ * the account.
+ */
 @SuppressLint("StaticFieldLeak")
 public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, LoginResponse> {
     private Account account;
     private String jwt;
 
+    /**
+     * Creates a new AccountLoginTask with the given activity as a context and the LoginBody to use
+     * @param activity The LoginActivity to use as the context for this task
+     * @param body The LoginBody to use to attempt to login
+     */
     public AccountLoginTask(LoginActivity activity, LoginBody body) {
         super(activity, body);
     }
@@ -40,19 +49,24 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
         jwt = response.getJwt();
         switch (response.getRole()) {
             case "admins":
-                account = new Admin(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                account = new Admin(response.getFirstname(), response.getLastname(),
+                        mBody.getUsername(), mBody.getPassword());
                 break;
             case "users":
-                account = new User(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                account = new User(response.getFirstname(), response.getLastname(),
+                        mBody.getUsername(), mBody.getPassword());
                 break;
             case "employees":
-                account = new LocationEmployee(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                account = new LocationEmployee(response.getFirstname(), response.getLastname(),
+                        mBody.getUsername(), mBody.getPassword());
                 break;
             case "managers":
-                account = new Manager(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                account = new Manager(response.getFirstname(), response.getLastname(),
+                        mBody.getUsername(), mBody.getPassword());
                 break;
             default:
-                account = new User(response.getFirstname(), response.getLastname(), mBody.getUsername(), mBody.getPassword());
+                account = new User(response.getFirstname(), response.getLastname(),
+                        mBody.getUsername(), mBody.getPassword());
                 break;
         }
         Webservice.logIn(account, jwt);

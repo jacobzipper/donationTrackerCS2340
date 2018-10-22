@@ -3,6 +3,9 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents an Administrator for the app
+ */
 public class Admin extends Account {
     private static UserType userType = UserType.ADMIN;
 

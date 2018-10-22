@@ -19,7 +19,8 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.GetDonationsResponse;
 import retrofit2.Response;
 
-public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity, Object, GetDonationsResponse> {
+public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
+        Object, GetDonationsResponse> {
     private List<Donation> donations;
     private List<String> donationNames;
 
@@ -39,21 +40,33 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity, Obje
 
     @Override
     public void uiSuccess() {
-        ((ListView) mContext.findViewById(R.id.donationsList)).setAdapter(new ArrayAdapter<>(mContext,
+        ((ListView) mContext.findViewById(R.id.donationsList)).
+                setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, donationNames));
-        ((ListView) mContext.findViewById(R.id.donationsList)).setOnItemClickListener((parent, view, position, id) -> {
+        ((ListView) mContext.findViewById(R.id.donationsList)).
+                setOnItemClickListener((parent, view, position, id) -> {
             Donation donation = donations.get(position);
             final Dialog dialog = new Dialog(mContext);
             dialog.setContentView(R.layout.donation_view);
             dialog.setTitle("Donation Details");
 
             // set the custom dialog components - text, image and button
-            ((TextView) dialog.findViewById(R.id.donationName)).setText(mContext.getString(R.string.donation_view_name,donation.getName()));
-            ((TextView) dialog.findViewById(R.id.donationDescription)).setText(mContext.getString(R.string.donation_view_description,donation.getDescription()));
-            ((TextView) dialog.findViewById(R.id.donationValue)).setText(mContext.getString(R.string.donation_view_value,donation.getValue()));
-            ((TextView) dialog.findViewById(R.id.donationCategory)).setText(mContext.getString(R.string.donation_view_category,donation.getCategory().getName()));
-            ((TextView) dialog.findViewById(R.id.donationComments)).setText(mContext.getString(R.string.donation_view_comments,donation.getComments()));
-            ((TextView) dialog.findViewById(R.id.donationTimeStamp)).setText(mContext.getString(R.string.donation_view_timestamp,donation.getTimeStamp()));
+            ((TextView) dialog.findViewById(R.id.donationName)).
+                    setText(mContext.getString(R.string.donation_view_name,donation.getName()));
+            ((TextView) dialog.findViewById(R.id.donationDescription)).
+                    setText(mContext.getString(R.string.donation_view_description,
+                            donation.getDescription()));
+            ((TextView) dialog.findViewById(R.id.donationValue)).
+                    setText(mContext.getString(R.string.donation_view_value,donation.getValue()));
+            ((TextView) dialog.findViewById(R.id.donationCategory)).
+                    setText(mContext.getString(R.string.donation_view_category,
+                            donation.getCategory().getName()));
+            ((TextView) dialog.findViewById(R.id.donationComments)).
+                    setText(mContext.getString(R.string.donation_view_comments,
+                            donation.getComments()));
+            ((TextView) dialog.findViewById(R.id.donationTimeStamp)).
+                    setText(mContext.getString(R.string.donation_view_timestamp,
+                            donation.getTimeStamp()));
 
             Button dialogCloseButton = dialog.findViewById(R.id.donationBackButton);
             // if button is clicked, close the custom dialog

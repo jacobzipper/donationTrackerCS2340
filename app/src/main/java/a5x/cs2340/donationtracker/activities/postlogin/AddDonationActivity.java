@@ -29,7 +29,8 @@ public class AddDonationActivity extends AppCompatActivity {
         categorySpinner = findViewById(R.id.addDonationCategory);
         ArrayAdapter<DonationCategory> donationCategoryArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, DonationCategory.values());
-        donationCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        donationCategoryArrayAdapter.
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(donationCategoryArrayAdapter);
         addDonationButton = findViewById(R.id.addDonationConfirmButton);
         cancelDonationButton = findViewById(R.id.addDonationCancelButton);

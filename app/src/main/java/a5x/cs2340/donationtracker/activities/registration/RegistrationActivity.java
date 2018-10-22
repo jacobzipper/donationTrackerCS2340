@@ -70,7 +70,8 @@ public class RegistrationActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.registerButton);
         Button backButton = findViewById(R.id.registerBackButton);
         userTypeSpinner = findViewById(R.id.registrationUserTypeSpinner);
-        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, UserType.values());
         userTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeArrayAdapter);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 strengthTimer.cancel();
                 strengthTimer.purge();
                 strengthTimer = new Timer();
-                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))), REGISTRATION_PASSWORD_CHECK_DELAY);
+                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))),
+                        REGISTRATION_PASSWORD_CHECK_DELAY);
             }
         });
         passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -202,8 +204,10 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param username username to register
      * @param password password to register
      */
-    protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username, password, type.getAPIType(), firstName, lastName));
+    protected void registerUser(String firstName, String lastName, String username,
+                                String password, UserType type) {
+        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username,
+                password, type.getAPIType(), firstName, lastName));
         mAuthTask.execute((Void) null);
     }
 

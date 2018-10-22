@@ -15,7 +15,8 @@ public class AddDonationTask extends WebserviceTask<AddDonationActivity, Object,
 
     @Override
     public Response<StandardResponse> doRequest(Object body) throws IOException {
-        return Webservice.donationService.addDonation((Donation) body, "Bearer " + Webservice.getJwtToken()).execute();
+        return Webservice.donationService.addDonation((Donation) body,
+                "Bearer " + Webservice.getJwtToken()).execute();
     }
 
     @Override

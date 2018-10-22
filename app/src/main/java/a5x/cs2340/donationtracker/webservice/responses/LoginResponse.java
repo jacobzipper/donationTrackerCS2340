@@ -6,7 +6,8 @@ public class LoginResponse extends StandardResponse {
     private String lastname;
     private String jwt;
 
-    public LoginResponse(int error, String msg, String role, String firstname, String lastname, String jwt) {
+    public LoginResponse(int error, String msg, String role,
+                         String firstname, String lastname, String jwt) {
         super(error, msg);
         this.role = role;
         this.firstname = firstname;

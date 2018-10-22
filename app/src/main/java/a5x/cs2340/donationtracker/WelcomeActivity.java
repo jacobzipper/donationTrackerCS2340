@@ -49,7 +49,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token) {/* ... */}
                 }).check();
     }
 
