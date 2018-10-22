@@ -48,12 +48,12 @@ public class AddDonationActivity extends AppCompatActivity {
             if (commentEditText.getText().toString().isEmpty()) {
                 donationToAdd = new Donation(nameEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
-                        Double.parseDouble(valueEditText.getText().toString()),
+                        (valueEditText.getText().toString()),
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()]);
             } else {
                 donationToAdd = new Donation(nameEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
-                        Double.parseDouble(valueEditText.getText().toString()),
+                        (valueEditText.getText().toString()),
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()],
                         commentEditText.getText().toString());
             }

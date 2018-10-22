@@ -72,7 +72,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/prompt_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <ProgressBar
             android:id="@+id/passwordStrengthMeter"
@@ -95,7 +96,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/prompt_password_verify"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <Spinner
             android:id="@+id/registrationUserTypeSpinner"

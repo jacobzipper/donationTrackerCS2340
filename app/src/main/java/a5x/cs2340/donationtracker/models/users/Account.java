@@ -54,7 +54,7 @@ public abstract class Account implements Parcelable {
     /**
      * Checks if the hashed password passed in matches the stored hash
      *
-     * @param passwordHash the pasesd in hash to check
+     * @param passwordHash the passed in hash to check
      * @return true if the password hashes match
      */
     public boolean checkPassword(String passwordHash) {

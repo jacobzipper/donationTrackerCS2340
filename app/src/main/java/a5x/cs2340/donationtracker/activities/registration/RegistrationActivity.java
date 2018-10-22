@@ -174,7 +174,7 @@ public class RegistrationActivity extends AppCompatActivity {
             focusView = passwordTextView;
             cancel = true;
         } else if (!passwordVerify.equals(password)) {
-            passwordVerifyTextView.setError(getString(R.string.error_passwords_dont_match));
+            passwordVerifyTextView.setError(getString(R.string.error_password_mismatch));
             focusView = passwordVerifyTextView;
             cancel = true;
         }

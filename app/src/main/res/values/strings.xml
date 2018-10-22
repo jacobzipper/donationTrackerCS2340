@@ -14,7 +14,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_username_already_exists">A profile with this username already exists</string>
-    <string name="error_passwords_dont_match">Must match password</string>
+    <string name="error_password_mismatch">Must match password</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing username
         completions."
     </string>
@@ -34,15 +34,15 @@
     <string name="post_login_welcome_string">Welcome %1$s %2$s!</string>
 
 
-    <string name="location_default_name">Name</string>
-    <string name="location_default_latitude">Latitude</string>
-    <string name="location_default_longitude">Longitude</string>
-    <string name="location_default_type">Type</string>
-    <string name="location_default_address">Address</string>
-    <string name="location_default_phone">Phone</string>
-    <string name="location_dialog_close_button">Close</string>
-    <string name="location_dialog_add_donation">Add Donation</string>
-    <string name="location_dialog_view_donations">View Donations</string>
+    <string name="location_name">Name: %1$s</string>
+    <string name="location_latitude">Latitude: %1$s</string>
+    <string name="location_longitude">Longitude: %1$s</string>
+    <string name="location_type">Type: %1$s</string>
+    <string name="location_address">Address: %1$s</string>
+    <string name="location_phone">Phone: %1$s</string>
+    <string name="location_dialog_close_button">Close: %1$s</string>
+    <string name="location_dialog_add_donation">Add Donation: %1$s</string>
+    <string name="location_dialog_view_donations">View Donations: %1$s</string>
 
     <string name="donation_add_header">Enter Donation Info</string>
     <string name="donation_name_prompt">Name</string>
@@ -51,6 +51,13 @@
     <string name="donation_comments_prompt">Additional Comments (Optional)</string>
     <string name="donation_add_button">Add</string>
     <string name="donation_cancel_button">Cancel</string>
-    <string name="donation_view_back">Back</string>
 
+
+    <string name="donation_view_name">Name: %1$s</string>
+    <string name="donation_view_description">Description: %1$s</string>
+    <string name="donation_view_value">Value: $%1$s</string>
+    <string name="donation_view_category">Category: %1$s</string>
+    <string name="donation_view_comments">Comments: %1$s</string>
+    <string name="donation_view_timestamp">Time: %1$s</string>
+    <string name="donation_view_back">Back</string>
 </resources>

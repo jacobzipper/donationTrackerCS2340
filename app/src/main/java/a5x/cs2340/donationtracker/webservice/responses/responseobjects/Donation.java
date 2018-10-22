@@ -6,11 +6,12 @@ import a5x.cs2340.donationtracker.DonationCategory;
 public class Donation {
     private String name;
     private String description;
-    private double value;
+    private String value;
     private DonationCategory category;
     private String comments;
+    private String timeStamp;
 
-    public Donation(String name, String description, double value,
+    public Donation(String name, String description, String value,
                     DonationCategory category, String comments) {
         this.name = name;
         this.description = description;
@@ -18,7 +19,7 @@ public class Donation {
         this.category = category;
         this.comments = comments;
     }
-    public Donation(String name, String description, double value
+    public Donation(String name, String description, String value
                     , DonationCategory category) {
         this(name, description, value, category, "No comment");
     }
@@ -38,11 +39,11 @@ public class Donation {
         this.description = description;
     }
 
-    public double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -60,5 +61,13 @@ public class Donation {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

@@ -41,12 +41,12 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
     @Override
     public void useResponse(GetLocationsResponse response) {
         locations = response.getLocations();
-        locationNames = locations.stream().map(location -> location.getName()).collect(Collectors.toList());
+        locationNames = locations.stream().map(Location::getName).collect(Collectors.toList());
     }
 
     @Override
     public void uiSuccess() {
-        ((ListView) mContext.findViewById(R.id.locationlist)).setAdapter(new ArrayAdapter<String>(mContext,
+        ((ListView) mContext.findViewById(R.id.locationlist)).setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, locationNames));
         ((ListView) mContext.findViewById(R.id.locationlist)).setOnItemClickListener((parent, view, position, id) -> {
             Location location = locations.get(position);
@@ -55,12 +55,12 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity, Object, 
             dialog.setTitle("Location Details");
 
             // set the custom dialog components - text, image and button
-            ((TextView) dialog.findViewById(R.id.name)).setText(location.getName());
-            ((TextView) dialog.findViewById(R.id.latitude)).setText(location.getLatitude());
-            ((TextView) dialog.findViewById(R.id.longitude)).setText(location.getLongitude());
-            ((TextView) dialog.findViewById(R.id.type)).setText(location.getType());
-            ((TextView) dialog.findViewById(R.id.phone)).setText(location.getPhone());
-            ((TextView) dialog.findViewById(R.id.address)).setText(location.getAddress());
+            ((TextView) dialog.findViewById(R.id.name)).setText(mContext.getString(R.string.location_name, location.getName()));
+            ((TextView) dialog.findViewById(R.id.latitude)).setText(mContext.getString(R.string.location_latitude, location.getLatitude()));
+            ((TextView) dialog.findViewById(R.id.longitude)).setText(mContext.getString(R.string.location_longitude, location.getLongitude()));
+            ((TextView) dialog.findViewById(R.id.type)).setText(mContext.getString(R.string.location_type, location.getType()));
+            ((TextView) dialog.findViewById(R.id.phone)).setText(mContext.getString(R.string.location_phone, location.getPhone()));
+            ((TextView) dialog.findViewById(R.id.address)).setText(mContext.getString(R.string.location_address, location.getAddress()));
 
             Button dialogCloseButton = dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
