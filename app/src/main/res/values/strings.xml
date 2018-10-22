@@ -40,9 +40,9 @@
     <string name="location_type">Type: %1$s</string>
     <string name="location_address">Address: %1$s</string>
     <string name="location_phone">Phone: %1$s</string>
-    <string name="location_dialog_close_button">Close: %1$s</string>
-    <string name="location_dialog_add_donation">Add Donation: %1$s</string>
-    <string name="location_dialog_view_donations">View Donations: %1$s</string>
+    <string name="location_dialog_close_button">Close</string>
+    <string name="location_dialog_add_donation">Add Donation</string>
+    <string name="location_dialog_view_donations">View Donations</string>
 
     <string name="donation_add_header">Enter Donation Info</string>
     <string name="donation_name_prompt">Name</string>
