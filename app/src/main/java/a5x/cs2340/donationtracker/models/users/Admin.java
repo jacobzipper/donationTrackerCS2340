@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Represents an Administrator for the app
  */
 public class Admin extends Account {
-    private static UserType userType = UserType.ADMIN;
+    private static final UserType userType = UserType.ADMIN;
 
     /**
      * Regular constructor and all passed parameters

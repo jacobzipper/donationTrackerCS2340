@@ -88,7 +88,7 @@ public abstract class Account implements Parcelable {
         if (other == this) {
             return true;
         }
-        return other instanceof Account && username.equals(((Account) other).username);
+        return (other instanceof Account) && username.equals(((Account) other).username);
     }
 
     @Override

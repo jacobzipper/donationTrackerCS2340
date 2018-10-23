@@ -17,7 +17,7 @@ public abstract class WebserviceTask<S extends Activity, T,
     protected final S mContext;
     protected final T mBody;
 
-    public WebserviceTask(S context, T body) {
+    protected WebserviceTask(S context, T body) {
         mContext = context;
         mBody = body;
     }
@@ -36,7 +36,7 @@ public abstract class WebserviceTask<S extends Activity, T,
 
         // TODO: Error messages for each error code from backend
         U response = requestAttempt.body();
-        if (requestAttempt.code() == 200 && response != null && response.getError() == 0) {
+        if ((requestAttempt.code() == 200) && (response != null) && (response.getError() == 0)) {
             useResponse(response);
             return true;
         }

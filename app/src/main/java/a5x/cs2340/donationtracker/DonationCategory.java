@@ -10,7 +10,7 @@ public enum DonationCategory {
     ELECTRONICS("Electronics"),
     HOUSEHOLD("Household"),
     OTHER("Other");
-    private String name;
+    private final String name;
     DonationCategory(String name) {
         this.name = name;
     }

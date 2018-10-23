@@ -42,7 +42,7 @@ public class PostLoginActivity extends AppCompatActivity {
     /**
      * Transitions back to the welcome screen
      */
-    protected void logoutBackToWelcome() {
+    private void logoutBackToWelcome() {
         Webservice.logOut();
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);

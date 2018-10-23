@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class LocationEmployee extends Account {
-    private static UserType userType = UserType.LOCATION_EMPLOYEE;
+    private static final UserType userType = UserType.LOCATION_EMPLOYEE;
 
     /**
      * Regular constructor and all passed parameters
