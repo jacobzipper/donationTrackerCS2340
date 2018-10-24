@@ -33,6 +33,7 @@
     <string name="password_strength_very_strong">Strength: Very Strong</string>
     <string name="post_login_welcome_string">Welcome %1$s %2$s!</string>
 
+    <string name="to_tools_button">Admin Tools</string>
 
     <string name="location_name">Name: %1$s</string>
     <string name="location_latitude">Latitude: %1$s</string>
@@ -41,8 +42,9 @@
     <string name="location_address">Address: %1$s</string>
     <string name="location_phone">Phone: %1$s</string>
     <string name="location_dialog_close_button">Close</string>
-    <string name="location_dialog_add_donation">Add Donation</string>
-    <string name="location_dialog_view_donations">View Donations</string>
+
+    <string name="tools_add_donation">Add Donation</string>
+    <string name="tools_view_donations">View Donations</string>
 
     <string name="donation_add_header">Enter Donation Info</string>
     <string name="donation_name_prompt">Name</string>

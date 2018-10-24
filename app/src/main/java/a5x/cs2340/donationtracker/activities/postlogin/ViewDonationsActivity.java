@@ -16,13 +16,13 @@ public class ViewDonationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_donations);
         backButton = findViewById(R.id.donationListBackButton);
-        backButton.setOnClickListener(v -> backToPostLogin());
+        backButton.setOnClickListener(v -> backToAdminTools());
         getDonationsTask = new GetDonationsTask(this, null);
         getDonationsTask.execute((Void) null);
     }
 
-    private void backToPostLogin() {
-        Intent backToPostLoginIntent = new Intent(this, PostLoginActivity.class);
-        startActivity(backToPostLoginIntent);
+    private void backToAdminTools() {
+        Intent backToAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
+        startActivity(backToAdminToolsIntent);
     }
 }

@@ -37,6 +37,8 @@ public class PostLoginActivity extends AppCompatActivity {
                 mGetLocationsTask.cancel(true);
             }
         });
+        Button toAdminToolsButton = findViewById(R.id.toToolsButton);
+        toAdminToolsButton.setOnClickListener(v -> toAdminTools());
     }
 
     /**
@@ -46,5 +48,13 @@ public class PostLoginActivity extends AppCompatActivity {
         Webservice.logOut();
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
+    }
+
+    /**
+     * Transitions to the admin tools screen
+     */
+    private void toAdminTools() {
+        Intent toAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
+        startActivity(toAdminToolsIntent);
     }
 }

@@ -39,7 +39,7 @@ public class AddDonationActivity extends AppCompatActivity {
         valueEditText = findViewById(R.id.addDonationValue);
         commentEditText = findViewById(R.id.addDonationComments);
         addDonationButton.setOnClickListener(v -> addDonation());
-        cancelDonationButton.setOnClickListener(v -> returnToLocationsList());
+        cancelDonationButton.setOnClickListener(v -> returnToAdminTools());
     }
 
     private void addDonation() {
@@ -60,7 +60,7 @@ public class AddDonationActivity extends AppCompatActivity {
             }
             donationTask = new AddDonationTask(this, donationToAdd);
             donationTask.execute((Void) null);
-            returnToLocationsList();
+            returnToAdminTools();
         }
     }
     private boolean errorCheck(EditText editText) {
@@ -71,8 +71,8 @@ public class AddDonationActivity extends AppCompatActivity {
         }
         return true;
     }
-    private void returnToLocationsList() {
-        Intent backToLocationListIntent = new Intent(this, PostLoginActivity.class);
-        startActivity(backToLocationListIntent);
+    private void returnToAdminTools() {
+        Intent backToAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
+        startActivity(backToAdminToolsIntent);
     }
 }
