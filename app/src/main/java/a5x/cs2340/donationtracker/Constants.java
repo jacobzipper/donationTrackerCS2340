@@ -2,6 +2,9 @@ package a5x.cs2340.donationtracker;
 
 import java.math.BigDecimal;
 
+/**
+ * Holds all of the constants for the app to prevent magic numbers
+ */
 public class Constants {
     public static final int MIN_PASSWORD_LENGTH = 4;
     public static final int MIN_USERNAME_LENGTH = 1;

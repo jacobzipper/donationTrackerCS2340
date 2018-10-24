@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -72,7 +73,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/prompt_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <ProgressBar
             android:id="@+id/passwordStrengthMeter"
@@ -95,7 +97,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/prompt_password_verify"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <Spinner
             android:id="@+id/registrationUserTypeSpinner"

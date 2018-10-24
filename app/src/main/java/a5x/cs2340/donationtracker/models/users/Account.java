@@ -3,6 +3,10 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Abstract definition of an Account, implemented differently to represent the different types of
+ * accounts with different permissions
+ */
 public abstract class Account implements Parcelable {
     private String firstName;
     private String lastName;
@@ -54,13 +58,17 @@ public abstract class Account implements Parcelable {
     /**
      * Checks if the hashed password passed in matches the stored hash
      *
-     * @param passwordHash the pasesd in hash to check
+     * @param passwordHash the passed in hash to check
      * @return true if the password hashes match
      */
     public boolean checkPassword(String passwordHash) {
         return this.passwordHash.equals(passwordHash);
     }
 
+    /**
+     * Returns the type of the user, different per concrete implementation
+     * @return the user type of the account
+     */
     public abstract UserType getUserType();
 
     /**
@@ -80,7 +88,7 @@ public abstract class Account implements Parcelable {
         if (other == this) {
             return true;
         }
-        return other instanceof Account && username.equals(((Account) other).username);
+        return (other instanceof Account) && username.equals(((Account) other).username);
     }
 
     @Override

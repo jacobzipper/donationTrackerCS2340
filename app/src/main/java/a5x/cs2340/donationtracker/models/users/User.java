@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User extends Account {
-    private static UserType userType = UserType.REGULAR_USER;
+    private static final UserType userType = UserType.REGULAR_USER;
 
     /**
      * Regular constructor and all passed parameters

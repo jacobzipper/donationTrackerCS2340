@@ -49,14 +49,15 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token) {/* ... */}
                 }).check();
     }
 
     /**
      * Transitions from the welcome screen to the login screen
      */
-    protected void goToLogin() {
+    private void goToLogin() {
         Intent goToLoginIntent = new Intent(this, LoginActivity.class);
         startActivity(goToLoginIntent);
     }

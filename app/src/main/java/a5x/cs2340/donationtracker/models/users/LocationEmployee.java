@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class LocationEmployee extends Account {
-    private static UserType userType = UserType.LOCATION_EMPLOYEE;
+    private static final UserType userType = UserType.LOCATION_EMPLOYEE;
 
     /**
      * Regular constructor and all passed parameters
@@ -14,7 +14,8 @@ public class LocationEmployee extends Account {
      * @param username     the LocationEmployee's username
      * @param passwordHash the LocationEmployee's hashed password
      */
-    public LocationEmployee(String firstName, String lastName, String username, String passwordHash) {
+    public LocationEmployee(String firstName, String lastName,
+                            String username, String passwordHash) {
         super(firstName, lastName, username, passwordHash);
     }
 

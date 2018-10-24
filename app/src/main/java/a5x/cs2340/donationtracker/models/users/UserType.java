@@ -5,7 +5,7 @@ public enum UserType {
     ADMIN("Admin"),
     LOCATION_EMPLOYEE("Location Employee"),
     MANAGER("Manager");
-    private String label;
+    private final String label;
 
     UserType(String label) {
         this.label = label;

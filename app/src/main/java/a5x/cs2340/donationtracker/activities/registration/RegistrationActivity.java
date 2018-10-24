@@ -29,6 +29,7 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
@@ -69,7 +70,8 @@ public class RegistrationActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.registerButton);
         Button backButton = findViewById(R.id.registerBackButton);
         userTypeSpinner = findViewById(R.id.registrationUserTypeSpinner);
-        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, UserType.values());
         userTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeArrayAdapter);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -100,13 +102,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 strengthTimer.cancel();
                 strengthTimer.purge();
                 strengthTimer = new Timer();
-                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))), REGISTRATION_PASSWORD_CHECK_DELAY);
+                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))),
+                        REGISTRATION_PASSWORD_CHECK_DELAY);
             }
         });
         passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
                     attemptRegister();
                     return true;
                 }
@@ -173,7 +176,7 @@ public class RegistrationActivity extends AppCompatActivity {
             focusView = passwordTextView;
             cancel = true;
         } else if (!passwordVerify.equals(password)) {
-            passwordVerifyTextView.setError(getString(R.string.error_passwords_dont_match));
+            passwordVerifyTextView.setError(getString(R.string.error_password_mismatch));
             focusView = passwordVerifyTextView;
             cancel = true;
         }
@@ -201,8 +204,10 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param username username to register
      * @param password password to register
      */
-    protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        mAuthTask = new AccountRegistrationTask(username, password, firstName, lastName, type.getAPIType());
+    protected void registerUser(String firstName, String lastName, String username,
+                                String password, UserType type) {
+        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username,
+                password, type.getAPIType(), firstName, lastName));
         mAuthTask.execute((Void) null);
     }
 
@@ -229,11 +234,11 @@ public class RegistrationActivity extends AppCompatActivity {
      * Async task to update the password strength
      */
     @SuppressLint("StaticFieldLeak")
-    public class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
+    class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
 
         private String password;
 
-        public PasswordStrengthTask(String password) {
+        PasswordStrengthTask(String password) {
             this.password = password;
         }
 

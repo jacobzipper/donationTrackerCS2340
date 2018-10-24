@@ -5,7 +5,8 @@ public class RegistrationBody extends LoginBody {
     private String firstname;
     private String lastname;
 
-    public RegistrationBody(String username, String password, String role, String firstname, String lastname) {
+    public RegistrationBody(String username, String password, String role,
+                            String firstname, String lastname) {
         super(username, password);
         this.role = role;
         this.firstname = firstname;

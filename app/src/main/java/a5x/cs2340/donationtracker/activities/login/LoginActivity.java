@@ -23,6 +23,7 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 
 /**
  * A login screen that offers login via email/password.
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
                     attemptLogin();
                     return true;
                 }
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new AccountLoginTask(this, username, password);
+            mAuthTask = new AccountLoginTask(this, new LoginBody(username, password));
             mAuthTask.execute((Void) null);
         }
     }
@@ -161,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    protected void showProgress(final boolean show) {
+    void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -186,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void indicateIncorrectPassword() {
+    void indicateIncorrectPassword() {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
     }
 
