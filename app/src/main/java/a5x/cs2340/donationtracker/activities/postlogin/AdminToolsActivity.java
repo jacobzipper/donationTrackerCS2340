@@ -7,9 +7,12 @@ import android.view.View;
 import android.widget.Button;
 
 import a5x.cs2340.donationtracker.R;
-import a5x.cs2340.donationtracker.models.users.LocationEmployee;
+import a5x.cs2340.donationtracker.models.users.UserType;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 
+/**
+ * Activity for all admin-related tools such as adding donations, modifying privileges, etc.
+ */
 public class AdminToolsActivity extends AppCompatActivity {
 
     @Override
@@ -22,7 +25,7 @@ public class AdminToolsActivity extends AppCompatActivity {
         addDonationButton.setOnClickListener(v -> toAddDonation());
         Button viewDonationsButton = findViewById(R.id.toolsViewDonationsButton);
         viewDonationsButton.setOnClickListener(v -> toViewDonations());
-        if (Webservice.getAccountLoggedIn() instanceof LocationEmployee) {
+        if (Webservice.getLoggedInUserType() == UserType.LOCATION_EMPLOYEE) {
             viewDonationsButton.setVisibility(View.VISIBLE);
             addDonationButton.setVisibility(View.VISIBLE);
         } else {

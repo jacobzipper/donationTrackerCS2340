@@ -3,6 +3,9 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents an account corresponding to a Manager
+ */
 public class Manager extends Account {
     private static final UserType userType = UserType.MANAGER;
 
@@ -29,15 +32,18 @@ public class Manager extends Account {
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        @Override
         public Account createFromParcel(Parcel in) {
             return new Manager((in));
         }
 
+        @Override
         public Account[] newArray(int size) {
             return new Manager[size];
         }
     };
 
+    @Override
     public UserType getUserType() {
         return userType;
     }

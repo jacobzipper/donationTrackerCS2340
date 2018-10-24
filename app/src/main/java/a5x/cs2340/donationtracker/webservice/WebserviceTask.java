@@ -11,6 +11,8 @@ import java.io.IOException;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import retrofit2.Response;
 
+import static a5x.cs2340.donationtracker.Constants.ERROR_CODE_OK;
+
 @SuppressLint("StaticFieldLeak")
 public abstract class WebserviceTask<S extends Activity, T,
         U extends StandardResponse> extends AsyncTask<Void, Void, Boolean> {
@@ -36,7 +38,8 @@ public abstract class WebserviceTask<S extends Activity, T,
 
         // TODO: Error messages for each error code from backend
         U response = requestAttempt.body();
-        if ((requestAttempt.code() == 200) && (response != null) && (response.getError() == 0)) {
+        if ((requestAttempt.code() == ERROR_CODE_OK) && (response != null)
+                && (response.getError() == 0)) {
             useResponse(response);
             return true;
         }
@@ -59,14 +62,14 @@ public abstract class WebserviceTask<S extends Activity, T,
     }
 
     // The webservice request
-    public abstract Response<U> doRequest(T body) throws IOException;
+    protected abstract Response<U> doRequest(T body) throws IOException;
 
     // What you want to do with the response (storing data in the class and such)
-    public abstract void useResponse(U response);
+    protected abstract void useResponse(U response);
 
     // What to do on the UI when successful
-    public abstract void uiSuccess();
+    protected abstract void uiSuccess();
 
     // What to do on the UI when failed
-    public abstract void uiFailure();
+    protected abstract void uiFailure();
 }

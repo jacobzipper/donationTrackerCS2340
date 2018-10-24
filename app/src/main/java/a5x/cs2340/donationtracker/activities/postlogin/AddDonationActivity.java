@@ -12,6 +12,9 @@ import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 
+/**
+ * Activity for employees to create new donations to add
+ */
 public class AddDonationActivity extends AppCompatActivity {
     private Button addDonationButton;
     private Button cancelDonationButton;

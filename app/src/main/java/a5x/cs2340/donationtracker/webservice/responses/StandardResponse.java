@@ -4,7 +4,7 @@ public class StandardResponse {
     private int error;
     private String msg;
 
-    public StandardResponse(int error, String msg) {
+    protected StandardResponse(int error, String msg) {
         this.error = error;
         this.msg = msg;
     }

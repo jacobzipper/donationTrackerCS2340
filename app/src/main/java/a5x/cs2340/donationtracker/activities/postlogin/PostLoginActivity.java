@@ -12,6 +12,9 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 
+/**
+ * Default activity users go to after they successfully log in
+ */
 public class PostLoginActivity extends AppCompatActivity {
     private GetLocationsTask mGetLocationsTask = null;
 
@@ -26,7 +29,7 @@ public class PostLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_login);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string,
-                Webservice.getAccountLoggedIn().getUserType().getLabel(),
+                Webservice.getLoggedInUserType().getLabel(),
                 Webservice.getAccountLoggedIn().getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         mGetLocationsTask = new GetLocationsTask(this, null);

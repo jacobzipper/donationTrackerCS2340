@@ -20,12 +20,20 @@ import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
 import retrofit2.Response;
 
+/**
+ * Webservice task for getting the list of all locations
+ */
 @SuppressLint("StaticFieldLeak")
 public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
         Object, GetLocationsResponse> {
     private List<Location> locations;
     private List<String> locationNames;
 
+    /**
+     * Constructor for creating a GetLocationsTask
+     * @param context the activity context
+     * @param body the body to pass in (usually null for this task)
+     */
     public GetLocationsTask(PostLoginActivity context, Object body) {
         super(context, body);
     }

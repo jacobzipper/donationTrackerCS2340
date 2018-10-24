@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import a5x.cs2340.donationtracker.R;
 
+/**
+ * Activity for employees to view the list of all donations for the location
+ */
 public class ViewDonationsActivity extends AppCompatActivity {
     private GetDonationsTask getDonationsTask = null;
 

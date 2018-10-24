@@ -8,14 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import a5x.cs2340.donationtracker.Constants;
 import a5x.cs2340.donationtracker.R;
@@ -31,8 +28,8 @@ import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 public class LoginActivity extends AppCompatActivity {
 
     // Constants representing identifiers for data to be passed with Intent to PostLogin
-    public static final String LOGGED_IN_USER = "donationTracker.successfulUser";
-    public static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
+    private static final String LOGGED_IN_USER = "donationTracker.successfulUser";
+    private static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -57,31 +54,18 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
         Button mUsernameSignInButton = findViewById(R.id.username_sign_in_button);
-        mUsernameSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mUsernameSignInButton.setOnClickListener(view -> attemptLogin());
         Button backToWelcomeButton = findViewById(R.id.fromLoginToWelcomeButton);
-        backToWelcomeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBackToWelcome();
-            }
-        });
+        backToWelcomeButton.setOnClickListener(view -> goBackToWelcome());
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -196,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param account the account of the successfully logged in person
      */
-    protected void goToPostLogin(Account account, String jwt) {
+    void goToPostLogin(Account account, String jwt) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
         goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);
@@ -206,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Transition back to the welcome screen
      */
-    protected void goBackToWelcome() {
+    private void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
     }

@@ -3,6 +3,9 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents an Account corresponding to Location Employees
+ */
 public class LocationEmployee extends Account {
     private static final UserType userType = UserType.LOCATION_EMPLOYEE;
 
@@ -30,15 +33,18 @@ public class LocationEmployee extends Account {
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        @Override
         public Account createFromParcel(Parcel in) {
             return new LocationEmployee((in));
         }
 
+        @Override
         public Account[] newArray(int size) {
             return new LocationEmployee[size];
         }
     };
 
+    @Override
     public UserType getUserType() {
         return userType;
     }

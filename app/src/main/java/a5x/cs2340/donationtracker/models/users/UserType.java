@@ -1,33 +1,34 @@
 package a5x.cs2340.donationtracker.models.users;
 
+/**
+ * Enum for the type of an Account
+ */
 public enum UserType {
-    REGULAR_USER("User"),
-    ADMIN("Admin"),
-    LOCATION_EMPLOYEE("Location Employee"),
-    MANAGER("Manager");
+    REGULAR_USER("User", "users"),
+    ADMIN("Admin", "admins"),
+    LOCATION_EMPLOYEE("Location Employee", "employees"),
+    MANAGER("Manager", "managers");
     private final String label;
-
-    UserType(String label) {
+    private final String apiType;
+    UserType(String label, String apiType) {
         this.label = label;
+        this.apiType = apiType;
     }
 
+    /**
+     * Getter for the label string
+     * @return the label string corresponding to the UserType
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Getter for the API type of the user
+     * @return the API type corresponding to the UserType
+     */
     public String getAPIType() {
-        switch (label) {
-            case "User":
-                return "users";
-            case "Admin":
-                return "admins";
-            case "Location Employee":
-                return "employees";
-            case "Manager":
-                return "managers";
-            default:
-                return "users";
-        }
+        return apiType;
     }
 
     @Override

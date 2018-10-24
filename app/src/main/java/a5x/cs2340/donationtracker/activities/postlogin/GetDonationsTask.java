@@ -19,11 +19,19 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.GetDonationsResponse;
 import retrofit2.Response;
 
+/**
+ * Webservice task for getting the list of donations
+ */
 public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
         Object, GetDonationsResponse> {
     private List<Donation> donations;
     private List<String> donationNames;
 
+    /**
+     * Constructor for GetDonationsTask
+     * @param context the Activity to use as context
+     * @param body the body for the task (usually null)
+     */
     public GetDonationsTask(ViewDonationsActivity context, Object body) {
         super(context, body);
     }

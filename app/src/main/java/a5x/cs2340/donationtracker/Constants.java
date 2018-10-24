@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class Constants {
     public static final int MIN_PASSWORD_LENGTH = 4;
     public static final int MIN_USERNAME_LENGTH = 1;
+    public static final int ERROR_CODE_OK = 200;
     public static final int AUTHENTICATION_UPPER_BOUND = 100000;
     public static final BigDecimal VERY_WEAK_GUESSES = new BigDecimal("1000000");
     public static final BigDecimal WEAK_GUESSES = new BigDecimal("100000000");

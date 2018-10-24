@@ -32,15 +32,18 @@ public class Admin extends Account {
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        @Override
         public Account createFromParcel(Parcel in) {
             return new Admin((in));
         }
 
+        @Override
         public Account[] newArray(int size) {
             return new Admin[size];
         }
     };
 
+    @Override
     public UserType getUserType() {
         return userType;
     }
