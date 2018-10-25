@@ -61,6 +61,9 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
             // set the custom dialog components - text, image and button
             ((TextView) dialog.findViewById(R.id.donationName)).
                     setText(mContext.getString(R.string.donation_view_name,donation.getName()));
+            ((TextView) dialog.findViewById(R.id.donationShortDescription)).
+                    setText(mContext.getString(R.string.donation_view_short_description,
+                            donation.getShortDescription()));
             ((TextView) dialog.findViewById(R.id.donationDescription)).
                     setText(mContext.getString(R.string.donation_view_description,
                             donation.getDescription()));

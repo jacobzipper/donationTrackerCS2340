@@ -19,6 +19,7 @@ public class AddDonationActivity extends AppCompatActivity {
     private Button addDonationButton;
     private Button cancelDonationButton;
     private EditText nameEditText;
+    private EditText shortDescriptionEditText;
     private EditText descriptionEditText;
     private EditText valueEditText;
     private Spinner categorySpinner;
@@ -38,6 +39,7 @@ public class AddDonationActivity extends AppCompatActivity {
         addDonationButton = findViewById(R.id.addDonationConfirmButton);
         cancelDonationButton = findViewById(R.id.addDonationCancelButton);
         nameEditText = findViewById(R.id.addDonationName);
+        shortDescriptionEditText = findViewById(R.id.addDonationShortDescription);
         descriptionEditText = findViewById(R.id.addDonationDescription);
         valueEditText = findViewById(R.id.addDonationValue);
         commentEditText = findViewById(R.id.addDonationComments);
@@ -51,11 +53,13 @@ public class AddDonationActivity extends AppCompatActivity {
             Donation donationToAdd;
             if (commentEditText.getText().toString().isEmpty()) {
                 donationToAdd = new Donation(nameEditText.getText().toString(),
+                        shortDescriptionEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
                         (valueEditText.getText().toString()),
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()]);
             } else {
                 donationToAdd = new Donation(nameEditText.getText().toString(),
+                        shortDescriptionEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
                         (valueEditText.getText().toString()),
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()],

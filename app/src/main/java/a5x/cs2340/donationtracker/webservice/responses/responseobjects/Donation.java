@@ -8,6 +8,7 @@ import a5x.cs2340.donationtracker.DonationCategory;
  */
 public class Donation {
     private String name;
+    private String shortDescription;
     private String description;
     private String value;
     private DonationCategory category;
@@ -22,9 +23,10 @@ public class Donation {
      * @param category The category the donation falls in
      * @param comments Non-empty comments about the donation
      */
-    public Donation(String name, String description, String value,
+    public Donation(String name, String shortDescription, String description, String value,
                     DonationCategory category, String comments) {
         this.name = name;
+        this.shortDescription = shortDescription;
         this.description = description;
         this.value = value;
         this.category = category;
@@ -38,9 +40,9 @@ public class Donation {
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
      */
-    public Donation(String name, String description, String value
+    public Donation(String name, String shortDescription, String description, String value
                     , DonationCategory category) {
-        this(name, description, value, category, "No comment");
+        this(name, shortDescription, description, value, category, "No comment");
     }
 
     /**
@@ -57,6 +59,22 @@ public class Donation {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Getter for short description
+     * @return the short description
+     */
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    /**
+     * Setter for short description
+     * @param shortDescription the new short description
+     */
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     /**

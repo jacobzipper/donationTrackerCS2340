@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,6 +20,21 @@
         app:layout_constraintVertical_bias="0.093" />
 
     <TextView
+        android:id="@+id/donationShortDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/donation_view_short_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/donationName"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <TextView
         android:id="@+id/donationDescription"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
@@ -31,9 +45,10 @@
         android:text="@string/donation_description_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donationName"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.155" />
 
     <TextView
         android:id="@+id/donationValue"
@@ -48,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donationDescription"
-        app:layout_constraintVertical_bias="0.062" />
+        app:layout_constraintVertical_bias="0.122" />
 
     <TextView
         android:id="@+id/donationCategory"
@@ -59,9 +74,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donationValue"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.183" />
 
     <TextView
         android:id="@+id/donationComments"
@@ -76,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donationCategory"
-        app:layout_constraintVertical_bias="0.116" />
+        app:layout_constraintVertical_bias="0.077" />
 
     <TextView
         android:id="@+id/donationTimeStamp"
@@ -91,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donationComments"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.222" />
 
     <Button
         android:id="@+id/donationBackButton"

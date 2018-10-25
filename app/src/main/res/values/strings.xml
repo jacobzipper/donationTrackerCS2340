@@ -48,7 +48,8 @@
 
     <string name="donation_add_header">Enter Donation Info</string>
     <string name="donation_name_prompt">Name</string>
-    <string name="donation_description_prompt">Description</string>
+    <string name="donation_short_description_prompt">Short Description</string>
+    <string name="donation_description_prompt">Full Description</string>
     <string name="donation_value_prompt">Estimated Value (In Dollars)</string>
     <string name="donation_comments_prompt">Additional Comments (Optional)</string>
     <string name="donation_add_button">Add</string>
@@ -56,6 +57,7 @@
 
 
     <string name="donation_view_name">Name: %1$s</string>
+    <string name="donation_view_short_description">Short Description: %1$s</string>
     <string name="donation_view_description">Description: %1$s</string>
     <string name="donation_view_value">Value: $%1$s</string>
     <string name="donation_view_category">Category: %1$s</string>
