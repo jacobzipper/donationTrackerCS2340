@@ -18,7 +18,7 @@ public interface DonationService {
      * @param jwt the jwt to check and return donation based on
      * @return the server call with the proper response
      */
-    @GET("/employee/donations")
+    @GET("/employee/getdonations")
     Call<GetDonationsResponse> getDonations(@Header("Authorization") String jwt);
 
     /**
