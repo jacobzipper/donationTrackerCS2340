@@ -1,8 +1,10 @@
 package a5x.cs2340.donationtracker.activities.postlogin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +29,8 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locations_map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        Button backToLocationListButton = findViewById(R.id.backFromMapButton);
+        backToLocationListButton.setOnClickListener(v -> backToLocationList());
         mapView = findViewById(R.id.mapView);
         Bundle mapViewBundle = savedInstanceState == null ? null : savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         mapView.onCreate(mapViewBundle);
@@ -90,7 +93,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         Log.d("MapReady", "Successful Map Ready");
         mMap = googleMap;
-
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mTask = new GetMapLocationsTask(this, null);
         mTask.execute((Void) null);
 
@@ -111,5 +114,9 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
             Log.d("MapReady", "Marker should be added");
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+    }
+    private void backToLocationList() {
+        Intent backToLocationListIntent = new Intent(this, PostLoginActivity.class);
+        startActivity(backToLocationListIntent);
     }
 }
