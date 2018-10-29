@@ -8,12 +8,12 @@ import a5x.cs2340.donationtracker.DonationCategory;
  */
 public class Donation {
     private String name;
-    private String shortDescription;
+    private String shortdescription;
     private String description;
     private String value;
     private DonationCategory category;
     private String comments;
-    private String timeStamp;
+    private String tstamp;
 
     /**
      * Creates a new Donation with given parameters
@@ -23,10 +23,10 @@ public class Donation {
      * @param category The category the donation falls in
      * @param comments Non-empty comments about the donation
      */
-    public Donation(String name, String shortDescription, String description, String value,
+    public Donation(String name, String shortdescription, String description, String value,
                     DonationCategory category, String comments) {
         this.name = name;
-        this.shortDescription = shortDescription;
+        this.shortdescription = shortdescription;
         this.description = description;
         this.value = value;
         this.category = category;
@@ -40,9 +40,9 @@ public class Donation {
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
      */
-    public Donation(String name, String shortDescription, String description, String value
+    public Donation(String name, String shortdescription, String description, String value
                     , DonationCategory category) {
-        this(name, shortDescription, description, value, category, "No comment");
+        this(name, shortdescription, description, value, category, "No comment");
     }
 
     /**
@@ -50,7 +50,7 @@ public class Donation {
      * @return the donation name
      */
     public String getName() {
-        return name;
+        return name == null ? "<No Name>" : name;
     }
 
     /**
@@ -65,16 +65,16 @@ public class Donation {
      * Getter for short description
      * @return the short description
      */
-    public String getShortDescription() {
-        return shortDescription;
+    public String getShortdescription() {
+        return shortdescription == null ? "<No Description>" : shortdescription;
     }
 
     /**
      * Setter for short description
-     * @param shortDescription the new short description
+     * @param shortdescription the new short description
      */
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
+    public void setShortdescription(String shortdescription) {
+        this.shortdescription = shortdescription;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Donation {
      * @return the donation description
      */
     public String getDescription() {
-        return description;
+        return description == null ? "<No Description>" : description;
     }
 
     /**
@@ -98,7 +98,7 @@ public class Donation {
      * @return the donation value
      */
     public String getValue() {
-        return value;
+        return value == null ? "<No Value>" : value;
     }
 
     /**
@@ -114,7 +114,7 @@ public class Donation {
      * @return the donation category
      */
     public DonationCategory getCategory() {
-        return category;
+        return category == null ? DonationCategory.NOCAT : category;
     }
 
     /**
@@ -130,7 +130,7 @@ public class Donation {
      * @return the donation comments
      */
     public String getComments() {
-        return comments;
+        return comments == null ? "<No Comments>" : comments;
     }
 
     /**
@@ -145,15 +145,15 @@ public class Donation {
      * Getter for time stamp
      * @return the donation time stamp
      */
-    public String getTimeStamp() {
-        return timeStamp;
+    public String getTstamp() {
+        return tstamp == null ? "<No Timestamp>" : tstamp;
     }
 
     /**
      * Setter for time stamp
-     * @param timeStamp the new time stamp
+     * @param tstamp the new time stamp
      */
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTstamp(String tstamp) {
+        this.tstamp = tstamp;
     }
 }
