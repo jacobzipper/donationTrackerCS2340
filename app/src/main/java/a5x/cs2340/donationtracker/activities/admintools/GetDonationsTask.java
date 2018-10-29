@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker.activities.postlogin;
+package a5x.cs2340.donationtracker.activities.admintools;
 
 import android.app.Dialog;
 import android.os.Build;
@@ -63,7 +63,7 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
                     setText(mContext.getString(R.string.donation_view_name,donation.getName()));
             ((TextView) dialog.findViewById(R.id.donationShortDescription)).
                     setText(mContext.getString(R.string.donation_view_short_description,
-                            donation.getShortDescription()));
+                            donation.getShortdescription()));
             ((TextView) dialog.findViewById(R.id.donationDescription)).
                     setText(mContext.getString(R.string.donation_view_description,
                             donation.getDescription()));
@@ -77,7 +77,7 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
                             donation.getComments()));
             ((TextView) dialog.findViewById(R.id.donationTimeStamp)).
                     setText(mContext.getString(R.string.donation_view_timestamp,
-                            donation.getTimeStamp()));
+                            donation.getTstamp()));
 
             Button dialogCloseButton = dialog.findViewById(R.id.donationBackButton);
             // if button is clicked, close the custom dialog

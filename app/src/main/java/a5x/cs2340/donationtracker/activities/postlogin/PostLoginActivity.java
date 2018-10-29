@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
+import a5x.cs2340.donationtracker.activities.admintools.AdminToolsActivity;
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 

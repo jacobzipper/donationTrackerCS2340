@@ -27,9 +27,9 @@
         </activity>
         <activity android:name=".activities.postlogin.PostLoginActivity" />
         <activity android:name=".activities.registration.RegistrationActivity" />
-        <activity android:name=".activities.postlogin.AddDonationActivity" />
-        <activity android:name=".activities.postlogin.ViewDonationsActivity" />
-        <activity android:name=".activities.postlogin.AdminToolsActivity" />
+        <activity android:name=".activities.admintools.AddDonationActivity" />
+        <activity android:name=".activities.admintools.ViewDonationsActivity" />
+        <activity android:name=".activities.admintools.AdminToolsActivity" />
     </application>
 
 </manifest>

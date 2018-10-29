@@ -1,4 +1,4 @@
-package a5x.cs2340.donationtracker.activities.postlogin;
+package a5x.cs2340.donationtracker.activities.admintools;
 
 import android.content.Intent;
 import android.os.Bundle;
