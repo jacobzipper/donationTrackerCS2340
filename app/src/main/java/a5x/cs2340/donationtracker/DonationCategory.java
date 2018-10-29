@@ -9,7 +9,8 @@ public enum DonationCategory {
     KITCHEN("Kitchen"),
     ELECTRONICS("Electronics"),
     HOUSEHOLD("Household"),
-    OTHER("Other");
+    OTHER("Other"),
+    NOCAT("<No Category>");
     private final String name;
     DonationCategory(String name) {
         this.name = name;
