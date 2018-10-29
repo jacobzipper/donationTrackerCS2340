@@ -3,8 +3,11 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents an Administrator for the app
+ */
 public class Admin extends Account {
-    private static UserType userType = UserType.ADMIN;
+    private static final UserType userType = UserType.ADMIN;
 
     /**
      * Regular constructor and all passed parameters
@@ -29,15 +32,18 @@ public class Admin extends Account {
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        @Override
         public Account createFromParcel(Parcel in) {
             return new Admin((in));
         }
 
+        @Override
         public Account[] newArray(int size) {
             return new Admin[size];
         }
     };
 
+    @Override
     public UserType getUserType() {
         return userType;
     }

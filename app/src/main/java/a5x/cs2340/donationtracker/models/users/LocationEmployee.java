@@ -3,8 +3,11 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Represents an Account corresponding to Location Employees
+ */
 public class LocationEmployee extends Account {
-    private static UserType userType = UserType.LOCATION_EMPLOYEE;
+    private static final UserType userType = UserType.LOCATION_EMPLOYEE;
 
     /**
      * Regular constructor and all passed parameters
@@ -14,7 +17,8 @@ public class LocationEmployee extends Account {
      * @param username     the LocationEmployee's username
      * @param passwordHash the LocationEmployee's hashed password
      */
-    public LocationEmployee(String firstName, String lastName, String username, String passwordHash) {
+    public LocationEmployee(String firstName, String lastName,
+                            String username, String passwordHash) {
         super(firstName, lastName, username, passwordHash);
     }
 
@@ -29,15 +33,18 @@ public class LocationEmployee extends Account {
 
 
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+        @Override
         public Account createFromParcel(Parcel in) {
             return new LocationEmployee((in));
         }
 
+        @Override
         public Account[] newArray(int size) {
             return new LocationEmployee[size];
         }
     };
 
+    @Override
     public UserType getUserType() {
         return userType;
     }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -29,6 +28,7 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
@@ -38,6 +38,9 @@ import static a5x.cs2340.donationtracker.Constants.STRONG_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.VERY_WEAK_GUESSES;
 import static a5x.cs2340.donationtracker.Constants.WEAK_GUESSES;
 
+/**
+ * Activity for registering new accounts
+ */
 public class RegistrationActivity extends AppCompatActivity {
 
     private TextView firstNameTextView;
@@ -69,21 +72,12 @@ public class RegistrationActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.registerButton);
         Button backButton = findViewById(R.id.registerBackButton);
         userTypeSpinner = findViewById(R.id.registrationUserTypeSpinner);
-        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> userTypeArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, UserType.values());
         userTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(userTypeArrayAdapter);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBackToWelcome();
-            }
-        });
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptRegister();
-            }
-        });
+        backButton.setOnClickListener(view -> goBackToWelcome());
+        registerButton.setOnClickListener(view -> attemptRegister());
         passwordStrengthMeter = findViewById(R.id.passwordStrengthMeter);
         passwordStrengthIndicatorText = findViewById(R.id.passwordStrengthNotifier);
         passwordTextView.addTextChangedListener(new TextWatcher() {
@@ -100,18 +94,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 strengthTimer.cancel();
                 strengthTimer.purge();
                 strengthTimer = new Timer();
-                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))), REGISTRATION_PASSWORD_CHECK_DELAY);
+                strengthTimer.schedule(getNewTimerTask(new PasswordStrengthTask((s.toString()))),
+                        REGISTRATION_PASSWORD_CHECK_DELAY);
             }
         });
-        passwordVerifyTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptRegister();
-                    return true;
-                }
-                return false;
+        passwordVerifyTextView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if ((id == EditorInfo.IME_ACTION_DONE) || (id == EditorInfo.IME_NULL)) {
+                attemptRegister();
+                return true;
             }
+            return false;
         });
     }
 
@@ -128,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Attempt to register the account with the currently entered credentials
      */
-    protected void attemptRegister() {
+    private void attemptRegister() {
         firstNameTextView.setError(null);
         lastNameTextView.setError(null);
         usernameTextView.setError(null);
@@ -173,7 +165,7 @@ public class RegistrationActivity extends AppCompatActivity {
             focusView = passwordTextView;
             cancel = true;
         } else if (!passwordVerify.equals(password)) {
-            passwordVerifyTextView.setError(getString(R.string.error_passwords_dont_match));
+            passwordVerifyTextView.setError(getString(R.string.error_password_mismatch));
             focusView = passwordVerifyTextView;
             cancel = true;
         }
@@ -190,7 +182,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Return to the welcome screen
      */
-    protected void goBackToWelcome() {
+    private void goBackToWelcome() {
         Intent goBackToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(goBackToWelcomeIntent);
     }
@@ -201,8 +193,10 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param username username to register
      * @param password password to register
      */
-    protected void registerUser(String firstName, String lastName, String username, String password, UserType type) {
-        mAuthTask = new AccountRegistrationTask(username, password, firstName, lastName, type.getAPIType());
+    private void registerUser(String firstName, String lastName, String username,
+                              String password, UserType type) {
+        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username,
+                password, type.getAPIType(), firstName, lastName));
         mAuthTask.execute((Void) null);
     }
 
@@ -229,11 +223,11 @@ public class RegistrationActivity extends AppCompatActivity {
      * Async task to update the password strength
      */
     @SuppressLint("StaticFieldLeak")
-    public class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
+    class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
 
         private String password;
 
-        public PasswordStrengthTask(String password) {
+        PasswordStrengthTask(String password) {
             this.password = password;
         }
 

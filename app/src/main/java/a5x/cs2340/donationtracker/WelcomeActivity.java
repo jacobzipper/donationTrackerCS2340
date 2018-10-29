@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.karumi.dexter.Dexter;
@@ -18,6 +16,9 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.activities.registration.RegistrationActivity;
 
+/**
+ * The default activtiy users will see when starting the app
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override
@@ -25,19 +26,9 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         Button goToLoginButton = findViewById(R.id.welcomeLoginButton);
-        goToLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToLogin();
-            }
-        });
+        goToLoginButton.setOnClickListener(view -> goToLogin());
         Button goToRegisterButton = findViewById(R.id.goToRegisterButton);
-        goToRegisterButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToRegister();
-            }
-        });
+        goToRegisterButton.setOnClickListener(view -> goToRegister());
 
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.INTERNET)
@@ -49,14 +40,15 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token) {/* ... */}
                 }).check();
     }
 
     /**
      * Transitions from the welcome screen to the login screen
      */
-    protected void goToLogin() {
+    private void goToLogin() {
         Intent goToLoginIntent = new Intent(this, LoginActivity.class);
         startActivity(goToLoginIntent);
     }
@@ -64,7 +56,7 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * Transitions from the welcome screen to the registration screen
      */
-    protected void goToRegister() {
+    private void goToRegister() {
         Intent goToRegisterIntent = new Intent(this, RegistrationActivity.class);
         startActivity(goToRegisterIntent);
     }
