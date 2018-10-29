@@ -43,6 +43,8 @@ public class PostLoginActivity extends AppCompatActivity {
         });
         Button toAdminToolsButton = findViewById(R.id.toToolsButton);
         toAdminToolsButton.setOnClickListener(v -> toAdminTools());
+        Button toMapButton = findViewById(R.id.toMapButton);
+        toMapButton.setOnClickListener(v -> toMapScreen());
     }
 
     /**
@@ -60,5 +62,12 @@ public class PostLoginActivity extends AppCompatActivity {
     private void toAdminTools() {
         Intent toAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
         startActivity(toAdminToolsIntent);
+    }
+    /**
+     * Transitions to map screen
+     */
+    private void toMapScreen() {
+        Intent toMapIntent = new Intent(this, LocationsMapActivity.class);
+        startActivity(toMapIntent);
     }
 }
