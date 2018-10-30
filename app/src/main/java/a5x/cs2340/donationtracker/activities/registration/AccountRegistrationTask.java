@@ -1,6 +1,7 @@
 package a5x.cs2340.donationtracker.activities.registration;
 
 import android.annotation.SuppressLint;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -38,11 +39,12 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
 
     @Override
     public void uiSuccess() {
-
+        Toast.makeText(mContext, "Registration Successful", Toast.LENGTH_LONG).show();
+        mContext.goBackToWelcome();
     }
 
     @Override
     public void uiFailure() {
-
+        Toast.makeText(mContext, "Registration Failed (try new username?)", Toast.LENGTH_LONG).show();
     }
 }

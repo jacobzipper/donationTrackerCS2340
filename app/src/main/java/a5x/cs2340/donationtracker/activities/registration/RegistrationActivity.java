@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.Timer;
@@ -174,15 +173,13 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             //No errors, register the new credentials
             registerUser(firstName, lastName, username, password, userType);
-            Toast.makeText(this, "Registration Successful", Toast.LENGTH_LONG).show();
-            goBackToWelcome();
         }
     }
 
     /**
      * Return to the welcome screen
      */
-    private void goBackToWelcome() {
+    public void goBackToWelcome() {
         Intent goBackToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(goBackToWelcomeIntent);
     }
