@@ -3,6 +3,7 @@ package a5x.cs2340.donationtracker.activities.admintools;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 
 import a5x.cs2340.donationtracker.R;
@@ -22,6 +23,10 @@ public class ViewDonationsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> backToAdminTools());
         getDonationsTask = new GetDonationsTask(this, null);
         getDonationsTask.execute((Void) null);
+        Toolbar donationViewToolbar = findViewById(R.id.donationsViewToolbar);
+        donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
+        setSupportActionBar(donationViewToolbar);
+        donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
     }
 
     private void backToAdminTools() {

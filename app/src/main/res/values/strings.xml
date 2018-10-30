@@ -56,7 +56,7 @@
     <string name="donation_add_button">Add</string>
     <string name="donation_cancel_button">Cancel</string>
 
-
+    <string name="donation_view_toolbar_text">Donations</string>
     <string name="donation_view_name">Name: %1$s</string>
     <string name="donation_view_short_description">Short Description: %1$s</string>
     <string name="donation_view_description">Description: %1$s</string>
