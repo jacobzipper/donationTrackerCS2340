@@ -37,7 +37,13 @@
         <activity android:name=".activities.registration.RegistrationActivity" />
         <activity android:name=".activities.admintools.AddDonationActivity" />
         <activity android:name=".activities.admintools.ViewDonationsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
         <activity android:name=".activities.admintools.AdminToolsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

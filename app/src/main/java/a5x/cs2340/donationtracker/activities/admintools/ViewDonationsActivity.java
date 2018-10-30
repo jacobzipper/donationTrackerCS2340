@@ -27,6 +27,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
+        donationViewToolbar.setNavigationOnClickListener(v -> onSearchRequested());
     }
 
     private void backToAdminTools() {
