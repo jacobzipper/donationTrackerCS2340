@@ -26,13 +26,13 @@ public class AdminToolsActivity extends AppCompatActivity {
         addDonationButton.setOnClickListener(v -> toAddDonation());
         Button viewDonationsButton = findViewById(R.id.toolsViewDonationsButton);
         viewDonationsButton.setOnClickListener(v -> toViewDonations());
-        if (Webservice.getLoggedInUserType().getPermissionsLevel() >=
+        if (Webservice.getCurrentUserPermissions() >=
                 UserType.REGULAR_USER.getPermissionsLevel()) {
             viewDonationsButton.setVisibility(View.VISIBLE);
         } else {
             viewDonationsButton.setVisibility(View.GONE);
         }
-        if (Webservice.getLoggedInUserType().getPermissionsLevel()
+        if (Webservice.getCurrentUserPermissions()
                 >= UserType.LOCATION_EMPLOYEE.getPermissionsLevel()) {
 
             addDonationButton.setVisibility(View.VISIBLE);

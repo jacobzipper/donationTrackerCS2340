@@ -23,7 +23,7 @@ public class AddDonationTask extends WebserviceTask<AddDonationActivity, Object,
 
     @Override
     public Response<StandardResponse> doRequest(Object body) throws IOException {
-        return Webservice.donationService.addDonation(Webservice.getLoggedInUserType().getAPIType(),
+        return Webservice.donationService.addDonation(Webservice.getCurrentUserAPIType(),
                 (Donation) body, "Bearer " + Webservice.getJwtToken()).execute();
     }
 

@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import a5x.cs2340.donationtracker.Constants;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
@@ -31,17 +30,17 @@ import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
 
-import static a5x.cs2340.donationtracker.Constants.AVERAGE_GUESSES;
-import static a5x.cs2340.donationtracker.Constants.REGISTRATION_PASSWORD_CHECK_DELAY;
-import static a5x.cs2340.donationtracker.Constants.STRONG_GUESSES;
-import static a5x.cs2340.donationtracker.Constants.VERY_WEAK_GUESSES;
-import static a5x.cs2340.donationtracker.Constants.WEAK_GUESSES;
-
 /**
  * Activity for registering new accounts
  */
 public class RegistrationActivity extends AppCompatActivity {
 
+    private static final int MIN_PASSWORD_LENGTH = 4;
+    private static final BigDecimal VERY_WEAK_GUESSES = new BigDecimal("1000000");
+    private static final BigDecimal WEAK_GUESSES = new BigDecimal("100000000");
+    private static final BigDecimal AVERAGE_GUESSES = new BigDecimal("1000000000");
+    private static final BigDecimal STRONG_GUESSES = new BigDecimal("10000000000");
+    private static final int REGISTRATION_PASSWORD_CHECK_DELAY = 750;
     private TextView firstNameTextView;
     private TextView lastNameTextView;
     private TextView usernameTextView;
@@ -157,7 +156,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //            usernameTextView.setError(getString(R.string.error_username_already_exists));
 //            focusView = usernameTextView;
 //            cancel = true;
-        } else if (password.length() < Constants.MIN_PASSWORD_LENGTH) {
+        } else if (password.length() < MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
             cancel = true;

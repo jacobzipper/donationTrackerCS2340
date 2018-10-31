@@ -14,7 +14,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import a5x.cs2340.donationtracker.Constants;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
@@ -27,6 +26,9 @@ import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
  */
 public class LoginActivity extends AppCompatActivity {
 
+
+    private static final int MIN_PASSWORD_LENGTH = 4;
+    private static final int MIN_USERNAME_LENGTH = 1;
     // Constants representing identifiers for data to be passed with Intent to PostLogin
     private static final String LOGGED_IN_USER = "donationTracker.successfulUser";
     private static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private AccountLoginTask mAuthTask = null;
+    private AccountLoginTask mAuthTask;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -129,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the username exists in the valid credentials
      */
     private boolean isUsernameValid(String username) {
-        return username.length() >= Constants.MIN_USERNAME_LENGTH;
+        return username.length() >= MIN_USERNAME_LENGTH;
     }
 
     /**
@@ -139,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the password meets specifications
      */
     private boolean isPasswordValid(String password) {
-        return password.length() >= Constants.MIN_PASSWORD_LENGTH;
+        return password.length() >= MIN_PASSWORD_LENGTH;
     }
 
     /**

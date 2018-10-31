@@ -32,7 +32,7 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
     @Override
     public Response<GetDonationsResponse> doRequest(Object body) throws IOException {
         return Webservice.donationService.getDonations(
-                Webservice.getLoggedInUserType().getAPIType(),
+                Webservice.getCurrentUserAPIType(),
                 "Bearer " + Webservice.getJwtToken()).execute();
     }
     @RequiresApi(api = Build.VERSION_CODES.N)

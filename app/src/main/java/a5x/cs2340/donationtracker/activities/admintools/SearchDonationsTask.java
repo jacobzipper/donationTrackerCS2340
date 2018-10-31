@@ -2,6 +2,7 @@ package a5x.cs2340.donationtracker.activities.admintools;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,13 +39,15 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
      */
     @Override
     public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
+        Log.d("Searching", "Making call");
         return Webservice.donationService.searchDonations(
-                Webservice.getLoggedInUserType().getAPIType(),
+                Webservice.getCurrentUserAPIType(),
                 "Bearer " + Webservice.getJwtToken(), body).execute();
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void useResponse(GetDonationsResponse response) {
+        Log.d("Searching", "Using response");
         donations = response.getDonations();
         donationSDescriptions = donations.stream().
                 map(Donation::getShortdescription).collect(Collectors.toList());
@@ -52,12 +55,13 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
 
     @Override
     public void uiSuccess() {
+        Log.d("Searching", "Call Success");
         mContext.updateListView(donations, donationSDescriptions);
         mContext.switchToClearingSearch();
     }
 
     @Override
     public void uiFailure() {
-
+        Log.d("Searching", "Call Failure");
     }
 }
