@@ -23,11 +23,8 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
  * Activity for employees to view the list of all donations for the location
  */
 public class ViewDonationsActivity extends AppCompatActivity {
-    private GetDonationsTask getDonationsTask;
     private SearchDonationsTask searchDonationsTask;
-    private GetSearchableLocationsTask getSearchableLocationsTask;
     private Toolbar donationViewToolbar;
-    private Button backButton;
     private List<String> locationsSearchableList;
     private List<String> locationsShowableList;
     private final String[] searchDonationCategories = {"Any", "Clothing", "Hat", "Kitchen",
@@ -36,13 +33,14 @@ public class ViewDonationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_donations);
-        backButton = findViewById(R.id.donationListBackButton);
+        Button backButton = findViewById(R.id.donationListBackButton);
         backButton.setOnClickListener(v -> backToAdminTools());
         setDonationListToDefault();
         donationViewToolbar = findViewById(R.id.donationsViewToolbar);
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
-        getSearchableLocationsTask = new GetSearchableLocationsTask(this, null);
+        GetSearchableLocationsTask getSearchableLocationsTask =
+                new GetSearchableLocationsTask(this, null);
         getSearchableLocationsTask.execute((Void) null);
     }
 
@@ -72,7 +70,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationSearchButton.setOnClickListener(view -> {
 
             EditText nameEntry = dialog.findViewById(R.id.donationSearchNameInput);
-            String selectedCategory = (categorySpinner.getSelectedItemPosition() == 0 ?
+            String selectedCategory = ((categorySpinner.getSelectedItemPosition() == 0) ?
                     null : DonationCategory.values()
                     [categorySpinner.getSelectedItemPosition() - 1].toString());
             String selectedLocation = locationsSearchableList.
@@ -89,7 +87,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         dialog.show();
     }
     private void setDonationListToDefault() {
-        getDonationsTask = new GetDonationsTask(this, null);
+        GetDonationsTask getDonationsTask = new GetDonationsTask(this, null);
         getDonationsTask.execute((Void) null);
     }
     void updateListView(List<Donation> donationList, List<String> donationSDescriptions) {

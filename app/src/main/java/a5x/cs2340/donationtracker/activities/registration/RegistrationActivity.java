@@ -50,10 +50,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private ProgressBar passwordStrengthMeter;
     private TextView passwordStrengthIndicatorText;
     private Spinner userTypeSpinner;
-    private Nbvcxz passwordStrengthChecker = new Nbvcxz();
+    private final Nbvcxz passwordStrengthChecker = new Nbvcxz();
     private Timer strengthTimer = new Timer();
-
-    private AccountRegistrationTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +190,8 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private void registerUser(String firstName, String lastName, String username,
                               String password, UserType type) {
-        mAuthTask = new AccountRegistrationTask(this, new RegistrationBody(username,
+        AccountRegistrationTask mAuthTask = new AccountRegistrationTask(this,
+                new RegistrationBody(username,
                 password, type.getAPIType(), firstName, lastName));
         mAuthTask.execute((Void) null);
     }
@@ -205,9 +204,9 @@ public class RegistrationActivity extends AppCompatActivity {
         STRONG(75, R.string.password_strength_strong, Color.GREEN),
         VERY_STRONG(100, R.string.password_strength_very_strong, Color.GREEN);
 
-        private int progress;
-        private int stringId;
-        private int color;
+        private final int progress;
+        private final int stringId;
+        private final int color;
 
         PasswordStrength(int progress, int stringId, int color) {
             this.progress = progress;
@@ -222,7 +221,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     class PasswordStrengthTask extends AsyncTask<Void, Void, PasswordStrength> {
 
-        private String password;
+        private final String password;
 
         PasswordStrengthTask(String password) {
             this.password = password;

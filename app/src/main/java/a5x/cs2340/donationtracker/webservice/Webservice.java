@@ -21,8 +21,8 @@ public class Webservice {
     private static String jwtToken;
 
     // Services
-    public static AccountService accountService;
-    public static DonationService donationService;
+    public static final AccountService accountService;
+    public static final DonationService donationService;
 
 
     static {

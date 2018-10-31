@@ -8,10 +8,10 @@ import android.os.Parcelable;
  * accounts with different permissions
  */
 public abstract class Account implements Parcelable {
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String passwordHash;
+    private final String firstName;
+    private final String lastName;
+    private final String username;
+    private final String passwordHash;
 
     /**
      * Regular constructor and all passed parameters
@@ -26,43 +26,6 @@ public abstract class Account implements Parcelable {
         this.lastName = lastName;
         this.username = username;
         this.passwordHash = passwordHash;
-    }
-
-    /**
-     * Accessor for first name
-     *
-     * @return first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Accessor for last name
-     *
-     * @return last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Accessor for username
-     *
-     * @return username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Checks if the hashed password passed in matches the stored hash
-     *
-     * @param passwordHash the passed in hash to check
-     * @return true if the password hashes match
-     */
-    public boolean checkPassword(String passwordHash) {
-        return this.passwordHash.equals(passwordHash);
     }
 
     /**

@@ -16,8 +16,6 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
  * Activity for employees to create new donations to add
  */
 public class AddDonationActivity extends AppCompatActivity {
-    private Button addDonationButton;
-    private Button cancelDonationButton;
     private EditText nameEditText;
     private EditText shortDescriptionEditText;
     private EditText descriptionEditText;
@@ -25,7 +23,6 @@ public class AddDonationActivity extends AppCompatActivity {
     private Spinner categorySpinner;
     private EditText commentEditText;
 
-    private AddDonationTask donationTask = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +33,8 @@ public class AddDonationActivity extends AppCompatActivity {
         donationCategoryArrayAdapter.
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(donationCategoryArrayAdapter);
-        addDonationButton = findViewById(R.id.addDonationConfirmButton);
-        cancelDonationButton = findViewById(R.id.addDonationCancelButton);
+        Button addDonationButton = findViewById(R.id.addDonationConfirmButton);
+        Button cancelDonationButton = findViewById(R.id.addDonationCancelButton);
         nameEditText = findViewById(R.id.addDonationName);
         shortDescriptionEditText = findViewById(R.id.addDonationShortDescription);
         descriptionEditText = findViewById(R.id.addDonationDescription);
@@ -65,7 +62,7 @@ public class AddDonationActivity extends AppCompatActivity {
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()],
                         commentEditText.getText().toString());
             }
-            donationTask = new AddDonationTask(this, donationToAdd);
+            AddDonationTask donationTask = new AddDonationTask(this, donationToAdd);
             donationTask.execute((Void) null);
             returnToAdminTools();
         }

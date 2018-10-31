@@ -18,10 +18,12 @@ import java.util.List;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
 
+/**
+ * Activity that shows a map of all locations using Google maps with a pin at every location
+ */
 public class LocationsMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private GetMapLocationsTask mTask;
     private MapView mapView;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -32,7 +34,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         Button backToLocationListButton = findViewById(R.id.backFromMapButton);
         backToLocationListButton.setOnClickListener(v -> backToLocationList());
         mapView = findViewById(R.id.mapView);
-        Bundle mapViewBundle = savedInstanceState == null ? null :
+        Bundle mapViewBundle = (savedInstanceState == null) ? null :
                 savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
@@ -95,7 +97,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         Log.d("MapReady", "Successful Map Ready");
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mTask = new GetMapLocationsTask(this, null);
+        GetMapLocationsTask mTask = new GetMapLocationsTask(this, null);
         mTask.execute((Void) null);
 
     }
