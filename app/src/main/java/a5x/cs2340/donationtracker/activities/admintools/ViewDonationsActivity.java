@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +27,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
     private SearchDonationsTask searchDonationsTask = null;
     private Toolbar donationViewToolbar;
     private Button backButton;
+    private final String[] searchDonationCategories = {"Any", "Clothing", "Hat", "Kitchen",
+            "Electronics", "Household", "Other"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +51,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.donation_search_view);
         Spinner categorySpinner = dialog.findViewById(R.id.donationSearchCategorySpinner);
-        ArrayAdapter<DonationCategory> donationCategoryArrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, DonationCategory.values());
+        ArrayAdapter<String> donationCategoryArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, searchDonationCategories);
         donationCategoryArrayAdapter.
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(donationCategoryArrayAdapter);
@@ -59,19 +60,19 @@ public class ViewDonationsActivity extends AppCompatActivity {
         Button closeButton = dialog.findViewById(R.id.donationSearchCancelButton);
         closeButton.setOnClickListener(v->dialog.dismiss());
 
-        donationSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        donationSearchButton.setOnClickListener(view -> {
 
-                EditText nameEntry = dialog.findViewById(R.id.donationSearchNameInput);
+            EditText nameEntry = dialog.findViewById(R.id.donationSearchNameInput);
+            String selectedCategory = (categorySpinner.getSelectedItemPosition() == 0 ?
+                    null : DonationCategory.values()
+                    [categorySpinner.getSelectedItemPosition() - 1].toString());
+            SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
+                    selectedCategory, null);
+            searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
+                    searchQuery);
+            searchDonationsTask.execute((Void) null);
+            dialog.dismiss();
 
-                SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
-                        DonationCategory.values()[categorySpinner.getSelectedItemPosition()].toString(), null);
-                searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this, searchQuery);
-                searchDonationsTask.execute((Void) null);
-                dialog.dismiss();
-
-            }
         });
 
         dialog.show();
