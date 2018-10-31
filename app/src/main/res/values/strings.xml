@@ -73,6 +73,7 @@
     <string name="donations_search_title">Search Donations</string>
     <string name="donations_search_name">Name</string>
     <string name="donations_search_category">Category:</string>
+    <string name="donations_search_location">Location:</string>
     <string name="donations_search_button">Search</string>
     <string name="donations_search_cancel_button">Cancel</string>
 </resources>

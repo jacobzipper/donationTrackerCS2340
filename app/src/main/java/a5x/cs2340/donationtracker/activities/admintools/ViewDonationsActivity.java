@@ -25,8 +25,11 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 public class ViewDonationsActivity extends AppCompatActivity {
     private GetDonationsTask getDonationsTask = null;
     private SearchDonationsTask searchDonationsTask = null;
+    private GetSearchableLocationsTask getSearchableLocationsTask = null;
     private Toolbar donationViewToolbar;
     private Button backButton;
+    private List<String> locationsSearchableList;
+    private List<String> locationsShowableList;
     private final String[] searchDonationCategories = {"Any", "Clothing", "Hat", "Kitchen",
             "Electronics", "Household", "Other"};
     @Override
@@ -39,7 +42,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationViewToolbar = findViewById(R.id.donationsViewToolbar);
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
-        switchToMakingSearch();
+        getSearchableLocationsTask = new GetSearchableLocationsTask(this, null);
+        getSearchableLocationsTask.execute((Void) null);
     }
 
     private void backToAdminTools() {
@@ -56,6 +60,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationCategoryArrayAdapter.
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(donationCategoryArrayAdapter);
+        Spinner locationSpinner = dialog.findViewById(R.id.donationSearchLocationSpinner);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, locationsShowableList);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationArrayAdapter);
         Button donationSearchButton = dialog.findViewById(R.id.donationSearchGoButton);
         Button closeButton = dialog.findViewById(R.id.donationSearchCancelButton);
         closeButton.setOnClickListener(v->dialog.dismiss());
@@ -66,8 +75,9 @@ public class ViewDonationsActivity extends AppCompatActivity {
             String selectedCategory = (categorySpinner.getSelectedItemPosition() == 0 ?
                     null : DonationCategory.values()
                     [categorySpinner.getSelectedItemPosition() - 1].toString());
+            String selectedLocation = locationsSearchableList.get(locationSpinner.getSelectedItemPosition());
             SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
-                    selectedCategory, null);
+                    selectedCategory, selectedLocation);
             searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
                     searchQuery);
             searchDonationsTask.execute((Void) null);
@@ -120,6 +130,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
                     dialog.show();
                 });
 
+    }
+    void setLocationsLists(List<String> searchableList, List<String> showableList) {
+        locationsSearchableList = searchableList;
+        locationsShowableList = showableList;
+        switchToMakingSearch();
     }
     void switchToClearingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
