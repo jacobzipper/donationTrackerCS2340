@@ -23,9 +23,9 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
  * Activity for employees to view the list of all donations for the location
  */
 public class ViewDonationsActivity extends AppCompatActivity {
-    private GetDonationsTask getDonationsTask = null;
-    private SearchDonationsTask searchDonationsTask = null;
-    private GetSearchableLocationsTask getSearchableLocationsTask = null;
+    private GetDonationsTask getDonationsTask;
+    private SearchDonationsTask searchDonationsTask;
+    private GetSearchableLocationsTask getSearchableLocationsTask;
     private Toolbar donationViewToolbar;
     private Button backButton;
     private List<String> locationsSearchableList;
@@ -75,7 +75,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
             String selectedCategory = (categorySpinner.getSelectedItemPosition() == 0 ?
                     null : DonationCategory.values()
                     [categorySpinner.getSelectedItemPosition() - 1].toString());
-            String selectedLocation = locationsSearchableList.get(locationSpinner.getSelectedItemPosition());
+            String selectedLocation = locationsSearchableList.
+                    get(locationSpinner.getSelectedItemPosition());
             SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
                     selectedCategory, selectedLocation);
             searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
@@ -94,7 +95,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
     void updateListView(List<Donation> donationList, List<String> donationSDescriptions) {
         ((ListView) this.findViewById(R.id.donationsList)).
                 setAdapter(new ArrayAdapter<>(this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, donationSDescriptions));
+                        android.R.layout.simple_list_item_1, android.R.id.text1,
+                        donationSDescriptions));
         ((ListView) findViewById(R.id.donationsList)).
                 setOnItemClickListener((parent, view, position, id) -> {
                     Donation donation = donationList.get(position);

@@ -13,7 +13,8 @@ import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
 import retrofit2.Response;
 
-public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActivity, Object, GetLocationsResponse> {
+public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActivity,
+        Object, GetLocationsResponse> {
     private List<String> locationsShowableList;
     private List<String> locationsSearchableList;
     GetSearchableLocationsTask(ViewDonationsActivity context, Object body) {super(context, body);}
@@ -25,9 +26,11 @@ public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void useResponse(GetLocationsResponse response) {
-        locationsSearchableList = response.getLocations().stream().map(Location::getName).collect(Collectors.toList());
+        locationsSearchableList = response.getLocations().stream().
+                map(Location::getName).collect(Collectors.toList());
         locationsSearchableList.add(0, null);
-        locationsShowableList = response.getLocations().stream().map(Location::getName).collect(Collectors.toList());
+        locationsShowableList = response.getLocations().stream().
+                map(Location::getName).collect(Collectors.toList());
         locationsShowableList.add(0, "Any");
     }
 

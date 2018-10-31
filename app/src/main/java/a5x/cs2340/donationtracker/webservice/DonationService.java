@@ -23,7 +23,8 @@ DonationService {
      * @return the server call with the proper response
      */
     @GET("{apitype}/getdonations")
-    Call<GetDonationsResponse> getDonations(@Path("apitype") String apiType, @Header("Authorization") String jwt);
+    Call<GetDonationsResponse> getDonations(@Path("apitype") String apiType,
+                                            @Header("Authorization") String jwt);
 
     /**
      * Get the donations based on the passed in jwt
@@ -31,7 +32,9 @@ DonationService {
      * @return the server call with the proper response
      */
     @GET("{apitype}/searchdonations")
-    Call<GetDonationsResponse> searchDonations(@Path("apitype") String apiType, @Header("Authorization") String jwt, @QueryMap SearchDonationsMap queryMap);
+    Call<GetDonationsResponse> searchDonations(@Path("apitype") String apiType,
+                                               @Header("Authorization") String jwt,
+                                               @QueryMap SearchDonationsMap queryMap);
 
     /**
      * Add a passed in donation based on the jwt

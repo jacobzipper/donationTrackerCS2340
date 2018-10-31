@@ -32,7 +32,8 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         Button backToLocationListButton = findViewById(R.id.backFromMapButton);
         backToLocationListButton.setOnClickListener(v -> backToLocationList());
         mapView = findViewById(R.id.mapView);
-        Bundle mapViewBundle = savedInstanceState == null ? null : savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        Bundle mapViewBundle = savedInstanceState == null ? null :
+                savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
     }

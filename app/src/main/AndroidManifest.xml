@@ -54,7 +54,7 @@
 
         <activity
             android:name=".activities.postlogin.LocationsMapActivity"
-            android:label="@string/title_activity_locations_map"></activity>
+            android:label="@string/title_activity_locations_map"/>
     </application>
 
 </manifest>

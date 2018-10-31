@@ -39,7 +39,8 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
     @Override
     public void useResponse(GetDonationsResponse response) {
         donations = response.getDonations();
-        donationSDescriptions = donations.stream().map(Donation::getShortdescription).collect(Collectors.toList());
+        donationSDescriptions = donations.stream().
+                map(Donation::getShortdescription).collect(Collectors.toList());
     }
 
     @Override

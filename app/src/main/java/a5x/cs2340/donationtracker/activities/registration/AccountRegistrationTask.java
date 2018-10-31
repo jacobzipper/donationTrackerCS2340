@@ -45,6 +45,7 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
 
     @Override
     public void uiFailure() {
-        Toast.makeText(mContext, "Registration Failed (try new username?)", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "Registration Failed (try new username?)",
+                Toast.LENGTH_LONG).show();
     }
 }

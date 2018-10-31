@@ -35,7 +35,6 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
      * NOTE: BODY CANNOT BE NULL
      * Do new SearchDonationsMap(null, null, null) if the user doesn't enter anything
      * Empty string should count as null
-     * For admin make a checkbox after the spinner (click to search all locations) and if checked, put null in the 3rd arg of SearchDonationsMap
      */
     @Override
     public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
@@ -47,7 +46,8 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
     @Override
     public void useResponse(GetDonationsResponse response) {
         donations = response.getDonations();
-        donationSDescriptions = donations.stream().map(Donation::getShortdescription).collect(Collectors.toList());
+        donationSDescriptions = donations.stream().
+                map(Donation::getShortdescription).collect(Collectors.toList());
     }
 
     @Override

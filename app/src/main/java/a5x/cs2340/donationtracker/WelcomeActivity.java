@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                                                                   PermissionToken token) {/* ... */}
+                                                                   PermissionToken token) {/* ...*/}
                 }).check();
     }
 
