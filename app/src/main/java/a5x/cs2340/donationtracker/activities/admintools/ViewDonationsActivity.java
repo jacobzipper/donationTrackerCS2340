@@ -25,7 +25,8 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
  */
 public class ViewDonationsActivity extends AppCompatActivity {
     private GetDonationsTask getDonationsTask = null;
-
+    private SearchDonationsTask searchDonationsTask = null;
+    private Toolbar donationViewToolbar;
     private Button backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_donations);
         backButton = findViewById(R.id.donationListBackButton);
         backButton.setOnClickListener(v -> backToAdminTools());
-        getDonationsTask = new GetDonationsTask(this, null);
-        getDonationsTask.execute((Void) null);
-        Toolbar donationViewToolbar = findViewById(R.id.donationsViewToolbar);
+        setDonationListToDefault();
+        donationViewToolbar = findViewById(R.id.donationsViewToolbar);
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
-        donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
-        donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
+        switchToMakingSearch();
     }
 
     private void backToAdminTools() {
@@ -68,7 +67,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
                 SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
                         DonationCategory.values()[categorySpinner.getSelectedItemPosition()].toString(), null);
-                SearchDonationsTask searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this, searchQuery);
+                searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this, searchQuery);
                 searchDonationsTask.execute((Void) null);
                 dialog.dismiss();
 
@@ -76,6 +75,10 @@ public class ViewDonationsActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+    private void setDonationListToDefault() {
+        getDonationsTask = new GetDonationsTask(this, null);
+        getDonationsTask.execute((Void) null);
     }
     void updateListView(List<Donation> donationList, List<String> donationSDescriptions) {
         ((ListView) this.findViewById(R.id.donationsList)).
@@ -116,5 +119,13 @@ public class ViewDonationsActivity extends AppCompatActivity {
                     dialog.show();
                 });
 
+    }
+    void switchToClearingSearch() {
+        donationViewToolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
+        donationViewToolbar.setNavigationOnClickListener(v -> setDonationListToDefault());
+    }
+    void switchToMakingSearch() {
+        donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
+        donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
     }
 }

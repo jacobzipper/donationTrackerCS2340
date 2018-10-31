@@ -53,6 +53,7 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
     @Override
     public void uiSuccess() {
         mContext.updateListView(donations, donationSDescriptions);
+        mContext.switchToClearingSearch();
     }
 
     @Override
