@@ -21,8 +21,8 @@ public class Webservice {
     private static String jwtToken;
 
     // Services
-    public static AccountService accountService;
-    public static DonationService donationService;
+    public static final AccountService accountService;
+    public static final DonationService donationService;
 
 
     static {
@@ -68,13 +68,29 @@ public class Webservice {
 
     /**
      * Gets the UserType of the logged in account
-     * @return the UserType corresponding to the logged in account
+     * @return the UserType corresponding to the logged in account, null if no user is logged in
      */
     public static UserType getLoggedInUserType() {
+        assert accountLoggedIn != null;
         return (isLoggedIn())
             ? accountLoggedIn.getUserType() : null;
     }
 
+    /**
+     * Gets the current APIType of the logged in user
+     * @return the current APIType of the logged in user, null if no user is logged in
+     */
+    public static String getCurrentUserAPIType() {
+        return (isLoggedIn() ? getLoggedInUserType().getAPIType() : null);
+    }
+
+    /**
+     * Gets the current permission level of the logged in user
+     * @return the current permissions level of the logged in user, -1 if no user is logged in
+     */
+    public static int getCurrentUserPermissions() {
+        return (isLoggedIn() ? getLoggedInUserType().getPermissionsLevel() : -1);
+    }
     /**
      * Get the current jwt
      * @return the jwt

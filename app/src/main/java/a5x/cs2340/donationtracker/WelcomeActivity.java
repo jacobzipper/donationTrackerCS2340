@@ -17,7 +17,7 @@ import a5x.cs2340.donationtracker.activities.login.LoginActivity;
 import a5x.cs2340.donationtracker.activities.registration.RegistrationActivity;
 
 /**
- * The default activtiy users will see when starting the app
+ * The default activity users will see when starting the app
  */
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                                                                   PermissionToken token) {/* ... */}
+                                                                   PermissionToken token) {/* ...*/}
                 }).check();
     }
 

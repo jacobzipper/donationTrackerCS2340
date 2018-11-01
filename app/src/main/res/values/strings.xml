@@ -56,7 +56,7 @@
     <string name="donation_add_button">Add</string>
     <string name="donation_cancel_button">Cancel</string>
 
-
+    <string name="donation_view_toolbar_text">Donations</string>
     <string name="donation_view_name">Name: %1$s</string>
     <string name="donation_view_short_description">Short Description: %1$s</string>
     <string name="donation_view_description">Description: %1$s</string>
@@ -69,4 +69,11 @@
     <string name="title_activity_locations_map">Map</string>
 
     <string name="back_from_map_button">Back</string>
+
+    <string name="donations_search_title">Search Donations</string>
+    <string name="donations_search_name">Name</string>
+    <string name="donations_search_category">Category:</string>
+    <string name="donations_search_location">Location:</string>
+    <string name="donations_search_button">Search</string>
+    <string name="donations_search_cancel_button">Cancel</string>
 </resources>

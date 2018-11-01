@@ -17,7 +17,7 @@ import a5x.cs2340.donationtracker.webservice.Webservice;
  * Default activity users go to after they successfully log in
  */
 public class PostLoginActivity extends AppCompatActivity {
-    private GetLocationsTask mGetLocationsTask = null;
+    private GetLocationsTask mGetLocationsTask;
 
     @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
@@ -30,7 +30,7 @@ public class PostLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_login);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string,
-                Webservice.getLoggedInUserType().getLabel(),
+                Webservice.getLoggedInUserType().toString(),
                 Webservice.getAccountLoggedIn().getName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         mGetLocationsTask = new GetLocationsTask(this, null);

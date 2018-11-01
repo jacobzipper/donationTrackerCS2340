@@ -7,18 +7,19 @@ import a5x.cs2340.donationtracker.DonationCategory;
  * Represents a Donation object
  */
 public class Donation {
-    private String name;
-    private String shortdescription;
-    private String description;
-    private String value;
-    private DonationCategory category;
-    private String comments;
+    private final String name;
+    private final String shortdescription;
+    private final String description;
+    private final String value;
+    private final DonationCategory category;
+    private final String comments;
     private String tstamp;
 
     /**
      * Creates a new Donation with given parameters
      * @param name The name of the donation
-     * @param description A description of the donation
+     * @param shortdescription A short description of the donation
+     * @param description A full description of the donation
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
      * @param comments Non-empty comments about the donation
@@ -36,6 +37,7 @@ public class Donation {
     /**
      * Creates a new Donation with no comments
      * @param name The name of the donation
+     * @param shortdescription A short description of the donation
      * @param description A description of the donation
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
@@ -50,15 +52,7 @@ public class Donation {
      * @return the donation name
      */
     public String getName() {
-        return name == null ? "<No Name>" : name;
-    }
-
-    /**
-     * Setter for name
-     * @param name the new name
-     */
-    public void setName(String name) {
-        this.name = name;
+        return (name == null) ? "<No Name>" : name;
     }
 
     /**
@@ -66,15 +60,7 @@ public class Donation {
      * @return the short description
      */
     public String getShortdescription() {
-        return shortdescription == null ? "<No Description>" : shortdescription;
-    }
-
-    /**
-     * Setter for short description
-     * @param shortdescription the new short description
-     */
-    public void setShortdescription(String shortdescription) {
-        this.shortdescription = shortdescription;
+        return (shortdescription == null) ? "<No Description>" : shortdescription;
     }
 
     /**
@@ -82,15 +68,7 @@ public class Donation {
      * @return the donation description
      */
     public String getDescription() {
-        return description == null ? "<No Description>" : description;
-    }
-
-    /**
-     * Setter for description
-     * @param description the new description
-     */
-    public void setDescription(String description) {
-        this.description = description;
+        return (description == null) ? "<No Description>" : description;
     }
 
     /**
@@ -98,15 +76,7 @@ public class Donation {
      * @return the donation value
      */
     public String getValue() {
-        return value == null ? "<No Value>" : value;
-    }
-
-    /**
-     * Setter for value
-     * @param value the new value
-     */
-    public void setValue(String value) {
-        this.value = value;
+        return (value == null) ? "<No Value>" : value;
     }
 
     /**
@@ -114,15 +84,7 @@ public class Donation {
      * @return the donation category
      */
     public DonationCategory getCategory() {
-        return category == null ? DonationCategory.NOCAT : category;
-    }
-
-    /**
-     * Setter for category
-     * @param category the new category
-     */
-    public void setCategory(DonationCategory category) {
-        this.category = category;
+        return (category == null) ? DonationCategory.NOCAT : category;
     }
 
     /**
@@ -130,15 +92,7 @@ public class Donation {
      * @return the donation comments
      */
     public String getComments() {
-        return comments == null ? "<No Comments>" : comments;
-    }
-
-    /**
-     * Setter for comments
-     * @param comments the new comments
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
+        return (comments == null) ? "<No Comments>" : comments;
     }
 
     /**
@@ -146,14 +100,7 @@ public class Donation {
      * @return the donation time stamp
      */
     public String getTstamp() {
-        return tstamp == null ? "<No Timestamp>" : tstamp;
+        return (tstamp == null) ? "<No Timestamp>" : tstamp;
     }
 
-    /**
-     * Setter for time stamp
-     * @param tstamp the new time stamp
-     */
-    public void setTstamp(String tstamp) {
-        this.tstamp = tstamp;
-    }
 }

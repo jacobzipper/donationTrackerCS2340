@@ -6,123 +6,132 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/donationName"
+        android:id="@+id/donationSearchHeader"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/donation_name_prompt"
+        android:text="@string/donations_search_title"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.093" />
+        app:layout_constraintVertical_bias="0.095" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/donationSearchNameLayout"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchHeader"
+        app:layout_constraintVertical_bias="0.077">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/donationSearchNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/donations_search_name" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
-        android:id="@+id/donationShortDescription"
+        android:id="@+id/donationSearchCategoryHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/donation_view_short_description"
+        android:text="@string/donations_search_category"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationName"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchNameLayout"
+        app:layout_constraintVertical_bias="0.075" />
 
-    <TextView
-        android:id="@+id/donationDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
+    <Spinner
+        android:id="@+id/donationSearchCategorySpinner"
+        android:layout_width="368dp"
+        android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/donation_description_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationName"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchCategoryHeader"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/donationValue"
+        android:id="@+id/donationSearchLocationHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/donation_value_prompt"
+        android:text="@string/donations_search_location"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationDescription"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchCategorySpinner"
+        app:layout_constraintVertical_bias="0.059" />
 
-    <TextView
-        android:id="@+id/donationCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="37dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationValue"
-        app:layout_constraintVertical_bias="0.183" />
-
-    <TextView
-        android:id="@+id/donationComments"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
+    <Spinner
+        android:id="@+id/donationSearchLocationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/donation_comments_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationCategory"
-        app:layout_constraintVertical_bias="0.077" />
-
-    <TextView
-        android:id="@+id/donationTimeStamp"
-        android:layout_width="wrap_content"
-        android:layout_height="14dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/donation_view_timestamp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationComments"
-        app:layout_constraintVertical_bias="0.222" />
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchLocationHeader"
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
-        android:id="@+id/donationBackButton"
+        android:id="@+id/donationSearchGoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="104dp"
+        android:text="@string/donations_search_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchLocationSpinner" />
+
+    <Button
+        android:id="@+id/donationSearchCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/location_dialog_close_button"
+        android:text="@string/donations_search_cancel_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationTimeStamp" />
-
+        app:layout_constraintTop_toBottomOf="@+id/donationSearchGoButton"
+        app:layout_constraintVertical_bias="0.066" />
 </android.support.constraint.ConstraintLayout>
