@@ -26,6 +26,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     private GoogleMap mMap;
     private MapView mapView;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private final float DEFAULT_ZOOM_LEVEL = 10.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
                     title(location.getName()).snippet(location.getPhone()));
             Log.d("MapReady", "Marker should be added");
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, DEFAULT_ZOOM_LEVEL));
     }
     private void backToLocationList() {
         Intent backToLocationListIntent = new Intent(this, PostLoginActivity.class);
