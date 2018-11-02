@@ -25,10 +25,11 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 public class ViewDonationsActivity extends AppCompatActivity {
     private SearchDonationsTask searchDonationsTask;
     private Toolbar donationViewToolbar;
-    private List<String> locationsSearchableList;
-    private List<String> locationsShowableList;
-    private final String[] searchDonationCategories = {"Any", "Clothing", "Hat", "Kitchen",
+    private String[] locationsSearchableList;
+    private String[] locationsShowableList;
+    private final String[] SEARCH_DONATION_CATEGORIES = {"Any", "Clothing", "Hat", "Kitchen",
             "Electronics", "Household", "Other"};
+    private final String[] NO_SEARCH_RESULTS = {"No Results"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +55,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.donation_search_view);
         Spinner categorySpinner = dialog.findViewById(R.id.donationSearchCategorySpinner);
         ArrayAdapter<String> donationCategoryArrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, searchDonationCategories);
+                android.R.layout.simple_spinner_item, SEARCH_DONATION_CATEGORIES);
         donationCategoryArrayAdapter.
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(donationCategoryArrayAdapter);
@@ -73,8 +74,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
             String selectedCategory = ((categorySpinner.getSelectedItemPosition() == 0) ?
                     null : DonationCategory.values()
                     [categorySpinner.getSelectedItemPosition() - 1].toString());
-            String selectedLocation = locationsSearchableList.
-                    get(locationSpinner.getSelectedItemPosition());
+            String selectedLocation = locationsSearchableList
+                    [(locationSpinner.getSelectedItemPosition())];
             SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
                     selectedCategory, selectedLocation);
             searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
@@ -91,6 +92,12 @@ public class ViewDonationsActivity extends AppCompatActivity {
         getDonationsTask.execute((Void) null);
     }
     void updateListView(List<Donation> donationList, List<String> donationSDescriptions) {
+        if (donationList.isEmpty()) {
+            ((ListView) this.findViewById(R.id.donationsList)).
+                    setAdapter(new ArrayAdapter<>(this,
+                            android.R.layout.simple_list_item_1, android.R.id.text1,
+                            NO_SEARCH_RESULTS));
+        }
         ((ListView) this.findViewById(R.id.donationsList)).
                 setAdapter(new ArrayAdapter<>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1,
@@ -132,8 +139,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
     }
     void setLocationsLists(List<String> searchableList, List<String> showableList) {
-        locationsSearchableList = searchableList;
-        locationsShowableList = showableList;
+        locationsSearchableList = (String[])searchableList.toArray();
+        locationsShowableList = (String[])showableList.toArray();
         switchToMakingSearch();
     }
     void switchToClearingSearch() {
