@@ -97,6 +97,9 @@ public class ViewDonationsActivity extends AppCompatActivity {
                     setAdapter(new ArrayAdapter<>(this,
                             android.R.layout.simple_list_item_1, android.R.id.text1,
                             NO_SEARCH_RESULTS));
+            ((ListView) findViewById(R.id.donationsList)).
+                    setOnItemClickListener((parent, view, position, id) -> {} );
+            return;
         }
         ((ListView) this.findViewById(R.id.donationsList)).
                 setAdapter(new ArrayAdapter<>(this,
@@ -139,8 +142,10 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
     }
     void setLocationsLists(List<String> searchableList, List<String> showableList) {
-        locationsSearchableList = (String[])searchableList.toArray();
-        locationsShowableList = (String[])showableList.toArray();
+        locationsSearchableList = new String[searchableList.size()];
+        locationsSearchableList = searchableList.toArray(locationsSearchableList);
+        locationsShowableList = new String[showableList.size()];
+        locationsShowableList = showableList.toArray(locationsShowableList);
         switchToMakingSearch();
     }
     void switchToClearingSearch() {
