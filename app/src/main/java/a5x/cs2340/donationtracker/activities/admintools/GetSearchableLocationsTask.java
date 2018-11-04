@@ -4,13 +4,16 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -23,20 +26,26 @@ public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActi
         Object, GetLocationsResponse> {
     private List<String> locationsShowableList;
     private List<String> locationsSearchableList;
-
-    GetSearchableLocationsTask(ViewDonationsActivity context, Object body) {super(context, body);}
+    private final Webservice webservice;
+    private final AccountService accountService;
+    GetSearchableLocationsTask(ViewDonationsActivity context) {
+        super(context, null);
+        webservice = Webservice.getInstance();
+        accountService = webservice.getAccountService();
+    }
     @Override
     protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-        return Webservice.accountService.locations().execute();
+        Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
+        return getLocationsResponseCall.execute();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void useResponse(GetLocationsResponse response) {
-        locationsSearchableList = response.getLocations().stream().
+        locationsSearchableList = Arrays.stream(response.getLocations()).
                 map(Location::getName).collect(Collectors.toList());
         locationsSearchableList.add(0, null);
-        locationsShowableList = response.getLocations().stream().
+        locationsShowableList = Arrays.stream(response.getLocations()).
                 map(Location::getName).collect(Collectors.toList());
         locationsShowableList.add(0, "Any");
     }

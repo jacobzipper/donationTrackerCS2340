@@ -14,6 +14,9 @@ public class SearchDonationsMap extends HashMap<String, String> {
      */
     public SearchDonationsMap(String name, String category, String location) {
         super();
+        fillMap(name, category, location);
+    }
+    private void fillMap(String name, String category, String location) {
         if (name != null) {
             this.put("name", name);
         }
@@ -24,4 +27,5 @@ public class SearchDonationsMap extends HashMap<String, String> {
             this.put("location", location);
         }
     }
+
 }

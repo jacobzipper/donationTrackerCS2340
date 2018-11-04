@@ -18,22 +18,22 @@ import a5x.cs2340.donationtracker.webservice.Webservice;
  */
 public class PostLoginActivity extends AppCompatActivity {
     private GetLocationsTask mGetLocationsTask;
-
+    private final Webservice webservice = Webservice.getInstance();
     @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!Webservice.isLoggedIn()) {
+        if (!webservice.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
             return;
         }
         setContentView(R.layout.activity_post_login);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string,
-                Webservice.getLoggedInUserType().toString(),
-                Webservice.getAccountLoggedIn().getName()));
+                webservice.getLoggedInUserType().toString(),
+                webservice.getAccountName()));
         Button logoutButton = findViewById(R.id.logoutButton);
-        mGetLocationsTask = new GetLocationsTask(this, null);
+        mGetLocationsTask = new GetLocationsTask(this);
         mGetLocationsTask.execute((Void) null);
         logoutButton.setOnClickListener(view -> {
             logoutBackToWelcome();
@@ -51,7 +51,7 @@ public class PostLoginActivity extends AppCompatActivity {
      * Transitions back to the welcome screen
      */
     private void logoutBackToWelcome() {
-        Webservice.logOut();
+        webservice.logOut();
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
     }

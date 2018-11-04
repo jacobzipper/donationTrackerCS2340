@@ -13,8 +13,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
 
@@ -98,14 +96,14 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         Log.d("MapReady", "Successful Map Ready");
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        GetMapLocationsTask mTask = new GetMapLocationsTask(this, null);
+        GetMapLocationsTask mTask = new GetMapLocationsTask(this);
         mTask.execute((Void) null);
 
     }
-    void populateList(List<Location> locations) {
+    void populateList(Location[] locations) {
         createMarkers(locations);
     }
-    private void createMarkers(List<Location> locations) {
+    private void createMarkers(Location[] locations) {
         Log.d("MapReady", "Successful locationTask");
         LatLng newLocation = new LatLng(0, 0);
         for (Location location : locations) {

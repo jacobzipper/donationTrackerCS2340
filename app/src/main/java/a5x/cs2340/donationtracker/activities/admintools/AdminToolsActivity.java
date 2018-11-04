@@ -15,7 +15,7 @@ import a5x.cs2340.donationtracker.webservice.Webservice;
  * Activity for all admin-related tools such as adding donations, modifying privileges, etc.
  */
 public class AdminToolsActivity extends AppCompatActivity {
-
+    private final Webservice webservice = Webservice.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +26,13 @@ public class AdminToolsActivity extends AppCompatActivity {
         addDonationButton.setOnClickListener(v -> toAddDonation());
         Button viewDonationsButton = findViewById(R.id.toolsViewDonationsButton);
         viewDonationsButton.setOnClickListener(v -> toViewDonations());
-        if (Webservice.getCurrentUserPermissions() >=
+        if (webservice.getCurrentUserPermissions() >=
                 UserType.REGULAR_USER.getPermissionsLevel()) {
             viewDonationsButton.setVisibility(View.VISIBLE);
         } else {
             viewDonationsButton.setVisibility(View.GONE);
         }
-        if (Webservice.getCurrentUserPermissions()
+        if (webservice.getCurrentUserPermissions()
                 >= UserType.LOCATION_EMPLOYEE.getPermissionsLevel()) {
 
             addDonationButton.setVisibility(View.VISIBLE);

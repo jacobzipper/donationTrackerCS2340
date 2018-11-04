@@ -5,14 +5,17 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.SearchDonationsMap;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.GetDonationsResponse;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -20,16 +23,19 @@ import retrofit2.Response;
  */
 public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
         SearchDonationsMap, GetDonationsResponse> {
-    private List<Donation> donations;
+    private Donation[] donations;
     private List<String> donationSDescriptions;
-
+    private final Webservice webservice;
+    private final DonationService donationService;
     /**
      * Constructor for GetDonationsTask
      * @param context the Activity to use as context
      * @param body the body for the task (usually null)
      */
-    public SearchDonationsTask(ViewDonationsActivity context, SearchDonationsMap body) {
+    SearchDonationsTask(ViewDonationsActivity context, SearchDonationsMap body) {
         super(context, body);
+        webservice = Webservice.getInstance();
+        donationService = webservice.getDonationService();
     }
 
     /**
@@ -39,17 +45,17 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
      */
     @Override
     public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
-        Log.d("Searching", "Making call");
-        return Webservice.donationService.searchDonations(
-                Webservice.getCurrentUserAPIType(),
-                "Bearer " + Webservice.getJwtToken(), body).execute();
+        Call<GetDonationsResponse> getDonationsResponseCall = donationService.searchDonations(
+                webservice.getCurrentUserAPIType(),
+                "Bearer " + webservice.getJwtToken(), body);
+        return getDonationsResponseCall.execute();
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void useResponse(GetDonationsResponse response) {
         Log.d("Searching", "Using response");
         donations = response.getDonations();
-        donationSDescriptions = donations.stream().
+        donationSDescriptions = Arrays.stream(donations).
                 map(Donation::getShortdescription).collect(Collectors.toList());
     }
 

@@ -8,7 +8,7 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
  * Webeservice response for getting the list of locations
  */
 public class GetLocationsResponse extends StandardResponse {
-    private List<Location> locations;
+    private Location[] locations;
 
     /**
      * Constructor for GetLocationsResponse
@@ -18,14 +18,15 @@ public class GetLocationsResponse extends StandardResponse {
      */
     public GetLocationsResponse(int error, String msg, List<Location> locations) {
         super(error, msg);
-        this.locations = locations;
+        this.locations = new Location[locations.size()];
+        this.locations = locations.toArray(this.locations);
     }
 
     /**
      * Gets the list of locations
      * @return the list of locations
      */
-    public List<Location> getLocations() {
+    public Location[] getLocations() {
         return locations;
     }
 
@@ -33,7 +34,7 @@ public class GetLocationsResponse extends StandardResponse {
      * Sets the list of locations
      * @param locations the new list of locations
      */
-    public void setLocations(List<Location> locations) {
+    public void setLocations(Location[] locations) {
         this.locations = locations;
     }
 }

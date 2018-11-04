@@ -52,10 +52,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private final Nbvcxz passwordStrengthChecker = new Nbvcxz();
     private Timer strengthTimer = new Timer();
 
+    private final Webservice webservice = Webservice.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Webservice.isLoggedIn()) {
+        if (webservice.isLoggedIn()) {
             startActivity(new Intent(this, PostLoginActivity.class));
             return;
         }
@@ -117,9 +119,6 @@ public class RegistrationActivity extends AppCompatActivity {
      * Attempt to register the account with the currently entered credentials
      */
     private void attemptRegister() {
-        firstNameTextView.setError(null);
-        lastNameTextView.setError(null);
-        usernameTextView.setError(null);
         passwordTextView.setError(null);
         passwordVerifyTextView.setError(null);
 
@@ -132,30 +131,21 @@ public class RegistrationActivity extends AppCompatActivity {
         String passwordVerify = passwordVerifyTextView.getText().toString();
         UserType userType = (UserType) userTypeSpinner.getSelectedItem();
         //Error checking
-        if (firstName.isEmpty()) {
-            firstNameTextView.setError(getString(R.string.error_field_required));
+        if (checkRequiredField(firstNameTextView, firstName)) {
             focusView = firstNameTextView;
             cancel = true;
-        } else if (lastName.isEmpty()) {
-            lastNameTextView.setError(getString(R.string.error_field_required));
+        } else if (checkRequiredField(lastNameTextView, lastName)) {
             focusView = lastNameTextView;
             cancel = true;
-        } else if (username.isEmpty()) {
-            usernameTextView.setError(getString(R.string.error_field_required));
+        } else if (checkRequiredField(usernameTextView, username)) {
             focusView = usernameTextView;
             cancel = true;
-        } else if (password.isEmpty()) {
-            passwordTextView.setError(getString(R.string.error_field_required));
+        } else if (checkRequiredField(passwordTextView, password)) {
             focusView = passwordTextView;
             cancel = true;
-        } else if (passwordVerify.isEmpty()) {
-            passwordVerifyTextView.setError(getString(R.string.error_field_required));
+        } else if (checkRequiredField(passwordVerifyTextView, passwordVerify)) {
             focusView = passwordVerifyTextView;
             cancel = true;
-//        } else if (LoginActivity.checkExistingUsername(username)) {
-//            usernameTextView.setError(getString(R.string.error_username_already_exists));
-//            focusView = usernameTextView;
-//            cancel = true;
         } else if (password.length() < MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
@@ -171,6 +161,15 @@ public class RegistrationActivity extends AppCompatActivity {
             //No errors, register the new credentials
             registerUser(firstName, lastName, username, password, userType);
         }
+    }
+
+    private boolean checkRequiredField(TextView textView, String content) {
+        if (content.isEmpty()) {
+            textView.setError(getString(R.string.error_field_required));
+            return true;
+        }
+        textView.setError(null);
+        return false;
     }
 
     /**

@@ -5,10 +5,12 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -18,18 +20,23 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak")
 public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity,
         RegistrationBody, StandardResponse> {
+    private final Webservice webservice;
+    private final AccountService accountService;
     /**
      * Creates a new AccountRegistrationTask with the given context and body
      * @param activity The RegistrationActivity to use as the context
      * @param body The RegistrationBody to attempt to register
      */
-    public AccountRegistrationTask(RegistrationActivity activity, RegistrationBody body) {
+    AccountRegistrationTask(RegistrationActivity activity, RegistrationBody body) {
         super(activity, body);
+        webservice = Webservice.getInstance();
+        accountService = webservice.getAccountService();
     }
 
     @Override
     public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
-        return Webservice.accountService.register(body).execute();
+        Call<StandardResponse> standardResponseCall = accountService.register(body);
+        return standardResponseCall.execute();
     }
 
     @Override
@@ -39,13 +46,17 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
 
     @Override
     public void uiSuccess() {
-        Toast.makeText(mContext, "Registration Successful", Toast.LENGTH_LONG).show();
+        Toast successfulRegistrationToast = Toast.makeText(mContext,
+                "Registration Successful", Toast.LENGTH_LONG);
+        successfulRegistrationToast.show();
         mContext.goBackToWelcome();
     }
 
     @Override
     public void uiFailure() {
-        Toast.makeText(mContext, "Registration Failed (try new username?)",
-                Toast.LENGTH_LONG).show();
+        Toast failedRegistrationToast = Toast.makeText(mContext,
+                "Registration Failed (try new username?)",
+                Toast.LENGTH_LONG);
+        failedRegistrationToast.show();
     }
 }

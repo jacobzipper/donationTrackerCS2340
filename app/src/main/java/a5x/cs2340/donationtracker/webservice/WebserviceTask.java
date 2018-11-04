@@ -13,6 +13,13 @@ import retrofit2.Response;
 
 import static a5x.cs2340.donationtracker.Constants.ERROR_CODE_OK;
 
+/**
+ * Represents an abstract webservice task which must be implemented in order to make calls
+ * to the backend webservice
+ * @param <S> The activity representing the context of the call
+ * @param <T> The body of the task that is passed in
+ * @param <U> The response expected from the webservice after completion
+ */
 @SuppressLint("StaticFieldLeak")
 public abstract class WebserviceTask<S extends Activity, T,
         U extends StandardResponse> extends AsyncTask<Void, Void, Boolean> {

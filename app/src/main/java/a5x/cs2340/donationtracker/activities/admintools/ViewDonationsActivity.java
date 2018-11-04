@@ -41,7 +41,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
         GetSearchableLocationsTask getSearchableLocationsTask =
-                new GetSearchableLocationsTask(this, null);
+                new GetSearchableLocationsTask(this);
         getSearchableLocationsTask.execute((Void) null);
     }
 
@@ -88,11 +88,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
         dialog.show();
     }
     private void setDonationListToDefault() {
-        GetDonationsTask getDonationsTask = new GetDonationsTask(this, null);
+        GetDonationsTask getDonationsTask = new GetDonationsTask(this);
         getDonationsTask.execute((Void) null);
     }
-    void updateListView(List<Donation> donationList, List<String> donationSDescriptions) {
-        if (donationList.isEmpty()) {
+    void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
+        if (donationList.length == 0) {
             ((ListView) this.findViewById(R.id.donationsList)).
                     setAdapter(new ArrayAdapter<>(this,
                             android.R.layout.simple_list_item_1, android.R.id.text1,
@@ -107,7 +107,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                         donationSDescriptions));
         ((ListView) findViewById(R.id.donationsList)).
                 setOnItemClickListener((parent, view, position, id) -> {
-                    Donation donation = donationList.get(position);
+                    Donation donation = donationList[(position)];
                     final Dialog dialog = new Dialog(this);
                     dialog.setContentView(R.layout.donation_view);
                     dialog.setTitle("Donation Details");

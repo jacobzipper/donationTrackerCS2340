@@ -10,14 +10,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -26,28 +29,34 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak")
 public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
         Object, GetLocationsResponse> {
-    private List<Location> locations;
+    private Location[] locations;
     private List<String> locationNames;
+    private final Webservice webservice;
+    private final AccountService accountService;
 
     /**
      * Constructor for creating a GetLocationsTask
      * @param context the activity context
-     * @param body the body to pass in (usually null for this task)
+     *
      */
-    public GetLocationsTask(PostLoginActivity context, Object body) {
-        super(context, body);
+    GetLocationsTask(PostLoginActivity context) {
+        super(context, null);
+        webservice = Webservice.getInstance();
+        accountService = webservice.getAccountService();
     }
 
     @Override
     public Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-        return Webservice.accountService.locations().execute();
+        Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
+        return getLocationsResponseCall.execute();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void useResponse(GetLocationsResponse response) {
         locations = response.getLocations();
-        locationNames = locations.stream().map(Location::getName).collect(Collectors.toList());
+        locationNames = Arrays.stream(locations).map(Location::getName).
+                collect(Collectors.toList());
     }
 
     @Override
@@ -57,7 +66,7 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
                 android.R.layout.simple_list_item_1, android.R.id.text1, locationNames));
         ((ListView) mContext.findViewById(R.id.locationlist)).
                 setOnItemClickListener((parent, view, position, id) -> {
-            Location location = locations.get(position);
+            Location location = locations[position];
             final Dialog dialog = new Dialog(mContext);
             dialog.setContentView(R.layout.location_view);
             dialog.setTitle("Location Details");

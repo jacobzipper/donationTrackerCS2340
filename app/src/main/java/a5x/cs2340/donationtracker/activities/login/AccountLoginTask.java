@@ -10,10 +10,12 @@ import a5x.cs2340.donationtracker.models.users.Admin;
 import a5x.cs2340.donationtracker.models.users.LocationEmployee;
 import a5x.cs2340.donationtracker.models.users.Manager;
 import a5x.cs2340.donationtracker.models.users.User;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -24,14 +26,18 @@ import retrofit2.Response;
 public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, LoginResponse> {
     private Account account;
     private String jwt;
+    private final AccountService accountService;
+    private final Webservice webservice;
 
     /**
      * Creates a new AccountLoginTask with the given activity as a context and the LoginBody to use
      * @param activity The LoginActivity to use as the context for this task
      * @param body The LoginBody to use to attempt to login
      */
-    public AccountLoginTask(LoginActivity activity, LoginBody body) {
+    AccountLoginTask(LoginActivity activity, LoginBody body) {
         super(activity, body);
+        webservice = Webservice.getInstance();
+        accountService = webservice.getAccountService();
     }
 
     @Override
@@ -41,7 +47,8 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
 
     @Override
     public Response<LoginResponse> doRequest(LoginBody body) throws IOException {
-        return Webservice.accountService.login(body).execute();
+        Call<LoginResponse> loginResponseCall = accountService.login(body);
+        return loginResponseCall.execute();
     }
 
     @Override
@@ -69,7 +76,7 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
                         mBody.getUsername(), mBody.getPassword());
                 break;
         }
-        Webservice.logIn(account, jwt);
+        webservice.logIn(account, jwt);
     }
 
     @Override

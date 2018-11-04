@@ -19,6 +19,7 @@ public interface
 DonationService {
     /**
      * Get the donations based on the passed in jwt
+     * @param apiType the type of the api corresponding to the logged in account
      * @param jwt the jwt to check and return donation based on
      * @return the server call with the proper response
      */
@@ -27,8 +28,10 @@ DonationService {
                                             @Header("Authorization") String jwt);
 
     /**
-     * Get the donations based on the passed in jwt
+     * Get a filtered list of donations based on the query map
+     * @param apiType the type of the api corresponding to the logged in account
      * @param jwt the jwt to check and return donation based on
+     * @param queryMap the map to make the search based on
      * @return the server call with the proper response
      */
     @GET("{apitype}/searchdonations")
@@ -38,6 +41,7 @@ DonationService {
 
     /**
      * Add a passed in donation based on the jwt
+     * @param apiType the type of the api corresponding to the logged in account
      * @param donation the donation to add
      * @param jwt the jwt of the user adding the donation
      * @return the server call with a standard response

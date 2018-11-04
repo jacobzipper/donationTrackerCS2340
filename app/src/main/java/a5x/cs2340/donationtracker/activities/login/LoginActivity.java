@@ -44,11 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
+    private final Webservice webservice = Webservice.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // If user is logged in we go directly to the PostLogin screen
-        if (Webservice.isLoggedIn()) {
+        if (webservice.isLoggedIn()) {
             startActivity(new Intent(this, PostLoginActivity.class));
             return;
         }
@@ -130,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param username the username to check
      * @return true if the username exists in the valid credentials
      */
-    private boolean isUsernameValid(String username) {
+    private boolean isUsernameValid(CharSequence username) {
         return username.length() >= MIN_USERNAME_LENGTH;
     }
 
@@ -140,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password the password to check
      * @return true if the password meets specifications
      */
-    private boolean isPasswordValid(String password) {
+    private boolean isPasswordValid(CharSequence password) {
         return password.length() >= MIN_PASSWORD_LENGTH;
     }
 

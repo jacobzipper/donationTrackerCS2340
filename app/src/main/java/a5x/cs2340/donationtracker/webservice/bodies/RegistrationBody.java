@@ -4,9 +4,9 @@ package a5x.cs2340.donationtracker.webservice.bodies;
  * Webservice body used for user registration
  */
 public class RegistrationBody extends LoginBody {
-    private String role;
-    private String firstname;
-    private String lastname;
+    private final String role;
+    private final String firstname;
+    private final String lastname;
 
     /**
      * Standard constructor from all parameters
@@ -24,51 +24,4 @@ public class RegistrationBody extends LoginBody {
         this.lastname = lastname;
     }
 
-    /**
-     * Getter for role
-     * @return the role
-     */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * Setter for role
-     * @param role the new role
-     */
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    /**
-     * Getter for first name
-     * @return the first name
-     */
-    public String getFirstname() {
-        return firstname;
-    }
-
-    /**
-     * Setter for first name
-     * @param firstname the new first name
-     */
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    /**
-     * Getter for last name
-     * @return the last name
-     */
-    public String getLastname() {
-        return lastname;
-    }
-
-    /**
-     * Setter for last name
-     * @param lastname the new last name
-     */
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 }
