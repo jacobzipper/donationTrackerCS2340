@@ -12,27 +12,9 @@ public class Donation {
     private final String description;
     private final String value;
     private final DonationCategory category;
-    private final String comments;
+    private String comments = "No comments";
     private String tstamp;
 
-    /**
-     * Creates a new Donation with given parameters
-     * @param name The name of the donation
-     * @param shortdescription A short description of the donation
-     * @param description A full description of the donation
-     * @param value The estimated value of the donation (in dollars)
-     * @param category The category the donation falls in
-     * @param comments Non-empty comments about the donation
-     */
-    public Donation(String name, String shortdescription, String description, String value,
-                    DonationCategory category, String comments) {
-        this.name = name;
-        this.shortdescription = shortdescription;
-        this.description = description;
-        this.value = value;
-        this.category = category;
-        this.comments = comments;
-    }
 
     /**
      * Creates a new Donation with no comments
@@ -42,9 +24,14 @@ public class Donation {
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
      */
-    public Donation(String name, String shortdescription, String description, String value
+    public Donation(CharSequence name, CharSequence shortdescription,
+                    CharSequence description, CharSequence value
                     , DonationCategory category) {
-        this(name, shortdescription, description, value, category, "No comment");
+        this.name = name.toString();
+        this.shortdescription = shortdescription.toString();
+        this.description = description.toString();
+        this.value = value.toString();
+        this.category = category;
     }
 
     /**
@@ -93,6 +80,14 @@ public class Donation {
      */
     public String getComments() {
         return (comments == null) ? "<No Comments>" : comments;
+    }
+
+    /**
+     * Setter for comments
+     * @param comments the new comments
+     */
+    public void setComments(CharSequence comments) {
+        this.comments = comments.toString();
     }
 
     /**

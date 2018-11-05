@@ -11,7 +11,7 @@ import java.io.IOException;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import retrofit2.Response;
 
-import static a5x.cs2340.donationtracker.Constants.ERROR_CODE_OK;
+import static a5x.cs2340.donationtracker.webservice.Webservice.ERROR_CODE_OK;
 
 /**
  * Represents an abstract webservice task which must be implemented in order to make calls

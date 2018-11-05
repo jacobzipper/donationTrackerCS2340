@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import java.io.IOException;
 
-import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.models.users.Admin;
 import a5x.cs2340.donationtracker.models.users.LocationEmployee;
@@ -54,26 +53,25 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
     @Override
     public void useResponse(LoginResponse response) {
         jwt = response.getJwt();
+        String firstName = response.getFirstname();
+        String lastName = response.getLastname();
+        String username = mBody.getUsername();
+        String password = mBody.getPassword();
         switch (response.getRole()) {
             case "admins":
-                account = new Admin(response.getFirstname(), response.getLastname(),
-                        mBody.getUsername(), mBody.getPassword());
+                account = new Admin(firstName, lastName, username, password);
                 break;
             case "users":
-                account = new User(response.getFirstname(), response.getLastname(),
-                        mBody.getUsername(), mBody.getPassword());
+                account = new User(firstName, lastName, username, password);
                 break;
             case "employees":
-                account = new LocationEmployee(response.getFirstname(), response.getLastname(),
-                        mBody.getUsername(), mBody.getPassword());
+                account = new LocationEmployee(firstName, lastName, username, password);
                 break;
             case "managers":
-                account = new Manager(response.getFirstname(), response.getLastname(),
-                        mBody.getUsername(), mBody.getPassword());
+                account = new Manager(firstName, lastName, username, password);
                 break;
             default:
-                account = new User(response.getFirstname(), response.getLastname(),
-                        mBody.getUsername(), mBody.getPassword());
+                account = new User(firstName, lastName, username, password);
                 break;
         }
         webservice.logIn(account, jwt);
@@ -89,6 +87,5 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
     public void uiFailure() {
         mContext.showProgress(false);
         mContext.indicateIncorrectPassword();
-        mContext.findViewById(R.id.username).requestFocus();
     }
 }

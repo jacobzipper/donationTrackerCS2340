@@ -123,48 +123,41 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordVerifyTextView.setError(null);
 
         View focusView = null;
-        boolean cancel = false;
-        String firstName = firstNameTextView.getText().toString();
-        String lastName = lastNameTextView.getText().toString();
-        String username = usernameTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-        String passwordVerify = passwordVerifyTextView.getText().toString();
+        CharSequence firstName = firstNameTextView.getText();
+        CharSequence lastName = lastNameTextView.getText();
+        CharSequence username = usernameTextView.getText();
+        CharSequence password = passwordTextView.getText();
+        CharSequence passwordVerify = passwordVerifyTextView.getText();
         UserType userType = (UserType) userTypeSpinner.getSelectedItem();
         //Error checking
         if (checkRequiredField(firstNameTextView, firstName)) {
             focusView = firstNameTextView;
-            cancel = true;
         } else if (checkRequiredField(lastNameTextView, lastName)) {
             focusView = lastNameTextView;
-            cancel = true;
         } else if (checkRequiredField(usernameTextView, username)) {
             focusView = usernameTextView;
-            cancel = true;
         } else if (checkRequiredField(passwordTextView, password)) {
             focusView = passwordTextView;
-            cancel = true;
         } else if (checkRequiredField(passwordVerifyTextView, passwordVerify)) {
             focusView = passwordVerifyTextView;
-            cancel = true;
         } else if (password.length() < MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
-            cancel = true;
         } else if (!passwordVerify.equals(password)) {
             passwordVerifyTextView.setError(getString(R.string.error_password_mismatch));
             focusView = passwordVerifyTextView;
-            cancel = true;
         }
-        if (cancel) {
+        if (focusView != null) {
             focusView.requestFocus();
         } else {
             //No errors, register the new credentials
-            registerUser(firstName, lastName, username, password, userType);
+            registerUser(firstName.toString(), lastName.toString(), username.toString(),
+                    password.toString(), userType);
         }
     }
 
-    private boolean checkRequiredField(TextView textView, String content) {
-        if (content.isEmpty()) {
+    private boolean checkRequiredField(TextView textView, CharSequence content) {
+        if (content.length() == 0) {
             textView.setError(getString(R.string.error_field_required));
             return true;
         }

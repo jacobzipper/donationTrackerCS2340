@@ -18,7 +18,6 @@ import android.widget.EditText;
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
-import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
 
@@ -89,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        CharSequence username = mUsernameView.getText();
+        CharSequence password = mPasswordView.getText();
 
         boolean cancel = false;
         View focusView = null;
@@ -121,7 +120,8 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new AccountLoginTask(this, new LoginBody(username, password));
+            mAuthTask = new AccountLoginTask(this, new LoginBody(username.toString(),
+                    password.toString()));
             mAuthTask.execute((Void) null);
         }
     }
@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
 
     void indicateIncorrectPassword() {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mUsernameView.requestFocus();
     }
 
     /**

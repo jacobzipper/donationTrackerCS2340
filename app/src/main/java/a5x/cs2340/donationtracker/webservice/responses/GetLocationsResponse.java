@@ -35,6 +35,6 @@ public class GetLocationsResponse extends StandardResponse {
      * @param locations the new list of locations
      */
     public void setLocations(Location[] locations) {
-        this.locations = locations;
+        this.locations = locations.clone();
     }
 }

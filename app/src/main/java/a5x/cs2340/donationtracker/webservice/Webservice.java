@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 
 import java.util.Objects;
 
-import a5x.cs2340.donationtracker.Constants;
 import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import retrofit2.Retrofit;
@@ -14,6 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Represents the webservice associated with the app-singleton class
  */
 public final class Webservice {
+    static final int ERROR_CODE_OK = 200;
+    private static final String API_URL = "https://donationtrackerzipper.herokuapp.com";
 
     private static final Webservice instance = new Webservice();
 
@@ -28,7 +29,7 @@ public final class Webservice {
     private final DonationService donationService;
 
     private Webservice() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(API_URL).
                 addConverterFactory(GsonConverterFactory.create()).build();
         accountService = retrofit.create(AccountService.class);
         donationService = retrofit.create(DonationService.class);}

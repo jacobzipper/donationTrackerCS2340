@@ -23,7 +23,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
             android:name=".activities.login.LoginActivity"
             android:label="@string/app_name" />
@@ -33,13 +36,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="donationtracker.2340.05x.com"
+                    android:pathPattern="/app" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.postlogin.PostLoginActivity" />
         <activity android:name=".activities.registration.RegistrationActivity" />
         <activity android:name=".activities.admintools.AddDonationActivity" />
-        <activity android:name=".activities.admintools.ViewDonationsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name=".activities.admintools.ViewDonationsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activities.admintools.AdminToolsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -57,7 +71,7 @@
 
         <activity
             android:name=".activities.postlogin.LocationsMapActivity"
-            android:label="@string/title_activity_locations_map"/>
+            android:label="@string/title_activity_locations_map" />
     </application>
 
 </manifest>

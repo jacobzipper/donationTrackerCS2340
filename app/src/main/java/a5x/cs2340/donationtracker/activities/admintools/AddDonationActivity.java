@@ -3,6 +3,7 @@ package a5x.cs2340.donationtracker.activities.admintools;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,20 +48,13 @@ public class AddDonationActivity extends AppCompatActivity {
     private void addDonation() {
         if(errorCheck(nameEditText) && errorCheck(descriptionEditText)
                 && errorCheck(valueEditText)) {
-            Donation donationToAdd;
-            if (commentEditText.getText().toString().isEmpty()) {
-                donationToAdd = new Donation(nameEditText.getText().toString(),
-                        shortDescriptionEditText.getText().toString(),
-                        descriptionEditText.getText().toString(),
-                        (valueEditText.getText().toString()),
-                        DonationCategory.values()[categorySpinner.getSelectedItemPosition()]);
-            } else {
-                donationToAdd = new Donation(nameEditText.getText().toString(),
-                        shortDescriptionEditText.getText().toString(),
-                        descriptionEditText.getText().toString(),
-                        (valueEditText.getText().toString()),
-                        DonationCategory.values()[categorySpinner.getSelectedItemPosition()],
-                        commentEditText.getText().toString());
+            Donation donationToAdd = new Donation(nameEditText.getText(),
+                    shortDescriptionEditText.getText(),
+                    descriptionEditText.getText(),
+                    (valueEditText.getText()),
+                    DonationCategory.values()[categorySpinner.getSelectedItemPosition()]);
+            if (!TextUtils.isEmpty(commentEditText.getText())) {
+                donationToAdd.setComments(commentEditText.getText());
             }
             AddDonationTask donationTask = new AddDonationTask(this, donationToAdd);
             donationTask.execute((Void) null);
@@ -69,7 +63,7 @@ public class AddDonationActivity extends AppCompatActivity {
     }
     private boolean errorCheck(EditText editText) {
         editText.setError(null);
-        if (editText.getText().toString().isEmpty()) {
+        if (TextUtils.isEmpty(editText.getText())) {
             editText.setError(getString(R.string.error_field_required));
             return false;
         }
