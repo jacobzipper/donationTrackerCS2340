@@ -76,7 +76,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                     [categorySpinner.getSelectedItemPosition() - 1].toString());
             String selectedLocation = locationsSearchableList
                     [(locationSpinner.getSelectedItemPosition())];
-            SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText().toString(),
+            SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText(),
                     selectedCategory, selectedLocation);
             searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
                     searchQuery);
@@ -125,7 +125,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                             setText(getString(R.string.donation_view_value,donation.getValue()));
                     ((TextView) dialog.findViewById(R.id.donationCategory)).
                             setText(getString(R.string.donation_view_category,
-                                    donation.getCategory().getName()));
+                                    donation.getCategoryName()));
                     ((TextView) dialog.findViewById(R.id.donationComments)).
                             setText(getString(R.string.donation_view_comments,
                                     donation.getComments()));

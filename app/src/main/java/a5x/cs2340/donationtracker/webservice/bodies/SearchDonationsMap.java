@@ -12,9 +12,9 @@ public class SearchDonationsMap extends HashMap<String, String> {
      * @param category The name of the category to filter by (null for any category)
      * @param location The location to search (null for any location)
      */
-    public SearchDonationsMap(String name, String category, String location) {
+    public SearchDonationsMap(CharSequence name, String category, String location) {
         super();
-        fillMap(name, category, location);
+        fillMap(name.toString(), category, location);
     }
     private void fillMap(String name, String category, String location) {
         if (name != null) {

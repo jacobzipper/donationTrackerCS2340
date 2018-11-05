@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.DexterBuilder;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
@@ -30,19 +31,21 @@ public class WelcomeActivity extends AppCompatActivity {
         Button goToRegisterButton = findViewById(R.id.goToRegisterButton);
         goToRegisterButton.setOnClickListener(view -> goToRegister());
 
-        Dexter.withActivity(this)
-                .withPermission(Manifest.permission.INTERNET)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {/* ... */}
+        DexterBuilder.Permission permission = Dexter.withActivity(this);
+        DexterBuilder.SinglePermissionListener singlePermissionListener =
+                permission.withPermission(Manifest.permission.INTERNET);
+        DexterBuilder builder = singlePermissionListener.withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse response) {/* ... */}
 
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                                                                   PermissionToken token) {/* ...*/}
-                }).check();
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                           PermissionToken token) {/* ...*/}
+        });
+        builder.check();
     }
 
     /**

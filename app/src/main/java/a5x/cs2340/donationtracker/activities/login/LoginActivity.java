@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+    @Nullable
     private AccountLoginTask mAuthTask;
 
     // UI references.
@@ -185,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
     void indicateIncorrectPassword() {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mUsernameView.requestFocus();
+        mAuthTask = null;
     }
 
     /**

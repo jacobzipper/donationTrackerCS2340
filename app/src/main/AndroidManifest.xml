@@ -53,7 +53,7 @@
         <activity android:name=".activities.admintools.AddDonationActivity" />
         <activity
             android:name=".activities.admintools.ViewDonationsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.admintools.AdminToolsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

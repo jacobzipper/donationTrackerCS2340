@@ -75,6 +75,13 @@ public class Donation {
     }
 
     /**
+     * Get the name of the donation's category
+     * @return the name of the donation's category, null if the category is null
+     */
+    public String getCategoryName() {
+        return ((category == null) ? null : category.getName());
+    }
+    /**
      * Getter for comments
      * @return the donation comments
      */
