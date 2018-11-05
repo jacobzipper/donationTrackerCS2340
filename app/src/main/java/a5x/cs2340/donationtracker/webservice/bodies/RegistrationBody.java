@@ -4,7 +4,6 @@ package a5x.cs2340.donationtracker.webservice.bodies;
  * Webservice body used for user registration
  */
 public class RegistrationBody extends LoginBody {
-    private final String role;
     private final String firstname;
     private final String lastname;
 
@@ -19,7 +18,7 @@ public class RegistrationBody extends LoginBody {
     public RegistrationBody(String username, String password, String role,
                             String firstname, String lastname) {
         super(username, password);
-        this.role = role;
+        String role1 = role;
         this.firstname = firstname;
         this.lastname = lastname;
     }

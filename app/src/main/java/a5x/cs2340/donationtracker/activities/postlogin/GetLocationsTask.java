@@ -31,7 +31,6 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
         Object, GetLocationsResponse> {
     private Location[] locations;
     private List<String> locationNames;
-    private final Webservice webservice;
     private final AccountService accountService;
 
     /**
@@ -41,7 +40,7 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
      */
     GetLocationsTask(PostLoginActivity context) {
         super(context, null);
-        webservice = Webservice.getInstance();
+        Webservice webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
 

@@ -27,7 +27,7 @@ public class GetLocationsResponse extends StandardResponse {
      * @return the list of locations
      */
     public Location[] getLocations() {
-        return locations;
+        return locations.clone();
     }
 
     /**

@@ -20,7 +20,6 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak")
 public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity,
         RegistrationBody, StandardResponse> {
-    private final Webservice webservice;
     private final AccountService accountService;
     /**
      * Creates a new AccountRegistrationTask with the given context and body
@@ -29,7 +28,7 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
      */
     AccountRegistrationTask(RegistrationActivity activity, RegistrationBody body) {
         super(activity, body);
-        webservice = Webservice.getInstance();
+        Webservice webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
 

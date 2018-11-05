@@ -13,8 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Represents the webservice associated with the app-singleton class
  */
-public class Webservice {
-    private final Retrofit retrofit;
+public final class Webservice {
 
     private static final Webservice instance = new Webservice();
 
@@ -29,8 +28,8 @@ public class Webservice {
     private final DonationService donationService;
 
     private Webservice() {
-        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).
-            addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).
+                addConverterFactory(GsonConverterFactory.create()).build();
         accountService = retrofit.create(AccountService.class);
         donationService = retrofit.create(DonationService.class);}
     static {

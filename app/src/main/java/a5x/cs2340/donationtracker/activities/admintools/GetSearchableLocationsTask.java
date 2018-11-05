@@ -26,11 +26,10 @@ public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActi
         Object, GetLocationsResponse> {
     private List<String> locationsShowableList;
     private List<String> locationsSearchableList;
-    private final Webservice webservice;
     private final AccountService accountService;
     GetSearchableLocationsTask(ViewDonationsActivity context) {
         super(context, null);
-        webservice = Webservice.getInstance();
+        Webservice webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
     @Override

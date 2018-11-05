@@ -27,7 +27,7 @@ public class GetDonationsResponse extends StandardResponse {
      * @return the list of donations
      */
     public Donation[] getDonations() {
-        return donations;
+        return donations.clone();
     }
 
 

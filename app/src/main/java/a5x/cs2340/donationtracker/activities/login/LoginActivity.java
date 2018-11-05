@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -183,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param account the account of the successfully logged in person
      */
-    void goToPostLogin(Account account, String jwt) {
+    void goToPostLogin(Parcelable account, String jwt) {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
         goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);

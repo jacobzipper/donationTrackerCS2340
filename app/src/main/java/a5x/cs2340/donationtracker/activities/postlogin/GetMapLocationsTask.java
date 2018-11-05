@@ -16,12 +16,11 @@ import retrofit2.Response;
 public class GetMapLocationsTask extends WebserviceTask<LocationsMapActivity, Object,
         GetLocationsResponse> {
     private Location[] locations;
-    private final Webservice webservice;
     private final AccountService accountService;
 
     GetMapLocationsTask(LocationsMapActivity context) {
         super(context, null);
-        webservice = Webservice.getInstance();
+        Webservice webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
     @Override
