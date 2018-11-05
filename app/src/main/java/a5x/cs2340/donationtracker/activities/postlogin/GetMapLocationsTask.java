@@ -16,17 +16,21 @@ import retrofit2.Response;
 public class GetMapLocationsTask extends WebserviceTask<LocationsMapActivity, Object,
         GetLocationsResponse> {
     private Location[] locations;
+    private final Webservice webservice;
     private final AccountService accountService;
 
     GetMapLocationsTask(LocationsMapActivity context) {
         super(context, null);
-        Webservice webservice = Webservice.getInstance();
+        webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
     @Override
     protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-        Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
-        return getLocationsResponseCall.execute();
+        if (webservice.isLoggedIn()) {
+            Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
+            return getLocationsResponseCall.execute();
+        }
+        return null;
     }
 
     @Override

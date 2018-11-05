@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -24,6 +25,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     private GoogleMap mMap;
     private MapView mapView;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final float DEFAULT_ZOOM_LEVEL = 10.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,8 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         Log.d("MapReady", "Successful Map Ready");
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+        UiSettings mapUISettings = mMap.getUiSettings();
+        mapUISettings.setZoomControlsEnabled(true);
         GetMapLocationsTask mTask = new GetMapLocationsTask(this);
         mTask.execute((Void) null);
 
@@ -110,11 +113,13 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
             newLocation = new LatLng(Double.parseDouble(location.getLatitude()),
                     Double.parseDouble(location.getLongitude()));
             Log.d("MapReady", "Adding Marker");
-            mMap.addMarker(new MarkerOptions().position(newLocation).
-                    title(location.getName()).snippet(location.getPhone()));
+            MarkerOptions newMarker = new MarkerOptions();
+            newMarker.position(newLocation);
+            newMarker.title(location.getName());
+            newMarker.snippet(location.getPhone());
+            mMap.addMarker(newMarker);
             Log.d("MapReady", "Marker should be added");
         }
-        float DEFAULT_ZOOM_LEVEL = 10.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, DEFAULT_ZOOM_LEVEL));
     }
     private void backToLocationList() {

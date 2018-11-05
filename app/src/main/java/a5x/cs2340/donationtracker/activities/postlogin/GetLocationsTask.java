@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.webservice.AccountService;
@@ -31,6 +32,7 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
         Object, GetLocationsResponse> {
     private Location[] locations;
     private List<String> locationNames;
+    private final Webservice webservice;
     private final AccountService accountService;
 
     /**
@@ -40,22 +42,26 @@ public class GetLocationsTask extends WebserviceTask<PostLoginActivity,
      */
     GetLocationsTask(PostLoginActivity context) {
         super(context, null);
-        Webservice webservice = Webservice.getInstance();
+        webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
 
     @Override
     public Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-        Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
-        return getLocationsResponseCall.execute();
+        if (webservice.isLoggedIn()) {
+            Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
+            return getLocationsResponseCall.execute();
+        }
+        return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void useResponse(GetLocationsResponse response) {
         locations = response.getLocations();
-        locationNames = Arrays.stream(locations).map(Location::getName).
-                collect(Collectors.toList());
+        Stream<Location> locationStream = Arrays.stream(locations);
+        Stream<String> namesStream = locationStream.map(Location::getName);
+        locationNames = namesStream.collect(Collectors.toList());
     }
 
     @Override

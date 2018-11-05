@@ -2,8 +2,6 @@ package a5x.cs2340.donationtracker.webservice;
 
 import android.support.annotation.Nullable;
 
-import java.util.Objects;
-
 import a5x.cs2340.donationtracker.models.users.Account;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import retrofit2.Retrofit;
@@ -22,6 +20,8 @@ public final class Webservice {
     @Nullable
     private Account accountLoggedIn;
     @Nullable
+    private UserType accountUserType;
+    @Nullable
     private String jwtToken;
 
     // Services
@@ -29,8 +29,12 @@ public final class Webservice {
     private final DonationService donationService;
 
     private Webservice() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(API_URL).
-                addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        Retrofit.Builder urlRetrofitBuilder = retrofitBuilder.baseUrl(API_URL);
+        GsonConverterFactory converterFactory = GsonConverterFactory.create();
+        Retrofit.Builder converterFactoryBuilder =
+                urlRetrofitBuilder.addConverterFactory(converterFactory);
+        Retrofit retrofit = converterFactoryBuilder.build();
         accountService = retrofit.create(AccountService.class);
         donationService = retrofit.create(DonationService.class);}
     static {
@@ -49,6 +53,7 @@ public final class Webservice {
      */
     public void logIn(Account acc, String jwt) {
         accountLoggedIn = acc;
+        accountUserType = accountLoggedIn.getUserType();
         jwtToken = jwt;
     }
 
@@ -69,36 +74,34 @@ public final class Webservice {
     }
 
     /**
-     * Gets the UserType of the logged in account
-     * @return the UserType corresponding to the logged in account, null if no user is logged in
-     */
-    public UserType getLoggedInUserType() {
-        assert accountLoggedIn != null;
-        return (isLoggedIn())
-            ? accountLoggedIn.getUserType() : null;
-    }
-
-    /**
      * Gets the name of the account currently logged in
      * @return the name of the logged in account, null if no account is logged in
      */
     public String getAccountName() {
-        return (isLoggedIn() ? Objects.requireNonNull(accountLoggedIn).getName() : null);
+        return ((accountLoggedIn != null) ? accountLoggedIn.getName() : null);
     }
     /**
      * Gets the current APIType of the logged in user
      * @return the current APIType of the logged in user, null if no user is logged in
      */
     public String getCurrentUserAPIType() {
-        return (isLoggedIn() ? getLoggedInUserType().getAPIType() : null);
+        return ((accountUserType != null) ? accountUserType.getAPIType() : null);
     }
 
+    /**
+     * Gets the label of the current user type
+     * @return the label corresponding to the user type of the logged in user, null
+     * if no user is logged in
+     */
+    public String getUserTypeLabel() {
+        return ((accountUserType != null) ? accountUserType.toString() : null);
+    }
     /**
      * Gets the current permission level of the logged in user
      * @return the current permissions level of the logged in user, -1 if no user is logged in
      */
     public  int getCurrentUserPermissions() {
-        return (isLoggedIn() ? getLoggedInUserType().getPermissionsLevel() : -1);
+        return ((accountUserType != null) ? accountUserType.getPermissionsLevel() : -1);
     }
     /**
      * Get the current jwt

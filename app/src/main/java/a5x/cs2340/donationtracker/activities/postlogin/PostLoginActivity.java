@@ -30,7 +30,7 @@ public class PostLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_login);
         TextView postLoginTextView = findViewById(R.id.postLoginTextView);
         postLoginTextView.setText(getString(R.string.post_login_welcome_string,
-                webservice.getLoggedInUserType().toString(),
+                webservice.getUserTypeLabel(),
                 webservice.getAccountName()));
         Button logoutButton = findViewById(R.id.logoutButton);
         mGetLocationsTask = new GetLocationsTask(this);

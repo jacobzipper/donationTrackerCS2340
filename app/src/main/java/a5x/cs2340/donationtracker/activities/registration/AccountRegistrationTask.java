@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity,
         RegistrationBody, StandardResponse> {
     private final AccountService accountService;
+    private final Webservice webservice;
     /**
      * Creates a new AccountRegistrationTask with the given context and body
      * @param activity The RegistrationActivity to use as the context
@@ -28,14 +29,17 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
      */
     AccountRegistrationTask(RegistrationActivity activity, RegistrationBody body) {
         super(activity, body);
-        Webservice webservice = Webservice.getInstance();
+        webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
 
     @Override
     public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
-        Call<StandardResponse> standardResponseCall = accountService.register(body);
-        return standardResponseCall.execute();
+        if (webservice.isLoggedIn()) {
+            Call<StandardResponse> standardResponseCall = accountService.register(body);
+            return standardResponseCall.execute();
+        }
+        return null;
     }
 
     @Override

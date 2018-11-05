@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
@@ -47,8 +48,9 @@ public class GetDonationsTask extends WebserviceTask<ViewDonationsActivity,
     @Override
     public void useResponse(GetDonationsResponse response) {
         donations = response.getDonations();
-        donationSDescriptions = Arrays.stream(donations).
-                map(Donation::getShortdescription).collect(Collectors.toList());
+        Stream<Donation> donationStream = Arrays.stream(donations);
+        Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
+        donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
     }
 
     @Override

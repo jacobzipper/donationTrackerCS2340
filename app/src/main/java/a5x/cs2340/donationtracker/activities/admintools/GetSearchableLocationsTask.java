@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
@@ -27,25 +28,31 @@ public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActi
     private List<String> locationsShowableList;
     private List<String> locationsSearchableList;
     private final AccountService accountService;
+    private final Webservice webservice;
     GetSearchableLocationsTask(ViewDonationsActivity context) {
         super(context, null);
-        Webservice webservice = Webservice.getInstance();
+        webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
     }
     @Override
     protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-        Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
-        return getLocationsResponseCall.execute();
+        if (webservice.isLoggedIn()) {
+            Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
+            return getLocationsResponseCall.execute();
+        }
+        return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void useResponse(GetLocationsResponse response) {
-        locationsSearchableList = Arrays.stream(response.getLocations()).
-                map(Location::getName).collect(Collectors.toList());
+        Stream<Location> searchableListStream = Arrays.stream(response.getLocations());
+        Stream<String> searchableListNameStream = searchableListStream.map(Location::getName);
+        locationsSearchableList = searchableListNameStream.collect(Collectors.toList());
         locationsSearchableList.add(0, null);
-        locationsShowableList = Arrays.stream(response.getLocations()).
-                map(Location::getName).collect(Collectors.toList());
+        Stream<Location> showableListStream = Arrays.stream(response.getLocations());
+        Stream<String> showableListNameStream = showableListStream.map(Location::getName);
+        locationsShowableList = showableListNameStream.collect(Collectors.toList());
         locationsShowableList.add(0, "Any");
     }
 
