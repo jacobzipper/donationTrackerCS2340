@@ -16,21 +16,13 @@ public class LoginBody {
         this.username = username;
         this.password = password;
     }
-
+    LoginBody(){}
     /**
      * Getter for username
      * @return the username
      */
     public String getUsername() {
         return username;
-    }
-
-    /**
-     * Setter for username
-     * @param username the new username
-     */
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     /**
@@ -41,11 +33,4 @@ public class LoginBody {
         return password;
     }
 
-    /**
-     * Setter for password
-     * @param password the new password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
