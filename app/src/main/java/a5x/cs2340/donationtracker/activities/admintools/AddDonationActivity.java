@@ -84,7 +84,7 @@ public class AddDonationActivity extends AppCompatActivity {
         startActivity(backToAdminToolsIntent);
     }
 
-    private class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
+    private static class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
         @Override
         public Response<StandardResponse> doRequest(Donation body) throws IOException {
             Webservice web = Webservice.getInstance();
