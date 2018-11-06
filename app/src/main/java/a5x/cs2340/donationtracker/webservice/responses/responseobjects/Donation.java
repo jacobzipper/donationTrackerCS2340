@@ -18,15 +18,16 @@ public class Donation {
 
     /**
      * Creates a new Donation with no comments
-     * @param name The name of the donation
+     *
+     * @param name             The name of the donation
      * @param shortdescription A short description of the donation
-     * @param description A description of the donation
-     * @param value The estimated value of the donation (in dollars)
-     * @param category The category the donation falls in
+     * @param description      A description of the donation
+     * @param value            The estimated value of the donation (in dollars)
+     * @param category         The category the donation falls in
      */
     public Donation(CharSequence name, CharSequence shortdescription,
                     CharSequence description, CharSequence value
-                    , DonationCategory category) {
+            , DonationCategory category) {
         this.name = name.toString();
         this.shortdescription = shortdescription.toString();
         this.description = description.toString();
@@ -36,6 +37,7 @@ public class Donation {
 
     /**
      * Getter for name
+     *
      * @return the donation name
      */
     public String getName() {
@@ -44,6 +46,7 @@ public class Donation {
 
     /**
      * Getter for short description
+     *
      * @return the short description
      */
     public String getShortdescription() {
@@ -52,6 +55,7 @@ public class Donation {
 
     /**
      * Getter for description
+     *
      * @return the donation description
      */
     public String getDescription() {
@@ -60,6 +64,7 @@ public class Donation {
 
     /**
      * Getter for value
+     *
      * @return the donation value
      */
     public String getValue() {
@@ -68,13 +73,16 @@ public class Donation {
 
     /**
      * Get the name of the donation's category
+     *
      * @return the name of the donation's category, null if the category is null
      */
     public String getCategoryName() {
         return ((category == null) ? null : category.toString());
     }
+
     /**
      * Getter for comments
+     *
      * @return the donation comments
      */
     public String getComments() {
@@ -83,6 +91,7 @@ public class Donation {
 
     /**
      * Setter for comments
+     *
      * @param comments the new comments
      */
     public void setComments(CharSequence comments) {
@@ -91,6 +100,7 @@ public class Donation {
 
     /**
      * Getter for time stamp
+     *
      * @return the donation time stamp
      */
     public String getTstamp() {

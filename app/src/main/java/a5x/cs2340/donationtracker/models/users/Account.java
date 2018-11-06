@@ -30,6 +30,7 @@ public abstract class Account implements Parcelable {
 
     /**
      * Returns the type of the user, different per concrete implementation
+     *
      * @return the user type of the account
      */
     public abstract UserType getUserType();

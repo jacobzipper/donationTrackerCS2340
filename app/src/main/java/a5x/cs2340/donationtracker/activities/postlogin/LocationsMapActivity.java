@@ -46,6 +46,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -58,6 +59,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
 
         mapView.onSaveInstanceState(mapViewBundle);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -75,21 +77,25 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         super.onStop();
         mapView.onStop();
     }
+
     @Override
     protected void onPause() {
         mapView.onPause();
         super.onPause();
     }
+
     @Override
     protected void onDestroy() {
         mapView.onDestroy();
         super.onDestroy();
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -108,9 +114,11 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         mTask.execute((Object) null);
 
     }
+
     void populateList(Location[] locations) {
         createMarkers(locations);
     }
+
     private void createMarkers(Location[] locations) {
         LatLng newLocation = new LatLng(0, 0);
         for (Location location : locations) {
@@ -124,6 +132,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, DEFAULT_ZOOM_LEVEL));
     }
+
     private void backToLocationList() {
         Intent backToLocationListIntent = new Intent(this, PostLoginActivity.class);
         startActivity(backToLocationListIntent);

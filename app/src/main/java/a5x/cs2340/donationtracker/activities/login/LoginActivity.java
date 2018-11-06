@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
 
     private final Webservice webservice = Webservice.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,7 +198,6 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Transitions from the login screen to the post-login screen
-     *
      */
     void goToPostLogin() {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);

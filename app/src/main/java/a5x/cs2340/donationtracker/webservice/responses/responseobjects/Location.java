@@ -14,6 +14,7 @@ public class Location {
 
     /**
      * Getter for type
+     *
      * @return the type of the location
      */
     public String getType() {
@@ -22,6 +23,7 @@ public class Location {
 
     /**
      * Getter for name
+     *
      * @return the name of the location
      */
     public String getName() {
@@ -30,6 +32,7 @@ public class Location {
 
     /**
      * Getter for latitude
+     *
      * @return the latitude of the location
      */
     public String getLatitude() {
@@ -38,6 +41,7 @@ public class Location {
 
     /**
      * Getter for longitude
+     *
      * @return the longitude of the location
      */
     public String getLongitude() {
@@ -46,6 +50,7 @@ public class Location {
 
     /**
      * Getter for address
+     *
      * @return the address of the location
      */
     public String getAddress() {
@@ -54,6 +59,7 @@ public class Location {
 
     /**
      * Getter for phone number
+     *
      * @return the phone number of the location
      */
     public String getPhone() {

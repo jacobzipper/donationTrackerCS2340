@@ -36,18 +36,25 @@ public final class Webservice {
                 urlRetrofitBuilder.addConverterFactory(converterFactory);
         Retrofit retrofit = converterFactoryBuilder.build();
         accountService = retrofit.create(AccountService.class);
-        donationService = retrofit.create(DonationService.class);}
+        donationService = retrofit.create(DonationService.class);
+    }
+
     static {
 
     }
 
     /**
      * Get the instance representing this singleton class
+     *
      * @return the Webservice instance
      */
-    public static Webservice getInstance() {return instance;}
+    public static Webservice getInstance() {
+        return instance;
+    }
+
     /**
      * Log in with the given account and jwt
+     *
      * @param acc the account to log in
      * @param jwt the jwt currently logging in
      */
@@ -67,6 +74,7 @@ public final class Webservice {
 
     /**
      * Checks whether or not an account is currently logged in
+     *
      * @return true if an account is logged in
      */
     public boolean isLoggedIn() {
@@ -75,13 +83,16 @@ public final class Webservice {
 
     /**
      * Gets the name of the account currently logged in
+     *
      * @return the name of the logged in account, null if no account is logged in
      */
     public String getAccountName() {
         return ((accountLoggedIn != null) ? accountLoggedIn.getName() : null);
     }
+
     /**
      * Gets the current APIType of the logged in user
+     *
      * @return the current APIType of the logged in user, null if no user is logged in
      */
     public String getCurrentUserAPIType() {
@@ -90,21 +101,26 @@ public final class Webservice {
 
     /**
      * Gets the label of the current user type
+     *
      * @return the label corresponding to the user type of the logged in user, null
      * if no user is logged in
      */
     public String getUserTypeLabel() {
         return ((accountUserType != null) ? accountUserType.toString() : null);
     }
+
     /**
      * Gets the current permission level of the logged in user
+     *
      * @return the current permissions level of the logged in user, -1 if no user is logged in
      */
-    public  int getCurrentUserPermissions() {
+    public int getCurrentUserPermissions() {
         return ((accountUserType != null) ? accountUserType.getPermissionsLevel() : -1);
     }
+
     /**
      * Get the current jwt
+     *
      * @return the jwt
      */
     @Nullable
@@ -114,6 +130,7 @@ public final class Webservice {
 
     /**
      * Getter for account service
+     *
      * @return the account service
      */
     public AccountService getAccountService() {
@@ -122,6 +139,7 @@ public final class Webservice {
 
     /**
      * Getter for donation service
+     *
      * @return the donation service
      */
     public DonationService getDonationService() {

@@ -10,6 +10,7 @@ public class GetDonationsResponse extends StandardResponse {
 
     /**
      * Gets the list of donations
+     *
      * @return the list of donations
      */
     public Donation[] getDonations() {

@@ -16,13 +16,16 @@ import retrofit2.http.POST;
 public interface AccountService {
     /**
      * Attempts to login based on passed in body
+     *
      * @param body the login body to login with
      * @return the server call
      */
     @POST("/login")
     Call<LoginResponse> login(@Body LoginBody body);
+
     /**
      * Attempts to register based on passed in body
+     *
      * @param body the registration body to register with
      * @return the server call
      */
@@ -31,6 +34,7 @@ public interface AccountService {
 
     /**
      * Gets the list of locations stored on the server
+     *
      * @return the server call
      */
     @GET("/locations")

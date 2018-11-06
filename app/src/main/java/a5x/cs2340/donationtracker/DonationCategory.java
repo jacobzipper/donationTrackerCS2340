@@ -20,10 +20,13 @@ public enum DonationCategory {
     OTHER("Other"),
     NOCAT("<No Category>");
     private final String name;
+
     DonationCategory(String name) {
         this.name = name;
     }
 
     @Override
-    public String toString() { return name; }
+    public String toString() {
+        return name;
+    }
 }

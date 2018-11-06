@@ -53,7 +53,7 @@ public class AddDonationActivity extends AppCompatActivity {
     }
 
     private void addDonation() {
-        if(errorCheck(nameEditText) && errorCheck(descriptionEditText)
+        if (errorCheck(nameEditText) && errorCheck(descriptionEditText)
                 && errorCheck(valueEditText)) {
             Donation donationToAdd = new Donation(nameEditText.getText(),
                     shortDescriptionEditText.getText(),
@@ -68,6 +68,7 @@ public class AddDonationActivity extends AppCompatActivity {
             returnToAdminTools();
         }
     }
+
     private boolean errorCheck(EditText editText) {
         editText.setError(null);
         if (TextUtils.isEmpty(editText.getText())) {
@@ -76,6 +77,7 @@ public class AddDonationActivity extends AppCompatActivity {
         }
         return true;
     }
+
     private void returnToAdminTools() {
         Intent backToAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
         startActivity(backToAdminToolsIntent);
@@ -84,8 +86,9 @@ public class AddDonationActivity extends AppCompatActivity {
     private class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
         @Override
         public Response<StandardResponse> doRequest(Donation body) throws IOException {
-            Call<StandardResponse> standardResponseCall = Webservice.getInstance().getDonationService().
-                    addDonation(Webservice.getInstance().getCurrentUserAPIType(),
+            Call<StandardResponse> standardResponseCall = Webservice.getInstance()
+                    .getDonationService()
+                    .addDonation(Webservice.getInstance().getCurrentUserAPIType(),
                             body, "Bearer " + Webservice.getInstance().getJwtToken());
             return standardResponseCall.execute();
         }

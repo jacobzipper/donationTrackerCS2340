@@ -15,7 +15,8 @@ import static a5x.cs2340.donationtracker.webservice.Webservice.ERROR_CODE_OK;
  * to the backend webservice
  */
 @SuppressLint("StaticFieldLeak")
-public abstract class WebserviceTask<T, Void, U extends StandardResponse> extends AsyncTask<T, Void, U> {
+public abstract class WebserviceTask<T, Void, U extends StandardResponse>
+        extends AsyncTask<T, Void, U> {
 
     @Override
     protected U doInBackground(T... params) {

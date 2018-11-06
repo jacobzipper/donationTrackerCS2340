@@ -10,6 +10,7 @@ public class GetLocationsResponse extends StandardResponse {
 
     /**
      * Gets the list of locations
+     *
      * @return the list of locations
      */
     public Location[] getLocations() {

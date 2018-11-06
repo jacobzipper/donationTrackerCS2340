@@ -14,10 +14,14 @@ public class StandardResponse {
         this.error = error;
         this.msg = msg;
     }
-    protected StandardResponse() {msg = null;}
+
+    protected StandardResponse() {
+        msg = null;
+    }
 
     /**
      * Get the error code of the response
+     *
      * @return the error code
      */
     public int getError() {

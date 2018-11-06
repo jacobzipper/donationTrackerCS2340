@@ -42,6 +42,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
     private final String[] SEARCH_DONATION_CATEGORIES = {"Any", "Clothing", "Hat", "Kitchen",
             "Electronics", "Household", "Other"};
     private final String[] NO_SEARCH_RESULTS = {"No Results"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +79,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         locationSpinner.setAdapter(locationArrayAdapter);
         Button donationSearchButton = dialog.findViewById(R.id.donationSearchGoButton);
         Button closeButton = dialog.findViewById(R.id.donationSearchCancelButton);
-        closeButton.setOnClickListener(v->dialog.dismiss());
+        closeButton.setOnClickListener(v -> dialog.dismiss());
 
         donationSearchButton.setOnClickListener(view -> {
 
@@ -98,11 +99,13 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
     private void setDonationListToDefault() {
         GetDonationsTask getDonationsTask = new GetDonationsTask();
         getDonationsTask.execute((Object) null);
 
     }
+
     void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
         if (donationList.length == 0) {
             ((ListView) this.findViewById(R.id.donationsList)).
@@ -110,7 +113,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
                             android.R.layout.simple_list_item_1, android.R.id.text1,
                             NO_SEARCH_RESULTS));
             ((ListView) findViewById(R.id.donationsList)).
-                    setOnItemClickListener((parent, view, position, id) -> {} );
+                    setOnItemClickListener((parent, view, position, id) -> {
+                    });
             return;
         }
         ((ListView) this.findViewById(R.id.donationsList)).
@@ -126,7 +130,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
                     // set the custom dialog components - text, image and button
                     ((TextView) dialog.findViewById(R.id.donationName)).
-                            setText(getString(R.string.donation_view_name,donation.getName()));
+                            setText(getString(R.string.donation_view_name, donation.getName()));
                     ((TextView) dialog.findViewById(R.id.donationShortDescription)).
                             setText(getString(R.string.donation_view_short_description,
                                     donation.getShortdescription()));
@@ -134,7 +138,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                             setText(getString(R.string.donation_view_description,
                                     donation.getDescription()));
                     ((TextView) dialog.findViewById(R.id.donationValue)).
-                            setText(getString(R.string.donation_view_value,donation.getValue()));
+                            setText(getString(R.string.donation_view_value, donation.getValue()));
                     ((TextView) dialog.findViewById(R.id.donationCategory)).
                             setText(getString(R.string.donation_view_category,
                                     donation.getCategoryName()));
@@ -153,6 +157,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                 });
 
     }
+
     void setLocationsLists(List<String> searchableList, List<String> showableList) {
         locationsSearchableList = new String[searchableList.size()];
         locationsSearchableList = searchableList.toArray(locationsSearchableList);
@@ -160,14 +165,17 @@ public class ViewDonationsActivity extends AppCompatActivity {
         locationsShowableList = showableList.toArray(locationsShowableList);
         switchToMakingSearch();
     }
+
     void switchToClearingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
         donationViewToolbar.setNavigationOnClickListener(v -> setDonationListToDefault());
     }
+
     void switchToMakingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
         donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
     }
+
     public class GetDonationsTask extends WebserviceTask<Object,
             Void, GetDonationsResponse> {
         private Donation[] donations;
@@ -190,7 +198,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
             }
             donations = response.getDonations();
             Stream<Donation> donationStream = Arrays.stream(donations);
-            Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
+            Stream<String> shortDescriptionStream =
+                    donationStream.map(Donation::getShortdescription);
             donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
             updateListView(donations, donationSDescriptions);
             switchToMakingSearch();
@@ -208,11 +217,12 @@ public class ViewDonationsActivity extends AppCompatActivity {
          * Empty string should count as null
          */
         @Override
-        public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
+        public Response<GetDonationsResponse> doRequest(SearchDonationsMap body)
+                throws IOException {
             Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
                     .getDonationService().searchDonations(
-                    Webservice.getInstance().getCurrentUserAPIType(),
-                    "Bearer " + Webservice.getInstance().getJwtToken(), body);
+                            Webservice.getInstance().getCurrentUserAPIType(),
+                            "Bearer " + Webservice.getInstance().getJwtToken(), body);
             return getDonationsResponseCall.execute();
         }
 
@@ -224,7 +234,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
             }
             donations = response.getDonations();
             Stream<Donation> donationStream = Arrays.stream(donations);
-            Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
+            Stream<String> shortDescriptionStream =
+                    donationStream.map(Donation::getShortdescription);
             donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
             updateListView(donations, donationSDescriptions);
             switchToClearingSearch();
@@ -239,7 +250,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
         @Override
         protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
             if (Webservice.getInstance().isLoggedIn()) {
-                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance().getAccountService().locations();
+                Call<GetLocationsResponse> getLocationsResponseCall =
+                        Webservice.getInstance().getAccountService().locations();
                 return getLocationsResponseCall.execute();
             }
             return null;

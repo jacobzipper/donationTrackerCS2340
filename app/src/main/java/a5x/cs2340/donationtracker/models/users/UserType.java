@@ -11,6 +11,7 @@ public enum UserType {
     private final String label;
     private final String apiType;
     private final int permissionsLevel;
+
     UserType(String label, String apiType, int permissionsLevel) {
         this.label = label;
         this.apiType = apiType;
@@ -19,6 +20,7 @@ public enum UserType {
 
     /**
      * Getter for the permissions level
+     *
      * @return the permissions level corresponding to the UserType
      */
     public int getPermissionsLevel() {
@@ -27,6 +29,7 @@ public enum UserType {
 
     /**
      * Getter for the API type of the user
+     *
      * @return the API type corresponding to the UserType
      */
     public String getAPIType() {

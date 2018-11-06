@@ -268,6 +268,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
     }
+
     public class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
             Void, StandardResponse> {
 
