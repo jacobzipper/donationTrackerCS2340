@@ -23,4 +23,7 @@ public class RegistrationBody extends LoginBody {
         this.lastname = lastname;
     }
 
+    public String getRole() {
+        return role;
+    }
 }
