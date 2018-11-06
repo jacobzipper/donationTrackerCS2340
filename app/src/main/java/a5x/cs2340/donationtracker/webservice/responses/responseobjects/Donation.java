@@ -67,14 +67,6 @@ public class Donation {
     }
 
     /**
-     * Getter for category
-     * @return the donation category
-     */
-    public DonationCategory getCategory() {
-        return (category == null) ? DonationCategory.NOCAT : category;
-    }
-
-    /**
      * Get the name of the donation's category
      * @return the name of the donation's category, null if the category is null
      */

@@ -128,6 +128,8 @@ public class RegistrationActivity extends AppCompatActivity {
         CharSequence username = usernameTextView.getText();
         CharSequence password = passwordTextView.getText();
         CharSequence passwordVerify = passwordVerifyTextView.getText();
+        String passwordVerifyString = passwordVerify.toString();
+        String passwordString = password.toString();
         UserType userType = (UserType) userTypeSpinner.getSelectedItem();
         //Error checking
         if (checkRequiredField(firstNameTextView, firstName)) {
@@ -143,7 +145,7 @@ public class RegistrationActivity extends AppCompatActivity {
         } else if (password.length() < MIN_PASSWORD_LENGTH) {
             passwordTextView.setError(getString(R.string.error_invalid_password));
             focusView = passwordTextView;
-        } else if (!passwordVerify.equals(password)) {
+        } else if (!passwordVerifyString.equals(passwordString)) {
             passwordVerifyTextView.setError(getString(R.string.error_password_mismatch));
             focusView = passwordVerifyTextView;
         }

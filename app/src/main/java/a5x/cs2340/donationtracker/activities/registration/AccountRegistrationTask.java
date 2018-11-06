@@ -35,7 +35,7 @@ public class AccountRegistrationTask extends WebserviceTask<RegistrationActivity
 
     @Override
     public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
-        if (webservice.isLoggedIn()) {
+        if (!webservice.isLoggedIn()) {
             Call<StandardResponse> standardResponseCall = accountService.register(body);
             return standardResponseCall.execute();
         }
