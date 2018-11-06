@@ -9,9 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.io.IOException;
+
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
+import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Activity for employees to create new donations to add
@@ -56,8 +63,8 @@ public class AddDonationActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(commentEditText.getText())) {
                 donationToAdd.setComments(commentEditText.getText());
             }
-            AddDonationTask donationTask = new AddDonationTask(this, donationToAdd);
-            donationTask.execute((Void) null);
+            AddDonationTask donationTask = new AddDonationTask();
+            donationTask.execute(donationToAdd);
             returnToAdminTools();
         }
     }
@@ -72,5 +79,16 @@ public class AddDonationActivity extends AppCompatActivity {
     private void returnToAdminTools() {
         Intent backToAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
         startActivity(backToAdminToolsIntent);
+    }
+
+    private class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
+        @Override
+        public Response<StandardResponse> doRequest(Donation body) throws IOException {
+            Call<StandardResponse> standardResponseCall = Webservice.getInstance().getDonationService().
+                    addDonation(Webservice.getInstance().getCurrentUserAPIType(),
+                            body, "Bearer " + Webservice.getInstance().getJwtToken());
+            return standardResponseCall.execute();
+        }
+
     }
 }

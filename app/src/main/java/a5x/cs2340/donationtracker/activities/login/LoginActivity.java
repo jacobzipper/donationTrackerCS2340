@@ -18,11 +18,22 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.IOException;
+
 import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
+import a5x.cs2340.donationtracker.models.users.Account;
+import a5x.cs2340.donationtracker.models.users.Admin;
+import a5x.cs2340.donationtracker.models.users.LocationEmployee;
+import a5x.cs2340.donationtracker.models.users.Manager;
+import a5x.cs2340.donationtracker.models.users.User;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -121,12 +132,10 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the account login attempt.
             showProgress(true);
-            mAuthTask = new AccountLoginTask(this, new LoginBody(username.toString(),
+            mAuthTask = new AccountLoginTask();
+            mAuthTask.execute(new LoginBody(username.toString(),
                     password.toString()));
-            mAuthTask.execute((Void) null);
         }
     }
 
@@ -208,6 +217,49 @@ public class LoginActivity extends AppCompatActivity {
     private void goBackToWelcome() {
         Intent backToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(backToWelcomeIntent);
+    }
+
+    public class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
+
+
+        @Override
+        public Response<LoginResponse> doRequest(LoginBody body) throws IOException {
+            Call<LoginResponse> loginResponseCall = Webservice.getInstance()
+                    .getAccountService().login(body);
+            return loginResponseCall.execute();
+        }
+
+        @Override
+        public void onPostExecute(LoginResponse response) {
+            if (response == null) {
+                indicateIncorrectPassword();
+                return;
+            }
+            Account account;
+            String jwt = response.getJwt();
+            String firstName = response.getFirstname();
+            String lastName = response.getLastname();
+
+            switch (response.getRole()) {
+                case "admins":
+                    account = new Admin(firstName, lastName, null, null);
+                    break;
+                case "users":
+                    account = new User(firstName, lastName, null, null);
+                    break;
+                case "employees":
+                    account = new LocationEmployee(firstName, lastName, null, null);
+                    break;
+                case "managers":
+                    account = new Manager(firstName, lastName, null, null);
+                    break;
+                default:
+                    account = new User(firstName, lastName, null, null);
+                    break;
+            }
+            Webservice.getInstance().logIn(account, jwt);
+            goToPostLogin(account, jwt);
+        }
     }
 }
 

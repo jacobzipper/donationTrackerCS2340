@@ -1,5 +1,6 @@
 package a5x.cs2340.donationtracker.activities.admintools;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +13,23 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.SearchDonationsMap;
+import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Donation;
+import a5x.cs2340.donationtracker.webservice.responses.responseobjects.GetDonationsResponse;
+import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Activity for employees to view the list of all donations for the location
@@ -41,8 +53,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
         donationViewToolbar.setTitle(R.string.donation_view_toolbar_text);
         setSupportActionBar(donationViewToolbar);
         GetSearchableLocationsTask getSearchableLocationsTask =
-                new GetSearchableLocationsTask(this);
-        getSearchableLocationsTask.execute((Void) null);
+                new GetSearchableLocationsTask();
+        getSearchableLocationsTask.execute((Object) null);
     }
 
     private void backToAdminTools() {
@@ -78,9 +90,8 @@ public class ViewDonationsActivity extends AppCompatActivity {
                     [(locationSpinner.getSelectedItemPosition())];
             SearchDonationsMap searchQuery = new SearchDonationsMap(nameEntry.getText(),
                     selectedCategory, selectedLocation);
-            searchDonationsTask = new SearchDonationsTask(ViewDonationsActivity.this,
-                    searchQuery);
-            searchDonationsTask.execute((Void) null);
+            searchDonationsTask = new SearchDonationsTask();
+            searchDonationsTask.execute(searchQuery);
             dialog.dismiss();
 
         });
@@ -88,8 +99,9 @@ public class ViewDonationsActivity extends AppCompatActivity {
         dialog.show();
     }
     private void setDonationListToDefault() {
-        GetDonationsTask getDonationsTask = new GetDonationsTask(this);
-        getDonationsTask.execute((Void) null);
+        GetDonationsTask getDonationsTask = new GetDonationsTask();
+        getDonationsTask.execute((Object) null);
+
     }
     void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
         if (donationList.length == 0) {
@@ -155,5 +167,99 @@ public class ViewDonationsActivity extends AppCompatActivity {
     void switchToMakingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
         donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
+    }
+    public class GetDonationsTask extends WebserviceTask<Object,
+            Void, GetDonationsResponse> {
+        private Donation[] donations;
+        private List<String> donationSDescriptions;
+
+        @Override
+        public Response<GetDonationsResponse> doRequest(Object body) throws IOException {
+            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
+                    .getDonationService().getDonations(
+                            Webservice.getInstance().getCurrentUserAPIType(),
+                            "Bearer " + Webservice.getInstance().getJwtToken());
+            return getDonationsResponseCall.execute();
+        }
+
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        @Override
+        protected void onPostExecute(GetDonationsResponse response) {
+            if (response == null) {
+                return;
+            }
+            donations = response.getDonations();
+            Stream<Donation> donationStream = Arrays.stream(donations);
+            Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
+            donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
+            updateListView(donations, donationSDescriptions);
+            switchToMakingSearch();
+        }
+    }
+
+    private class SearchDonationsTask extends WebserviceTask<SearchDonationsMap,
+            Void, GetDonationsResponse> {
+        private Donation[] donations;
+        private List<String> donationSDescriptions;
+
+        /**
+         * NOTE: BODY CANNOT BE NULL
+         * Do new SearchDonationsMap(null, null, null) if the user doesn't enter anything
+         * Empty string should count as null
+         */
+        @Override
+        public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
+            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
+                    .getDonationService().searchDonations(
+                    Webservice.getInstance().getCurrentUserAPIType(),
+                    "Bearer " + Webservice.getInstance().getJwtToken(), body);
+            return getDonationsResponseCall.execute();
+        }
+
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        @Override
+        protected void onPostExecute(GetDonationsResponse response) {
+            if (response == null) {
+                return;
+            }
+            donations = response.getDonations();
+            Stream<Donation> donationStream = Arrays.stream(donations);
+            Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
+            donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
+            updateListView(donations, donationSDescriptions);
+            switchToClearingSearch();
+        }
+    }
+
+    public class GetSearchableLocationsTask extends WebserviceTask<Object,
+            Void, GetLocationsResponse> {
+        private List<String> locationsShowableList;
+        private List<String> locationsSearchableList;
+
+        @Override
+        protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
+            if (Webservice.getInstance().isLoggedIn()) {
+                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance().getAccountService().locations();
+                return getLocationsResponseCall.execute();
+            }
+            return null;
+        }
+
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        @Override
+        protected void onPostExecute(GetLocationsResponse response) {
+            if (response == null) {
+                return;
+            }
+            Stream<Location> searchableListStream = Arrays.stream(response.getLocations());
+            Stream<String> searchableListNameStream = searchableListStream.map(Location::getName);
+            locationsSearchableList = searchableListNameStream.collect(Collectors.toList());
+            locationsSearchableList.add(0, null);
+            Stream<Location> showableListStream = Arrays.stream(response.getLocations());
+            Stream<String> showableListNameStream = showableListStream.map(Location::getName);
+            locationsShowableList = showableListNameStream.collect(Collectors.toList());
+            locationsShowableList.add(0, "Any");
+            setLocationsLists(locationsSearchableList, locationsShowableList);
+        }
     }
 }
