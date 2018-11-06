@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,9 +28,13 @@ import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
 import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
+import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 import me.gosimple.nbvcxz.Nbvcxz;
 import me.gosimple.nbvcxz.scoring.Result;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Activity for registering new accounts
@@ -183,10 +189,9 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private void registerUser(String firstName, String lastName, String username,
                               String password, UserType type) {
-        AccountRegistrationTask mAuthTask = new AccountRegistrationTask(this,
-                new RegistrationBody(username,
+        AccountRegistrationTask mAuthTask = new AccountRegistrationTask();
+        mAuthTask.execute(new RegistrationBody(username,
                 password, type.getAPIType(), firstName, lastName));
-        mAuthTask.execute((Void) null);
     }
 
     public enum PasswordStrength {
@@ -262,5 +267,34 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
 
+    }
+    public class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
+            Void, StandardResponse> {
+
+        @Override
+        public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
+            if (Webservice.getInstance().isLoggedIn()) {
+                Call<StandardResponse> standardResponseCall = Webservice.getInstance()
+                        .getAccountService().register(body);
+                return standardResponseCall.execute();
+            }
+            return null;
+        }
+
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        @Override
+        protected void onPostExecute(StandardResponse response) {
+            if (response == null || response.getError() != 0) {
+                Toast failedRegistrationToast = Toast.makeText(getApplicationContext(),
+                        "Registration Failed (try new username?)",
+                        Toast.LENGTH_LONG);
+                failedRegistrationToast.show();
+                return;
+            }
+            Toast successfulRegistrationToast = Toast.makeText(getApplicationContext(),
+                    "Registration Successful", Toast.LENGTH_LONG);
+            successfulRegistrationToast.show();
+            goBackToWelcome();
+        }
     }
 }

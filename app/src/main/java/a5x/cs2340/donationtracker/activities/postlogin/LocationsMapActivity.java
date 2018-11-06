@@ -1,5 +1,6 @@
 package a5x.cs2340.donationtracker.activities.postlogin;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,8 +14,15 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.Webservice;
+import a5x.cs2340.donationtracker.webservice.WebserviceTask;
+import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Activity that shows a map of all locations using Google maps with a pin at every location
@@ -96,8 +104,8 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         mMap = googleMap;
         UiSettings mapUISettings = mMap.getUiSettings();
         mapUISettings.setZoomControlsEnabled(true);
-        GetMapLocationsTask mTask = new GetMapLocationsTask(this);
-        mTask.execute((Void) null);
+        GetMapLocationsTask mTask = new GetMapLocationsTask();
+        mTask.execute((Object) null);
 
     }
     void populateList(Location[] locations) {
@@ -119,5 +127,30 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
     private void backToLocationList() {
         Intent backToLocationListIntent = new Intent(this, PostLoginActivity.class);
         startActivity(backToLocationListIntent);
+    }
+
+    public class GetMapLocationsTask extends WebserviceTask<Object, Void,
+            GetLocationsResponse> {
+        private Location[] locations;
+
+        @Override
+        protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
+            if (Webservice.getInstance().isLoggedIn()) {
+                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance()
+                        .getAccountService().locations();
+                return getLocationsResponseCall.execute();
+            }
+            return null;
+        }
+
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        @Override
+        protected void onPostExecute(GetLocationsResponse response) {
+            if (response == null) {
+                return;
+            }
+            locations = response.getLocations();
+            populateList(locations);
+        }
     }
 }
