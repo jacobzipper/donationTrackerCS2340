@@ -80,7 +80,7 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
     @Override
     public void uiSuccess() {
         mContext.showProgress(false);
-        mContext.goToPostLogin(account, jwt);
+        mContext.goToPostLogin();
     }
 
     @Override

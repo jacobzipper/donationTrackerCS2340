@@ -3,7 +3,6 @@ package a5x.cs2340.donationtracker.activities.postlogin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -94,7 +93,6 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MapReady", "Successful Map Ready");
         mMap = googleMap;
         UiSettings mapUISettings = mMap.getUiSettings();
         mapUISettings.setZoomControlsEnabled(true);
@@ -106,19 +104,15 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         createMarkers(locations);
     }
     private void createMarkers(Location[] locations) {
-        Log.d("MapReady", "Successful locationTask");
         LatLng newLocation = new LatLng(0, 0);
         for (Location location : locations) {
-            Log.d("MapReady", "Adding Location");
             newLocation = new LatLng(Double.parseDouble(location.getLatitude()),
                     Double.parseDouble(location.getLongitude()));
-            Log.d("MapReady", "Adding Marker");
             MarkerOptions newMarker = new MarkerOptions();
             newMarker.position(newLocation);
             newMarker.title(location.getName());
             newMarker.snippet(location.getPhone());
             mMap.addMarker(newMarker);
-            Log.d("MapReady", "Marker should be added");
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, DEFAULT_ZOOM_LEVEL));
     }

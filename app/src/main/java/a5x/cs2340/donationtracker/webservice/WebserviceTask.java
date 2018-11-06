@@ -38,12 +38,10 @@ public abstract class WebserviceTask<S extends Activity, T,
         try {
             requestAttempt = doRequest(mBody);
         } catch (IOException e) {
-            // TODO: Graceful error handling
             e.printStackTrace();
             return false;
         }
 
-        // TODO: Error messages for each error code from backend
         U response = requestAttempt.body();
         if ((requestAttempt.code() == ERROR_CODE_OK) && (response != null)
                 && (response.getError() == 0)) {
