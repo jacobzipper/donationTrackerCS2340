@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.AccountService;
+import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.SearchDonationsMap;
@@ -183,10 +185,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
         @Override
         public Response<GetDonationsResponse> doRequest(Object body) throws IOException {
-            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
-                    .getDonationService().getDonations(
-                            Webservice.getInstance().getCurrentUserAPIType(),
-                            "Bearer " + Webservice.getInstance().getJwtToken());
+            Webservice web = Webservice.getInstance();
+            DonationService ds = web.getDonationService();
+            Call<GetDonationsResponse> getDonationsResponseCall = ds.getDonations(
+                            web.getCurrentUserAPIType(),
+                            "Bearer " + web.getJwtToken());
             return getDonationsResponseCall.execute();
         }
 
@@ -219,10 +222,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
         @Override
         public Response<GetDonationsResponse> doRequest(SearchDonationsMap body)
                 throws IOException {
-            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
-                    .getDonationService().searchDonations(
-                            Webservice.getInstance().getCurrentUserAPIType(),
-                            "Bearer " + Webservice.getInstance().getJwtToken(), body);
+            Webservice web = Webservice.getInstance();
+            DonationService ds = web.getDonationService();
+            Call<GetDonationsResponse> getDonationsResponseCall = ds.searchDonations(
+                            web.getCurrentUserAPIType(),
+                            "Bearer " + web.getJwtToken(), body);
             return getDonationsResponseCall.execute();
         }
 
@@ -249,9 +253,10 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
         @Override
         protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<GetLocationsResponse> getLocationsResponseCall =
-                        Webservice.getInstance().getAccountService().locations();
+            Webservice web = Webservice.getInstance();
+            AccountService as = web.getAccountService();
+            if (web.isLoggedIn()) {
+                Call<GetLocationsResponse> getLocationsResponseCall = as.locations();
                 return getLocationsResponseCall.execute();
             }
             return null;

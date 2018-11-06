@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
@@ -144,9 +145,10 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
 
         @Override
         protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance()
-                        .getAccountService().locations();
+            Webservice web = Webservice.getInstance();
+            AccountService as = web.getAccountService();
+            if (web.isLoggedIn()) {
+                Call<GetLocationsResponse> getLocationsResponseCall = as.locations();
                 return getLocationsResponseCall.execute();
             }
             return null;

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
@@ -87,8 +88,9 @@ public class AddDonationActivity extends AppCompatActivity {
         @Override
         public Response<StandardResponse> doRequest(Donation body) throws IOException {
             Webservice web = Webservice.getInstance();
-            Call<StandardResponse> standardResponseCall = web.getDonationService()
-                    .addDonation(web.getCurrentUserAPIType(), body,
+            DonationService ds = web.getDonationService();
+            Call<StandardResponse> standardResponseCall =
+                    ds.addDonation(web.getCurrentUserAPIType(), body,
                             "Bearer " + web.getJwtToken());
             return standardResponseCall.execute();
         }

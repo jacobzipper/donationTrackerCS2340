@@ -27,6 +27,7 @@ import a5x.cs2340.donationtracker.models.users.Admin;
 import a5x.cs2340.donationtracker.models.users.LocationEmployee;
 import a5x.cs2340.donationtracker.models.users.Manager;
 import a5x.cs2340.donationtracker.models.users.User;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
@@ -217,8 +218,9 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public Response<LoginResponse> doRequest(LoginBody body) throws IOException {
-            Call<LoginResponse> loginResponseCall = Webservice.getInstance()
-                    .getAccountService().login(body);
+            Webservice web = Webservice.getInstance();
+            AccountService as = web.getAccountService();
+            Call<LoginResponse> loginResponseCall = as.login(body);
             return loginResponseCall.execute();
         }
 
@@ -250,7 +252,8 @@ public class LoginActivity extends AppCompatActivity {
                     account = new User(firstName, lastName, null, null);
                     break;
             }
-            Webservice.getInstance().logIn(account, jwt);
+            Webservice web = Webservice.getInstance();
+            web.logIn(account, jwt);
             goToPostLogin();
         }
     }

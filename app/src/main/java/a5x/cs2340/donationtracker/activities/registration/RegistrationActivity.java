@@ -27,6 +27,7 @@ import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
@@ -274,9 +275,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         @Override
         public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<StandardResponse> standardResponseCall = Webservice.getInstance()
-                        .getAccountService().register(body);
+            Webservice web = Webservice.getInstance();
+            AccountService as = web.getAccountService();
+            if (web.isLoggedIn()) {
+                Call<StandardResponse> standardResponseCall = as.register(body);
                 return standardResponseCall.execute();
             }
             return null;
