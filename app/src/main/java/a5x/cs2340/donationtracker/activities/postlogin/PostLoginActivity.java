@@ -2,6 +2,7 @@ package a5x.cs2340.donationtracker.activities.postlogin;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -111,12 +112,12 @@ public class PostLoginActivity extends AppCompatActivity {
             Stream<String> namesStream = locationStream.map(Location::getName);
             locationNames = namesStream.collect(Collectors.toList());
             ((ListView) findViewById(R.id.locationlist)).
-                    setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                    setAdapter(new ArrayAdapter<>(PostLoginActivity.this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, locationNames));
             ((ListView) findViewById(R.id.locationlist)).
                     setOnItemClickListener((parent, view, position, id) -> {
                         Location location = locations[position];
-                        final Dialog dialog = new Dialog(getApplicationContext());
+                        final Dialog dialog = new Dialog(PostLoginActivity.this);
                         dialog.setContentView(R.layout.location_view);
                         dialog.setTitle("Location Details");
 

@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                     break;
             }
             Webservice.getInstance().logIn(account, jwt);
-            goToPostLogin(account, jwt);
+            goToPostLogin();
         }
     }
 }
