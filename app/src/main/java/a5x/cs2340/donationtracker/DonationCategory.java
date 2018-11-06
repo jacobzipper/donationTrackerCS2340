@@ -24,14 +24,6 @@ public enum DonationCategory {
         this.name = name;
     }
 
-    /**
-     * Gets the string name of the category
-     * @return the name of the category in string form
-     */
-    public String getName() {
-        return name;
-    }
-
     @Override
     public String toString() { return name; }
 }

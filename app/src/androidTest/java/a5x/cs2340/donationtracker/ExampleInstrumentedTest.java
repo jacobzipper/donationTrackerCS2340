@@ -16,6 +16,9 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+    /**
+     * Default created test
+     */
     @Test
     public void useAppContext() {
         // Context of the app under test.

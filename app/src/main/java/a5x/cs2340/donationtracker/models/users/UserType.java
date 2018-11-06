@@ -18,14 +18,6 @@ public enum UserType {
     }
 
     /**
-     * Getter for the label string
-     * @return the label string corresponding to the UserType
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
      * Getter for the permissions level
      * @return the permissions level corresponding to the UserType
      */

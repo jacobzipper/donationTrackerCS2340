@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -43,9 +42,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int MIN_PASSWORD_LENGTH = 4;
     private static final int MIN_USERNAME_LENGTH = 1;
-    // Constants representing identifiers for data to be passed with Intent to PostLogin
-    private static final String LOGGED_IN_USER = "donationTracker.successfulUser";
-    private static final String CURRENT_AUTHENTICATION_KEY = "donationTracker.currentAuthKey";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -65,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // If user is logged in we go directly to the PostLogin screen
         if (webservice.isLoggedIn()) {
-            startActivity(new Intent(this, PostLoginActivity.class));
+            goToPostLogin();
             return;
         }
         setContentView(R.layout.activity_login);
@@ -202,12 +198,9 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Transitions from the login screen to the post-login screen
      *
-     * @param account the account of the successfully logged in person
      */
-    void goToPostLogin(Parcelable account, String jwt) {
+    void goToPostLogin() {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
-        goToPostLoginIntent.putExtra(LOGGED_IN_USER, account);
-        goToPostLoginIntent.putExtra(CURRENT_AUTHENTICATION_KEY, jwt);
         startActivity(goToPostLoginIntent);
     }
 
