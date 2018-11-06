@@ -87,7 +87,7 @@ public class PostLoginActivity extends AppCompatActivity {
         startActivity(toMapIntent);
     }
 
-    public class GetLocationsTask extends WebserviceTask<Object,
+    protected class GetLocationsTask extends WebserviceTask<Object,
             Void, GetLocationsResponse> {
         private Location[] locations;
         private List<String> locationNames;

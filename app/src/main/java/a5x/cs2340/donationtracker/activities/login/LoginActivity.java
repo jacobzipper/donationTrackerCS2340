@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    void showProgress(final boolean show) {
+    private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void indicateIncorrectPassword() {
+    private void indicateIncorrectPassword() {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mUsernameView.requestFocus();
         mAuthTask = null;
@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Transitions from the login screen to the post-login screen
      */
-    void goToPostLogin() {
+    private void goToPostLogin() {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         startActivity(goToPostLoginIntent);
     }
@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(backToWelcomeIntent);
     }
 
-    public class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
+    protected class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
 
 
         @Override

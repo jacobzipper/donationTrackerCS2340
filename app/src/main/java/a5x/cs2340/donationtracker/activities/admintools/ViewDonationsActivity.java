@@ -106,7 +106,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
     }
 
-    void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
+    private void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
         if (donationList.length == 0) {
             ((ListView) this.findViewById(R.id.donationsList)).
                     setAdapter(new ArrayAdapter<>(this,
@@ -158,7 +158,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
     }
 
-    void setLocationsLists(List<String> searchableList, List<String> showableList) {
+    private void setLocationsLists(List<String> searchableList, List<String> showableList) {
         locationsSearchableList = new String[searchableList.size()];
         locationsSearchableList = searchableList.toArray(locationsSearchableList);
         locationsShowableList = new String[showableList.size()];
@@ -166,17 +166,17 @@ public class ViewDonationsActivity extends AppCompatActivity {
         switchToMakingSearch();
     }
 
-    void switchToClearingSearch() {
+    private void switchToClearingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
         donationViewToolbar.setNavigationOnClickListener(v -> setDonationListToDefault());
     }
 
-    void switchToMakingSearch() {
+    private void switchToMakingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
         donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
     }
 
-    public class GetDonationsTask extends WebserviceTask<Object,
+    protected class GetDonationsTask extends WebserviceTask<Object,
             Void, GetDonationsResponse> {
         private Donation[] donations;
         private List<String> donationSDescriptions;
@@ -242,7 +242,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         }
     }
 
-    public class GetSearchableLocationsTask extends WebserviceTask<Object,
+    protected class GetSearchableLocationsTask extends WebserviceTask<Object,
             Void, GetLocationsResponse> {
         private List<String> locationsShowableList;
         private List<String> locationsSearchableList;

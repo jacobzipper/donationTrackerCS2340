@@ -1,5 +1,7 @@
 package a5x.cs2340.donationtracker.models.users;
 
+import android.support.annotation.NonNull;
+
 /**
  * Enum for the type of an Account
  */
@@ -36,6 +38,7 @@ public enum UserType {
         return apiType;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return label;

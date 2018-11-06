@@ -86,10 +86,10 @@ public class AddDonationActivity extends AppCompatActivity {
     private class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
         @Override
         public Response<StandardResponse> doRequest(Donation body) throws IOException {
-            Call<StandardResponse> standardResponseCall = Webservice.getInstance()
-                    .getDonationService()
-                    .addDonation(Webservice.getInstance().getCurrentUserAPIType(),
-                            body, "Bearer " + Webservice.getInstance().getJwtToken());
+            Webservice web = Webservice.getInstance();
+            Call<StandardResponse> standardResponseCall = web.getDonationService()
+                    .addDonation(web.getCurrentUserAPIType(), body,
+                            "Bearer " + web.getJwtToken());
             return standardResponseCall.execute();
         }
 

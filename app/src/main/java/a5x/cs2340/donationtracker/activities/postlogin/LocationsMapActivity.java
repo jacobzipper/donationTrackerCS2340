@@ -115,7 +115,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
 
     }
 
-    void populateList(Location[] locations) {
+    private void populateList(Location[] locations) {
         createMarkers(locations);
     }
 
@@ -138,7 +138,7 @@ public class LocationsMapActivity extends FragmentActivity implements OnMapReady
         startActivity(backToLocationListIntent);
     }
 
-    public class GetMapLocationsTask extends WebserviceTask<Object, Void,
+    protected class GetMapLocationsTask extends WebserviceTask<Object, Void,
             GetLocationsResponse> {
         private Location[] locations;
 

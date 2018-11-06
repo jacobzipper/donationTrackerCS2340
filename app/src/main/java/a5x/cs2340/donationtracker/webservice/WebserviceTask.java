@@ -18,12 +18,13 @@ import static a5x.cs2340.donationtracker.webservice.Webservice.ERROR_CODE_OK;
 public abstract class WebserviceTask<T, Void, U extends StandardResponse>
         extends AsyncTask<T, Void, U> {
 
+    @SafeVarargs
     @Override
-    protected U doInBackground(T... params) {
+    protected final U doInBackground(T... params) {
         return doRequestBoilerplate(params[0]);
     }
 
-    protected U doRequestBoilerplate(T mBody) {
+    private U doRequestBoilerplate(T mBody) {
         Response<U> requestAttempt;
         try {
             requestAttempt = doRequest(mBody);

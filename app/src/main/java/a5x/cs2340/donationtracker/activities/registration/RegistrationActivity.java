@@ -176,7 +176,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Return to the welcome screen
      */
-    public void goBackToWelcome() {
+    private void goBackToWelcome() {
         Intent goBackToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(goBackToWelcomeIntent);
     }
@@ -269,7 +269,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    public class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
+    protected class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
             Void, StandardResponse> {
 
         @Override
@@ -285,7 +285,7 @@ public class RegistrationActivity extends AppCompatActivity {
         @SuppressLint({"NewApi", "LocalSuppress"})
         @Override
         protected void onPostExecute(StandardResponse response) {
-            if (response == null || response.getError() != 0) {
+            if ((response == null) || (response.getError() != 0)) {
                 Toast failedRegistrationToast = Toast.makeText(getApplicationContext(),
                         "Registration Failed (try new username?)",
                         Toast.LENGTH_LONG);
