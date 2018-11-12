@@ -57,39 +57,98 @@ public class RegistrationApiUnitTest {
     private static AccountService accountService;
 
     @Mock
-    private static Call<StandardResponse> validCall;
+    private static Call<StandardResponse> correctCall;
 
     @Mock
-    private static Call<StandardResponse> invalidCall;
+    private static Call<StandardResponse> incorrectCall;
 
     @Mock
-    private static Response<StandardResponse> validResponse;
+    private static Response<StandardResponse> correctResponse;
 
     @Mock
-    private static Response<StandardResponse> invalidResponse;
+    private static Response<StandardResponse> incorrectResponse;
 
     @Before
     public void setUp() throws IOException {
-        when(validResponse.body()).thenReturn(successBody);
-        when(validResponse.code()).thenReturn(200);
-        when(invalidResponse.code()).thenReturn(400);
-        when(validCall.execute()).thenReturn(validResponse);
-        when(invalidCall.execute()).thenReturn(invalidResponse);
-        when(accountService.register(any())).thenReturn(validCall);
+        when(incorrectCall.execute()).thenReturn(incorrectResponse);
+        when(accountService.register(any())).thenReturn(incorrectCall);
+        when(correctCall.execute()).thenReturn(correctResponse);
     }
 
     @Test
     public void testInvalidRegistrationNullField() throws IOException {
 
-        when(accountService.register(argThat(body -> body.getRole() == null || body.getPassword() == null || body.getUsername() == null))).thenReturn(invalidCall);
-        when(invalidResponse.body()).thenReturn(failNullParam);
+
+
+        when(accountService.register(argThat(body -> body.getRole() == null || body.getPassword() == null || body.getUsername() == null))).thenReturn(correctCall);
+        when(correctResponse.body()).thenReturn(failNullParam);
 
         Call<StandardResponse> call = accountService.register(invalidRegistrationNullRequired);
 
         Response<StandardResponse> res = call.execute();
 
-        assertEquals(res.code(), 400);
         assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_NULL_FIELDS_REGISTRATION);
+
+    }
+
+    @Test
+    public void testInvalidRegistrationInvalidRole() throws IOException {
+
+        when(accountService.register(argThat(body -> !validRoles.contains(body.getRole())))).thenReturn(correctCall);
+        when(correctResponse.body()).thenReturn(failInvalidRole);
+
+        Call<StandardResponse> call = accountService.register(invalidRegistrationRole);
+
+        Response<StandardResponse> res = call.execute();
+
+        assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_INVALID_ROLE);
+
+    }
+
+    @Test
+    public void testValidRegistration() throws IOException {
+
+        when(accountService.register(argThat(body -> body.getRole() != null && body.getPassword() != null && body.getUsername() != null && validRoles.contains(body.getRole())))).thenReturn(correctCall);
+        when(correctResponse.body()).thenReturn(successBody);
+
+        Call<StandardResponse> call = accountService.register(validRegistration);
+
+        Response<StandardResponse> res = call.execute();
+
+        assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_OK);
+
+    }
+
+    @Test
+    public void testValidRegistrationNullNames() throws IOException {
+
+        when(accountService.register(argThat(body -> body.getRole() != null && body.getPassword() != null && body.getUsername() != null && validRoles.contains(body.getRole())))).thenReturn(correctCall);
+        when(correctResponse.body()).thenReturn(successBody);
+
+        Call<StandardResponse> call = accountService.register(validRegistrationNullName);
+
+        Response<StandardResponse> res = call.execute();
+
+        assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_OK);
+    }
+
+    @Test
+    public void testInvalidRegistrationUsernameUsed() throws IOException {
+
+        when(accountService.register(argThat(body -> body.getRole() != null && body.getPassword() != null && body.getUsername() != null && validRoles.contains(body.getRole()) && body.getUsername() == validRegistration.getUsername()))).thenReturn(correctCall);
+        when(correctResponse.body()).thenReturn(successBody).thenReturn(failUsernameTaken);
+
+        Call<StandardResponse> call = accountService.register(validRegistration);
+
+        Response<StandardResponse> res = call.execute();
+
+        assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_OK);
+
+        call = accountService.register(validRegistration);
+
+        res = call.execute();
+
+        assertEquals(Errors.errorsMap.get(res.body().getError()), Errors.ERROR_USERNAME_TAKEN);
 
     }
 }
