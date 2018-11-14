@@ -55,7 +55,7 @@ public class AddDonationActivity extends AppCompatActivity {
     }
 
     private void addDonation() {
-        if(errorCheck(nameEditText) && errorCheck(descriptionEditText)
+        if (errorCheck(nameEditText) && errorCheck(descriptionEditText)
                 && errorCheck(valueEditText)) {
             Donation donationToAdd = new Donation(nameEditText.getText(),
                     shortDescriptionEditText.getText(),
@@ -70,6 +70,7 @@ public class AddDonationActivity extends AppCompatActivity {
             returnToAdminTools();
         }
     }
+
     private boolean errorCheck(EditText editText) {
         editText.setError(null);
         if (TextUtils.isEmpty(editText.getText())) {
@@ -78,6 +79,7 @@ public class AddDonationActivity extends AppCompatActivity {
         }
         return true;
     }
+
     private void returnToAdminTools() {
         Intent backToAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
         startActivity(backToAdminToolsIntent);

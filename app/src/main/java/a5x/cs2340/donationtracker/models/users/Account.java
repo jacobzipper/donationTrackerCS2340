@@ -30,6 +30,7 @@ public abstract class Account implements Parcelable {
 
     /**
      * Returns the type of the user, different per concrete implementation
+     *
      * @return the user type of the account
      */
     public abstract UserType getUserType();
@@ -48,10 +49,7 @@ public abstract class Account implements Parcelable {
         if (other == null) {
             return false;
         }
-        if (other == this) {
-            return true;
-        }
-        return (other instanceof Account) && username.equals(((Account) other).username);
+        return other == this || (other instanceof Account) && username.equals(((Account) other).username);
     }
 
     @Override

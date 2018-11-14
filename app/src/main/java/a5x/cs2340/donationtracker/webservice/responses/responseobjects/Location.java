@@ -4,13 +4,13 @@ package a5x.cs2340.donationtracker.webservice.responses.responseobjects;
  * Represents a Location object for the app
  */
 public class Location {
-    private String name;
-    private String type;
-    private String latitude;
-    private String longitude;
-    private String address;
-    private String phone;
-    private String id;
+    private final String name;
+    private final String type;
+    private final String latitude;
+    private final String longitude;
+    private final String address;
+    private final String phone;
+    private final String id;
 
     public Location(String name, String type, String latitude, String longitude, String address, String phone, String id) {
         this.name = name;
@@ -24,6 +24,7 @@ public class Location {
 
     /**
      * Getter for type
+     *
      * @return the type of the location
      */
     public String getType() {
@@ -32,6 +33,7 @@ public class Location {
 
     /**
      * Getter for name
+     *
      * @return the name of the location
      */
     public String getName() {
@@ -40,6 +42,7 @@ public class Location {
 
     /**
      * Getter for latitude
+     *
      * @return the latitude of the location
      */
     public String getLatitude() {
@@ -48,6 +51,7 @@ public class Location {
 
     /**
      * Getter for longitude
+     *
      * @return the longitude of the location
      */
     public String getLongitude() {
@@ -56,6 +60,7 @@ public class Location {
 
     /**
      * Getter for address
+     *
      * @return the address of the location
      */
     public String getAddress() {
@@ -64,6 +69,7 @@ public class Location {
 
     /**
      * Getter for phone number
+     *
      * @return the phone number of the location
      */
     public String getPhone() {

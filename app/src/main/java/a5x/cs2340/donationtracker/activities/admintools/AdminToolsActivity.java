@@ -16,6 +16,7 @@ import a5x.cs2340.donationtracker.webservice.Webservice;
  */
 public class AdminToolsActivity extends AppCompatActivity {
     private final Webservice webservice = Webservice.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +42,17 @@ public class AdminToolsActivity extends AppCompatActivity {
         }
 
     }
+
     private void toAddDonation() {
         Intent toAddDonationIntent = new Intent(this, AddDonationActivity.class);
         startActivity(toAddDonationIntent);
     }
+
     private void toViewDonations() {
         Intent toViewDonationsIntent = new Intent(this, ViewDonationsActivity.class);
         startActivity(toViewDonationsIntent);
     }
+
     private void backToPostLogin() {
         Intent backToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         startActivity(backToPostLoginIntent);

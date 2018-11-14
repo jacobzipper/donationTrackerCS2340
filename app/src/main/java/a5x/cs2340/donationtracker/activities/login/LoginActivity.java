@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
 
     private final Webservice webservice = Webservice.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +155,6 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Transitions from the login screen to the post-login screen
-     *
      */
     private void goToPostLogin() {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
@@ -174,7 +174,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     @SuppressLint("StaticFieldLeak")
     private class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
-
 
         @Override
         public Response<LoginResponse> doRequest(LoginBody body) throws IOException {

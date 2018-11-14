@@ -19,6 +19,7 @@ public class LoginResponse extends StandardResponse {
 
     /**
      * Accessor for role
+     *
      * @return the role
      */
     public String getRole() {
@@ -27,6 +28,7 @@ public class LoginResponse extends StandardResponse {
 
     /**
      * Accessor for first name
+     *
      * @return the first name
      */
     public String getFirstname() {
@@ -35,6 +37,7 @@ public class LoginResponse extends StandardResponse {
 
     /**
      * Accessor for last name
+     *
      * @return the last name
      */
     public String getLastname() {
@@ -43,6 +46,7 @@ public class LoginResponse extends StandardResponse {
 
     /**
      * Accessor for jwt
+     *
      * @return the jwt
      */
     public String getJwt() {

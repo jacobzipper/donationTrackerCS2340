@@ -17,6 +17,7 @@ public class StandardResponse {
 
     /**
      * Get the error code of the response
+     *
      * @return the error code
      */
     public int getError() {

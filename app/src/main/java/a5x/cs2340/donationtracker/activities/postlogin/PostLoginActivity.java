@@ -34,6 +34,7 @@ import retrofit2.Response;
 public class PostLoginActivity extends AppCompatActivity {
     private GetLocationsTask mGetLocationsTask;
     private final Webservice webservice = Webservice.getInstance();
+
     @SuppressLint("StringFormatMatches") // This fixes an android studio bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class PostLoginActivity extends AppCompatActivity {
         Intent toAdminToolsIntent = new Intent(this, AdminToolsActivity.class);
         startActivity(toAdminToolsIntent);
     }
+
     /**
      * Transitions to map screen
      */
@@ -117,12 +119,13 @@ public class PostLoginActivity extends AppCompatActivity {
             Stream<String> namesStream = locationStream.map(Location::getName);
             locationNames = namesStream.collect(Collectors.toList());
             ((ListView) findViewById(R.id.locationlist)).
-                    setAdapter(new ArrayAdapter<>(getApplicationContext(),
-                            android.R.layout.simple_list_item_1, android.R.id.text1, locationNames));
+                    setAdapter(new ArrayAdapter<>(PostLoginActivity.this,
+                            android.R.layout.simple_list_item_1,
+                            android.R.id.text1, locationNames));
             ((ListView) findViewById(R.id.locationlist)).
                     setOnItemClickListener((parent, view, position, id) -> {
                         Location location = locations[position];
-                        final Dialog dialog = new Dialog(getApplicationContext());
+                        final Dialog dialog = new Dialog(PostLoginActivity.this);
                         dialog.setContentView(R.layout.location_view);
                         dialog.setTitle("Location Details");
 

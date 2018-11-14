@@ -275,6 +275,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     @SuppressLint("StaticFieldLeak")
     private class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
+
             Void, StandardResponse> {
 
         @Override

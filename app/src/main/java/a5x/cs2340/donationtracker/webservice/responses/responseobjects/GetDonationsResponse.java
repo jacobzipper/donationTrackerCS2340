@@ -6,15 +6,16 @@ import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
  * Webservice response for getting the list of donations
  */
 public class GetDonationsResponse extends StandardResponse {
-    private Donation[] donations;
+    private final Donation[] donations;
 
     public GetDonationsResponse(int error, String msg, Donation[] donations) {
         super(error, msg);
-        this.donations = donations;
+        this.donations = donations.clone();
     }
 
     /**
      * Gets the list of donations
+     *
      * @return the list of donations
      */
     public Donation[] getDonations() {
