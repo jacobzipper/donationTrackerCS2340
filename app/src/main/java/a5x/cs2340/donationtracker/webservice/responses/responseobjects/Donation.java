@@ -26,7 +26,7 @@ public class Donation {
      */
     public Donation(CharSequence name, CharSequence shortdescription,
                     CharSequence description, CharSequence value
-                    , DonationCategory category) {
+            , DonationCategory category) {
         this.name = name.toString();
         this.shortdescription = shortdescription.toString();
         this.description = description.toString();

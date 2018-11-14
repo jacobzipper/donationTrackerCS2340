@@ -8,6 +8,11 @@ import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
 public class GetDonationsResponse extends StandardResponse {
     private Donation[] donations;
 
+    public GetDonationsResponse(int error, String msg, Donation[] donations) {
+        super(error, msg);
+        this.donations = donations;
+    }
+
     /**
      * Gets the list of donations
      * @return the list of donations

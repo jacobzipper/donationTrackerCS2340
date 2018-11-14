@@ -1,5 +1,6 @@
 package a5x.cs2340.donationtracker.activities.admintools;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import java.io.IOException;
 
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.StandardResponse;
@@ -81,12 +83,18 @@ public class AddDonationActivity extends AppCompatActivity {
         startActivity(backToAdminToolsIntent);
     }
 
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
     private class AddDonationTask extends WebserviceTask<Donation, Void, StandardResponse> {
         @Override
         public Response<StandardResponse> doRequest(Donation body) throws IOException {
-            Call<StandardResponse> standardResponseCall = Webservice.getInstance().getDonationService().
-                    addDonation(Webservice.getInstance().getCurrentUserAPIType(),
-                            body, "Bearer " + Webservice.getInstance().getJwtToken());
+            Webservice webservice = Webservice.getInstance();
+            DonationService donationService = webservice.getDonationService();
+            Call<StandardResponse> standardResponseCall = donationService.
+                    addDonation(webservice.getCurrentUserAPIType(),
+                            body, "Bearer " + webservice.getJwtToken());
             return standardResponseCall.execute();
         }
 

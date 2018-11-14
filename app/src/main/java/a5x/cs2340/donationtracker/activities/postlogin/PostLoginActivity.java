@@ -20,6 +20,7 @@ import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.admintools.AdminToolsActivity;
 import a5x.cs2340.donationtracker.activities.login.LoginActivity;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.responses.GetLocationsResponse;
@@ -85,16 +86,21 @@ public class PostLoginActivity extends AppCompatActivity {
         startActivity(toMapIntent);
     }
 
-    public class GetLocationsTask extends WebserviceTask<Object,
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
+    private class GetLocationsTask extends WebserviceTask<Object,
             Void, GetLocationsResponse> {
         private Location[] locations;
         private List<String> locationNames;
 
         @Override
         public Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance()
-                        .getAccountService().locations();
+            Webservice webservice = Webservice.getInstance();
+            if (webservice.isLoggedIn()) {
+                AccountService accountService = webservice.getAccountService();
+                Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
                 return getLocationsResponseCall.execute();
             }
             return null;

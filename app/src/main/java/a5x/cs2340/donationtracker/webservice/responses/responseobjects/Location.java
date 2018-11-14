@@ -12,6 +12,16 @@ public class Location {
     private String phone;
     private String id;
 
+    public Location(String name, String type, String latitude, String longitude, String address, String phone, String id) {
+        this.name = name;
+        this.type = type;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+        this.phone = phone;
+        this.id = id;
+    }
+
     /**
      * Getter for type
      * @return the type of the location

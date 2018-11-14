@@ -16,7 +16,6 @@ public class LoginBody {
         this.username = username;
         this.password = password;
     }
-    LoginBody(){}
     /**
      * Getter for username
      * @return the username

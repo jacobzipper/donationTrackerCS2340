@@ -4,10 +4,18 @@ package a5x.cs2340.donationtracker.webservice.responses;
  * Represents the response after a login attempt
  */
 public class LoginResponse extends StandardResponse {
-    private String role;
-    private String firstname;
-    private String lastname;
-    private String jwt;
+    private final String role;
+    private final String firstname;
+    private final String lastname;
+    private final String jwt;
+
+    public LoginResponse(int error, String msg, String role, String firstname, String lastname, String jwt) {
+        super(error, msg);
+        this.role = role;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.jwt = jwt;
+    }
 
     /**
      * Accessor for role

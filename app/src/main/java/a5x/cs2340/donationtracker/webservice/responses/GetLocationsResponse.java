@@ -1,5 +1,7 @@
 package a5x.cs2340.donationtracker.webservice.responses;
 
+import android.support.annotation.Nullable;
+
 import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
 
 /**
@@ -7,6 +9,11 @@ import a5x.cs2340.donationtracker.webservice.responses.responseobjects.Location;
  */
 public class GetLocationsResponse extends StandardResponse {
     private Location[] locations;
+
+    protected GetLocationsResponse(int error, @Nullable String msg, Location[] locations) {
+        super(error, msg);
+        this.locations = locations;
+    }
 
     /**
      * Gets the list of locations

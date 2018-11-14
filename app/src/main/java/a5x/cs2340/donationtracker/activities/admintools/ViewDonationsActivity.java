@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 
 import a5x.cs2340.donationtracker.DonationCategory;
 import a5x.cs2340.donationtracker.R;
+import a5x.cs2340.donationtracker.webservice.AccountService;
+import a5x.cs2340.donationtracker.webservice.DonationService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.SearchDonationsMap;
@@ -103,7 +105,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
         getDonationsTask.execute((Object) null);
 
     }
-    void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
+    private void updateListView(Donation[] donationList, List<String> donationSDescriptions) {
         if (donationList.length == 0) {
             ((ListView) this.findViewById(R.id.donationsList)).
                     setAdapter(new ArrayAdapter<>(this,
@@ -153,32 +155,38 @@ public class ViewDonationsActivity extends AppCompatActivity {
                 });
 
     }
-    void setLocationsLists(List<String> searchableList, List<String> showableList) {
+    private void setLocationsLists(List<String> searchableList, List<String> showableList) {
         locationsSearchableList = new String[searchableList.size()];
         locationsSearchableList = searchableList.toArray(locationsSearchableList);
         locationsShowableList = new String[showableList.size()];
         locationsShowableList = showableList.toArray(locationsShowableList);
         switchToMakingSearch();
     }
-    void switchToClearingSearch() {
+    private void switchToClearingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_input_delete);
         donationViewToolbar.setNavigationOnClickListener(v -> setDonationListToDefault());
     }
-    void switchToMakingSearch() {
+    private void switchToMakingSearch() {
         donationViewToolbar.setNavigationIcon(android.R.drawable.ic_menu_search);
         donationViewToolbar.setNavigationOnClickListener(v -> displaySearch());
     }
-    public class GetDonationsTask extends WebserviceTask<Object,
+
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
+    private class GetDonationsTask extends WebserviceTask<Object,
             Void, GetDonationsResponse> {
         private Donation[] donations;
         private List<String> donationSDescriptions;
 
         @Override
         public Response<GetDonationsResponse> doRequest(Object body) throws IOException {
-            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
-                    .getDonationService().getDonations(
-                            Webservice.getInstance().getCurrentUserAPIType(),
-                            "Bearer " + Webservice.getInstance().getJwtToken());
+            Webservice webservice = Webservice.getInstance();
+            DonationService donationService = webservice.getDonationService();
+            Call<GetDonationsResponse> getDonationsResponseCall = donationService.getDonations(
+                            webservice.getCurrentUserAPIType(),
+                            "Bearer " + webservice.getJwtToken());
             return getDonationsResponseCall.execute();
         }
 
@@ -197,6 +205,10 @@ public class ViewDonationsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
     private class SearchDonationsTask extends WebserviceTask<SearchDonationsMap,
             Void, GetDonationsResponse> {
         private Donation[] donations;
@@ -209,10 +221,11 @@ public class ViewDonationsActivity extends AppCompatActivity {
          */
         @Override
         public Response<GetDonationsResponse> doRequest(SearchDonationsMap body) throws IOException {
-            Call<GetDonationsResponse> getDonationsResponseCall = Webservice.getInstance()
-                    .getDonationService().searchDonations(
-                    Webservice.getInstance().getCurrentUserAPIType(),
-                    "Bearer " + Webservice.getInstance().getJwtToken(), body);
+            Webservice webservice = Webservice.getInstance();
+            DonationService donationService = webservice.getDonationService();
+            Call<GetDonationsResponse> getDonationsResponseCall = donationService.searchDonations(
+                    webservice.getCurrentUserAPIType(),
+                    "Bearer " + webservice.getJwtToken(), body);
             return getDonationsResponseCall.execute();
         }
 
@@ -231,15 +244,21 @@ public class ViewDonationsActivity extends AppCompatActivity {
         }
     }
 
-    public class GetSearchableLocationsTask extends WebserviceTask<Object,
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
+    protected class GetSearchableLocationsTask extends WebserviceTask<Object,
             Void, GetLocationsResponse> {
         private List<String> locationsShowableList;
         private List<String> locationsSearchableList;
 
         @Override
         protected Response<GetLocationsResponse> doRequest(Object body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<GetLocationsResponse> getLocationsResponseCall = Webservice.getInstance().getAccountService().locations();
+            Webservice webservice = Webservice.getInstance();
+            if (webservice.isLoggedIn()) {
+                AccountService accountService = webservice.getAccountService();
+                Call<GetLocationsResponse> getLocationsResponseCall = accountService.locations();
                 return getLocationsResponseCall.execute();
             }
             return null;

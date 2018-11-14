@@ -22,7 +22,7 @@ public abstract class WebserviceTask<T, Void, U extends StandardResponse> extend
         return doRequestBoilerplate(params[0]);
     }
 
-    protected U doRequestBoilerplate(T mBody) {
+    private U doRequestBoilerplate(T mBody) {
         Response<U> requestAttempt;
         try {
             requestAttempt = doRequest(mBody);

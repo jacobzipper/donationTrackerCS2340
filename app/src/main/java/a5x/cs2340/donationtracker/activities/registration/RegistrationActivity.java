@@ -27,6 +27,7 @@ import a5x.cs2340.donationtracker.R;
 import a5x.cs2340.donationtracker.WelcomeActivity;
 import a5x.cs2340.donationtracker.activities.postlogin.PostLoginActivity;
 import a5x.cs2340.donationtracker.models.users.UserType;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.RegistrationBody;
@@ -176,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Return to the welcome screen
      */
-    public void goBackToWelcome() {
+    private void goBackToWelcome() {
         Intent goBackToWelcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(goBackToWelcomeIntent);
     }
@@ -268,14 +269,20 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
     }
-    public class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
+
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
+    private class AccountRegistrationTask extends WebserviceTask<RegistrationBody,
             Void, StandardResponse> {
 
         @Override
         public Response<StandardResponse> doRequest(RegistrationBody body) throws IOException {
-            if (Webservice.getInstance().isLoggedIn()) {
-                Call<StandardResponse> standardResponseCall = Webservice.getInstance()
-                        .getAccountService().register(body);
+            Webservice webservice = Webservice.getInstance();
+            if (webservice.isLoggedIn()) {
+                AccountService accountService = webservice.getAccountService();
+                Call<StandardResponse> standardResponseCall = accountService.register(body);
                 return standardResponseCall.execute();
             }
             return null;
@@ -284,7 +291,7 @@ public class RegistrationActivity extends AppCompatActivity {
         @SuppressLint({"NewApi", "LocalSuppress"})
         @Override
         protected void onPostExecute(StandardResponse response) {
-            if (response == null || response.getError() != 0) {
+            if ((response == null) || (response.getError() != 0)) {
                 Toast failedRegistrationToast = Toast.makeText(getApplicationContext(),
                         "Registration Failed (try new username?)",
                         Toast.LENGTH_LONG);

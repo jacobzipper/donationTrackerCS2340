@@ -2,7 +2,10 @@ package a5x.cs2340.donationtracker.webservice.bodies;
 
 /**
  * Webservice body used for user registration
+ *
+ * Suppress field local and unused issue because retrofit uses these via reflect
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class RegistrationBody extends LoginBody {
     private final String role;
     private final String firstname;
@@ -23,4 +26,15 @@ public class RegistrationBody extends LoginBody {
         this.lastname = lastname;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
 }

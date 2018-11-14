@@ -1,17 +1,12 @@
 package a5x.cs2340.donationtracker.activities.login;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,6 +22,7 @@ import a5x.cs2340.donationtracker.models.users.Admin;
 import a5x.cs2340.donationtracker.models.users.LocationEmployee;
 import a5x.cs2340.donationtracker.models.users.Manager;
 import a5x.cs2340.donationtracker.models.users.User;
+import a5x.cs2340.donationtracker.webservice.AccountService;
 import a5x.cs2340.donationtracker.webservice.Webservice;
 import a5x.cs2340.donationtracker.webservice.WebserviceTask;
 import a5x.cs2340.donationtracker.webservice.bodies.LoginBody;
@@ -52,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     private final Webservice webservice = Webservice.getInstance();
     @Override
@@ -80,8 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameSignInButton.setOnClickListener(view -> attemptLogin());
         Button backToWelcomeButton = findViewById(R.id.fromLoginToWelcomeButton);
         backToWelcomeButton.setOnClickListener(view -> goBackToWelcome());
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -128,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            showProgress(true);
             mAuthTask = new AccountLoginTask();
             mAuthTask.execute(new LoginBody(username.toString(),
                     password.toString()));
@@ -155,41 +146,7 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() >= MIN_PASSWORD_LENGTH;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        Resources resources = getResources();
-        int shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime);
-
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        ViewPropertyAnimator loginAnimator = mLoginFormView.animate();
-        loginAnimator.setDuration(shortAnimTime);
-        loginAnimator.alpha(show ? 0 : 1);
-        loginAnimator.setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        ViewPropertyAnimator progressAnimator = mProgressView.animate();
-        progressAnimator.setDuration(shortAnimTime);
-        progressAnimator.alpha(show ? 1 : 0);
-        progressAnimator.setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
-
-    void indicateIncorrectPassword() {
+    private void indicateIncorrectPassword() {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mUsernameView.requestFocus();
         mAuthTask = null;
@@ -199,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
      * Transitions from the login screen to the post-login screen
      *
      */
-    void goToPostLogin() {
+    private void goToPostLogin() {
         Intent goToPostLoginIntent = new Intent(this, PostLoginActivity.class);
         startActivity(goToPostLoginIntent);
     }
@@ -212,13 +169,18 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(backToWelcomeIntent);
     }
 
-    public class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
+    /**
+     * Suppressed because need access to UI elements and can't make this static
+     */
+    @SuppressLint("StaticFieldLeak")
+    private class AccountLoginTask extends WebserviceTask<LoginBody, Void, LoginResponse> {
 
 
         @Override
         public Response<LoginResponse> doRequest(LoginBody body) throws IOException {
-            Call<LoginResponse> loginResponseCall = Webservice.getInstance()
-                    .getAccountService().login(body);
+            Webservice webservice = Webservice.getInstance();
+            AccountService accountService = webservice.getAccountService();
+            Call<LoginResponse> loginResponseCall = accountService.login(body);
             return loginResponseCall.execute();
         }
 
@@ -250,8 +212,9 @@ public class LoginActivity extends AppCompatActivity {
                     account = new User(firstName, lastName, null, null);
                     break;
             }
-            Webservice.getInstance().logIn(account, jwt);
-            goToPostLogin(account, jwt);
+            Webservice webservice = Webservice.getInstance();
+            webservice.logIn(account, jwt);
+            goToPostLogin();
         }
     }
 }
