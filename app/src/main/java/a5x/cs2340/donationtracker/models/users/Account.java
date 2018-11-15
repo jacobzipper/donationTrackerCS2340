@@ -3,6 +3,8 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+
 /**
  * Abstract definition of an Account, implemented differently to represent the different types of
  * accounts with different permissions
@@ -16,16 +18,15 @@ public abstract class Account implements Parcelable {
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName    the Account's first name
-     * @param lastName     the Account's last name
+     * @param login        the LoginResponse for the account to be created from
      * @param username     the Account's username
-     * @param passwordHash the Account's hashed password
+     * @param password     the Account's hashed password
      */
-    Account(String firstName, String lastName, String username, String passwordHash) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    Account(LoginResponse login, String username, String password) {
+        this.firstName = login.getFirstname();
+        this.lastName = login.getLastname();
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.passwordHash = password;
     }
 
     /**
@@ -61,7 +62,7 @@ public abstract class Account implements Parcelable {
 
     @Override
     public int describeContents() {
-        return 0;
+        return username.hashCode();
     }
 
     @Override

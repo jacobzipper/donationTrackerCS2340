@@ -23,7 +23,27 @@ public class RegistrationBody extends LoginBody {
         this.lastname = lastname;
     }
 
+    /**
+     * Getter for account role corresponding to this registration
+     * @return role of the account
+     */
     public String getRole() {
         return role;
+    }
+
+    /**
+     * Getter for account first name corresponding to registration
+     * @return first name of this account
+     */
+    public String getFirstname() {
+        return firstname;
+    }
+
+    /**
+     * Getter for account last name corresponding to registration
+     * @return last name of this account
+     */
+    public String getLastname() {
+        return lastname;
     }
 }

@@ -1,5 +1,7 @@
 package a5x.cs2340.donationtracker;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -24,6 +26,7 @@ public enum DonationCategory {
         this.name = name;
     }
 
+    @NonNull
     @Override
     public String toString() { return name; }
 }

@@ -21,7 +21,7 @@ import retrofit2.Response;
  * Task to get a list of location names specifically for searching.
  * Sets a showable and searchable list location names to the context
  * The showable list has "Any" in index 0, and the searchable list has null in index 0
- * All other indicies are identical, and contain the names of all locations
+ * All other indices are identical, and contain the names of all locations
  */
 public class GetSearchableLocationsTask extends WebserviceTask<ViewDonationsActivity,
         Object, GetLocationsResponse> {

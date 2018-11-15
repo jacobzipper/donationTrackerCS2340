@@ -3,6 +3,8 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+
 /**
  * Represents an account corresponding to a Manager
  */
@@ -12,13 +14,12 @@ public class Manager extends Account {
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName    the Manager's first name
-     * @param lastName     the Manager's last name
-     * @param username     the Manager's username
-     * @param passwordHash the Manager's hashed password
+     * @param login        the LoginResponse corresponding to this object
+     * @param username     the Admin's username
+     * @param passwordHash the Admin's hashed password
      */
-    public Manager(String firstName, String lastName, String username, String passwordHash) {
-        super(firstName, lastName, username, passwordHash);
+    public Manager(LoginResponse login, String username, String passwordHash) {
+        super(login, username, passwordHash);
     }
 
     /**
