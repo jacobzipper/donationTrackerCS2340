@@ -24,6 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("ALL")
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class RegistrationApiUnitTest {
 
