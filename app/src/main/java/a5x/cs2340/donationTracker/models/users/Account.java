@@ -23,8 +23,8 @@ public abstract class Account implements Parcelable {
      * @param password     the Account's hashed password
      */
     Account(LoginResponse login, String username, String password) {
-        this.firstName = login.getFirstName();
-        this.lastName = login.getLastName();
+        this.firstName = login.getFirstname();
+        this.lastName = login.getLastname();
         this.username = username;
         this.passwordHash = password;
     }

@@ -8,7 +8,7 @@ import a5x.cs2340.donationTracker.DonationCategory;
  */
 public class Donation {
     private final String name;
-    private final String shortDescription;
+    private final String shortdescription;
     private final String description;
     private final String value;
     private final DonationCategory category;
@@ -23,16 +23,16 @@ public class Donation {
     /**
      * Creates a new Donation with no comments
      * @param name The name of the donation
-     * @param shortDescription A short description of the donation
+     * @param shortdescription A short description of the donation
      * @param description A description of the donation
      * @param value The estimated value of the donation (in dollars)
      * @param category The category the donation falls in
      */
-    public Donation(CharSequence name, CharSequence shortDescription,
+    public Donation(CharSequence name, CharSequence shortdescription,
                     CharSequence description, CharSequence value
                     , DonationCategory category) {
         this.name = name.toString();
-        this.shortDescription = shortDescription.toString();
+        this.shortdescription = shortdescription.toString();
         this.description = description.toString();
         this.value = value.toString();
         this.category = category;
@@ -50,8 +50,8 @@ public class Donation {
      * Getter for short description
      * @return the short description
      */
-    public String getShortDescription() {
-        return (shortDescription == null) ? "<No Description>" : shortDescription;
+    public String getShortdescription() {
+        return (shortdescription == null) ? "<No Description>" : shortdescription;
     }
 
     /**

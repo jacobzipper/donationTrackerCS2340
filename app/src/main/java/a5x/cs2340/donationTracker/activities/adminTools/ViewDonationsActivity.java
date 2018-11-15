@@ -117,7 +117,7 @@ public class ViewDonationsActivity extends AppCompatActivity {
                             setText(getString(R.string.donation_view_name,donation.getName()));
                     ((TextView) dialog.findViewById(R.id.donationShortDescription)).
                             setText(getString(R.string.donation_view_short_description,
-                                    donation.getShortDescription()));
+                                    donation.getShortdescription()));
                     ((TextView) dialog.findViewById(R.id.donationDescription)).
                             setText(getString(R.string.donation_view_description,
                                     donation.getDescription()));

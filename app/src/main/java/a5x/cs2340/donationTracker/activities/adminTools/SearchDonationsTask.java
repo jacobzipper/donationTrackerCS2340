@@ -57,7 +57,7 @@ public class SearchDonationsTask extends WebserviceTask<ViewDonationsActivity,
         Log.d("Searching", "Using response");
         donations = response.getDonations();
         Stream<Donation> donationStream = Arrays.stream(donations);
-        Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortDescription);
+        Stream<String> shortDescriptionStream = donationStream.map(Donation::getShortdescription);
         donationSDescriptions = shortDescriptionStream.collect(Collectors.toList());
     }
 
