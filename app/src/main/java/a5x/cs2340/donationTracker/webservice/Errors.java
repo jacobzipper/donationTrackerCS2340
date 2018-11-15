@@ -1,10 +1,11 @@
 package a5x.cs2340.donationTracker.webservice;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.SparseArray;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 /**
@@ -20,7 +21,10 @@ public enum Errors {
     ERROR_USERNAME_TAKEN(1002);
 
     private final int errNum;
-    public static final SparseArray<Errors> errorsMap = new SparseArray<>();
+
+    // Needs to be hashMap to fit existing code
+    @SuppressLint("UseSparseArrays")
+    public static final HashMap<Integer, Errors> errorsMap = new HashMap<>();
     Errors(int errNum) {
         this.errNum = errNum;
     }

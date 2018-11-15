@@ -7,11 +7,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import a5x.cs2340.donationtracker.activities.registration.RegistrationActivity;
+import a5x.cs2340.donationTracker.activities.registration.RegistrationActivity;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
+@SuppressWarnings("ALL")
 public class PasswordCheckerUnitTest {
     RegistrationActivity ra;
     Class<?> inner;
@@ -22,7 +22,7 @@ public class PasswordCheckerUnitTest {
     @Before
     public void setUp() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         ra = new RegistrationActivity();
-        inner = Class.forName("a5x.cs2340.donationtracker.activities.registration.RegistrationActivity$PasswordStrengthTask");
+        inner = Class.forName("a5x.cs2340.donationTracker.activities.registration.RegistrationActivity$PasswordStrengthTask");
         pstConst = inner.getDeclaredConstructors()[0];
         pstConst.setAccessible(true);
         method = inner.getDeclaredMethod("updatePasswordStrength", String.class);
