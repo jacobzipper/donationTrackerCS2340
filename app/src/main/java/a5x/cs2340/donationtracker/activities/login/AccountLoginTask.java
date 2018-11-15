@@ -53,25 +53,23 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
     @Override
     public void useResponse(LoginResponse response) {
         jwt = response.getJwt();
-        String firstName = response.getFirstname();
-        String lastName = response.getLastname();
         String username = mBody.getUsername();
         String password = mBody.getPassword();
         switch (response.getRole()) {
             case "admins":
-                account = new Admin(firstName, lastName, username, password);
+                account = new Admin(response, username, password);
                 break;
             case "users":
-                account = new User(firstName, lastName, username, password);
+                account = new User(response, username, password);
                 break;
             case "employees":
-                account = new LocationEmployee(firstName, lastName, username, password);
+                account = new LocationEmployee(response, username, password);
                 break;
             case "managers":
-                account = new Manager(firstName, lastName, username, password);
+                account = new Manager(response, username, password);
                 break;
             default:
-                account = new User(firstName, lastName, username, password);
+                account = new User(response, username, password);
                 break;
         }
         webservice.logIn(account, jwt);

@@ -3,6 +3,8 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+
 /**
  * Represents a regular user with no special privileges
  */
@@ -12,13 +14,12 @@ public class User extends Account {
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName    the User's first name
-     * @param lastName     the User's last name
-     * @param username     the User's username
-     * @param passwordHash the User's hashed password
+     * @param login        the LoginResponse corresponding to this object
+     * @param username     the Admin's username
+     * @param passwordHash the Admin's hashed password
      */
-    public User(String firstName, String lastName, String username, String passwordHash) {
-        super(firstName, lastName, username, passwordHash);
+    public User(LoginResponse login, String username, String passwordHash) {
+        super(login, username, passwordHash);
     }
 
     /**

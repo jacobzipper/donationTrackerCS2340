@@ -3,6 +3,8 @@ package a5x.cs2340.donationtracker.models.users;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import a5x.cs2340.donationtracker.webservice.responses.LoginResponse;
+
 /**
  * Represents an Account corresponding to Location Employees
  */
@@ -12,14 +14,12 @@ public class LocationEmployee extends Account {
     /**
      * Regular constructor and all passed parameters
      *
-     * @param firstName    the LocationEmployee's first name
-     * @param lastName     the LocationEmployee's last name
-     * @param username     the LocationEmployee's username
-     * @param passwordHash the LocationEmployee's hashed password
+     * @param login        the LoginResponse corresponding to this object
+     * @param username     the Admin's username
+     * @param passwordHash the Admin's hashed password
      */
-    public LocationEmployee(String firstName, String lastName,
-                            String username, String passwordHash) {
-        super(firstName, lastName, username, passwordHash);
+    public LocationEmployee(LoginResponse login, String username, String passwordHash) {
+        super(login, username, passwordHash);
     }
 
     /**
