@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.postlogin.PostLoginActivity">
+    tools:context=".activities.postLogin.PostLoginActivity">
 
     <ListView
-        android:id="@+id/locationlist"
+        android:id="@+id/locationList"
         android:layout_width="match_parent"
         android:layout_height="342dp"
         android:layout_marginTop="160dp"
@@ -66,7 +66,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationlist"
+        app:layout_constraintTop_toBottomOf="@+id/locationList"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.446"
         app:layout_constraintStart_toEndOf="@+id/toToolsButton"
-        app:layout_constraintTop_toBottomOf="@+id/locationlist"
+        app:layout_constraintTop_toBottomOf="@+id/locationList"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

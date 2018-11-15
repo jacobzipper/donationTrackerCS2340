@@ -1,0 +1,56 @@
+package a5x.cs2340.donationTracker.activities.adminTools;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
+import a5x.cs2340.donationTracker.R;
+import a5x.cs2340.donationTracker.activities.postLogin.PostLoginActivity;
+import a5x.cs2340.donationTracker.models.users.UserType;
+import a5x.cs2340.donationTracker.webservice.Webservice;
+
+/**
+ * Activity for all admin-related tools such as adding donations, modifying privileges, etc.
+ */
+public class AdminToolsActivity extends AppCompatActivity {
+    private final Webservice webservice = Webservice.getInstance();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_admin_tools);
+        Button backButton = findViewById(R.id.toolsBackButton);
+        backButton.setOnClickListener(v -> backToPostLogin());
+        Button addDonationButton = findViewById(R.id.toolsAddDonationButton);
+        addDonationButton.setOnClickListener(v -> toAddDonation());
+        Button viewDonationsButton = findViewById(R.id.toolsViewDonationsButton);
+        viewDonationsButton.setOnClickListener(v -> toViewDonations());
+        if (webservice.getCurrentUserPermissions() >=
+                UserType.REGULAR_USER.getPermissionsLevel()) {
+            viewDonationsButton.setVisibility(View.VISIBLE);
+        } else {
+            viewDonationsButton.setVisibility(View.GONE);
+        }
+        if (webservice.getCurrentUserPermissions()
+                >= UserType.LOCATION_EMPLOYEE.getPermissionsLevel()) {
+
+            addDonationButton.setVisibility(View.VISIBLE);
+        } else {
+            addDonationButton.setVisibility(View.GONE);
+        }
+
+    }
+    private void toAddDonation() {
+        Intent toAddDonationIntent = new Intent(this, AddDonationActivity.class);
+        startActivity(toAddDonationIntent);
+    }
+    private void toViewDonations() {
+        Intent toViewDonationsIntent = new Intent(this, ViewDonationsActivity.class);
+        startActivity(toViewDonationsIntent);
+    }
+    private void backToPostLogin() {
+        Intent backToPostLoginIntent = new Intent(this, PostLoginActivity.class);
+        startActivity(backToPostLoginIntent);
+    }
+}

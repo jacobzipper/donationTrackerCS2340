@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="a5x.cs2340.donationtracker">
+    package="a5x.cs2340.donationTracker">
 
     <!-- To auto-complete the email text field in the login form with the account's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -48,13 +48,13 @@
                     android:pathPattern="/app" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.postlogin.PostLoginActivity" />
+        <activity android:name=".activities.postLogin.PostLoginActivity" />
         <activity android:name=".activities.registration.RegistrationActivity" />
-        <activity android:name=".activities.admintools.AddDonationActivity" />
+        <activity android:name=".activities.adminTools.AddDonationActivity" />
         <activity
-            android:name=".activities.admintools.ViewDonationsActivity"
+            android:name=".activities.adminTools.ViewDonationsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.admintools.AdminToolsActivity" />
+        <activity android:name=".activities.adminTools.AdminToolsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -70,7 +70,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.postlogin.LocationsMapActivity"
+            android:name=".activities.postLogin.LocationsMapActivity"
             android:label="@string/title_activity_locations_map" />
     </application>
 

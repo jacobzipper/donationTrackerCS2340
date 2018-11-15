@@ -5,7 +5,7 @@
 
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=
     CLIENT_SIDE_ANDROID&r=2D:4C:89:F7:79:5A:00:5C:6A:EF:A2:1D:CC:3A:AB:9B:B9:53:A9:3A%3Ba5x.cs2340
-    .donationtracker.activities.postlogin
+    .donationTracker.activities.postLogin
 
     You can also add your credentials to an existing key, using these values:
 
