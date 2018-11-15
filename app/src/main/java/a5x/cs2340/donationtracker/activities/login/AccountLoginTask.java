@@ -86,4 +86,20 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
         mContext.showProgress(false);
         mContext.indicateIncorrectPassword();
     }
+
+    /**
+     * Getter for account
+     * @return account corresponding to this login task
+     */
+    public Account getAccount() {
+        return account;
+    }
+
+    /**
+     * Getter for JWT
+     * @return JWT corresponding to this login task
+     */
+    public String getJwt() {
+        return jwt;
+    }
 }
