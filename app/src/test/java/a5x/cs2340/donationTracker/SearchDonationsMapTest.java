@@ -8,6 +8,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @author Jacob Allen
+ */
 @SuppressWarnings("ALL")
 public class SearchDonationsMapTest {
     private SearchDonationsMap searchDonationsMap;
