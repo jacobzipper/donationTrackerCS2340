@@ -61,11 +61,6 @@ public abstract class WebserviceTask<S extends Activity, T,
         }
     }
 
-    @Override
-    protected void onCancelled() {
-
-    }
-
     // The webservice request
     protected abstract Response<U> doRequest(T body) throws IOException;
 

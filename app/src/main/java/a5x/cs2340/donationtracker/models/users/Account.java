@@ -22,7 +22,7 @@ public abstract class Account implements Parcelable {
      * @param username     the Account's username
      * @param password     the Account's hashed password
      */
-    public Account(LoginResponse login, String username, String password) {
+    Account(LoginResponse login, String username, String password) {
         this.firstName = login.getFirstname();
         this.lastName = login.getLastname();
         this.username = username;
@@ -62,7 +62,7 @@ public abstract class Account implements Parcelable {
 
     @Override
     public int describeContents() {
-        return 0;
+        return username.hashCode();
     }
 
     @Override

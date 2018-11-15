@@ -22,7 +22,7 @@ import retrofit2.Response;
  * the account.
  */
 @SuppressLint("StaticFieldLeak")
-public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, LoginResponse> {
+class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, LoginResponse> {
     private Account account;
     private String jwt;
     private final AccountService accountService;
@@ -37,11 +37,6 @@ public class AccountLoginTask extends WebserviceTask<LoginActivity, LoginBody, L
         super(activity, body);
         webservice = Webservice.getInstance();
         accountService = webservice.getAccountService();
-    }
-
-    @Override
-    protected void onCancelled() {
-        mContext.showProgress(false);
     }
 
     @Override
