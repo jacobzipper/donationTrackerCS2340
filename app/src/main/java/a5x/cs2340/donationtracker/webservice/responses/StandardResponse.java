@@ -10,7 +10,7 @@ public class StandardResponse {
     @Nullable
     private final String msg;
 
-    protected StandardResponse(int error, @Nullable String msg) {
+    public StandardResponse(int error, @Nullable String msg) {
         this.error = error;
         this.msg = msg;
     }

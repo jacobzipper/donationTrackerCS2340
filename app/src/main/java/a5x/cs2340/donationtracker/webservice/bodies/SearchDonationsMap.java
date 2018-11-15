@@ -14,11 +14,11 @@ public class SearchDonationsMap extends HashMap<String, String> {
      */
     public SearchDonationsMap(CharSequence name, String category, String location) {
         super();
-        fillMap(name.toString(), category, location);
+        fillMap(name, category, location);
     }
-    private void fillMap(String name, String category, String location) {
+    private void fillMap(CharSequence name, String category, String location) {
         if (name != null) {
-            this.put("name", name);
+            this.put("name", name.toString());
         }
         if (category != null) {
             this.put("category", category);
